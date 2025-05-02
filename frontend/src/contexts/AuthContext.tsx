@@ -17,6 +17,7 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   isAdmin: boolean;
+  token: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
@@ -29,14 +30,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     // Check if user is already logged in
     const currentUser = getCurrentUser();
+    const storedToken = localStorage.getItem('token');
+
     if (currentUser) {
       setUser(currentUser);
     }
+
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
     setLoading(false);
   }, []);
 
@@ -47,12 +56,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await loginUser(credentials);
       if (response.success) {
         setUser(response.user);
+        if (response.token) {
+          setToken(response.token);
+        }
         return;
       } else {
         setError(response.message || 'Login failed');
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during login');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'An error occurred during login');
     } finally {
       setLoading(false);
     }
@@ -65,12 +78,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await registerUser(data);
       if (response.success) {
         setUser(response.user);
+        if (response.token) {
+          setToken(response.token);
+        }
         return;
       } else {
         setError(response.message || 'Registration failed');
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during registration');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || 'An error occurred during registration');
     } finally {
       setLoading(false);
     }
@@ -79,6 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     logoutUser();
     setUser(null);
+    setToken(null);
     router.push('/');
   };
 
@@ -96,6 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         error,
         isAdmin,
+        token,
         login,
         register,
         logout,

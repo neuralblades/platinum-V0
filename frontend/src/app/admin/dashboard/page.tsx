@@ -9,13 +9,13 @@ import { getAllOffplanInquiries } from '@/services/offplanInquiryService';
 
 // Dashboard Stat Card Component
 const StatCard = ({ title, value, icon, bgColor }: { title: string; value: number; icon: React.ReactNode; bgColor: string }) => (
-  <div className="bg-white rounded-lg shadow-md p-6 flex items-center">
+  <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 flex items-center hover:shadow-md transition-shadow duration-300">
     <div className={`rounded-full p-3 mr-4 ${bgColor}`}>
       {icon}
     </div>
     <div>
-      <p className="text-gray-500 text-sm">{title}</p>
-      <p className="text-2xl font-bold">{value}</p>
+      <p className="text-gray-500 text-sm font-medium">{title}</p>
+      <p className="text-2xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">{value}</p>
     </div>
   </div>
 );
@@ -103,7 +103,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
       </div>
     );
   }
@@ -119,7 +119,7 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           }
-          bgColor="bg-blue-100"
+          bgColor="bg-gradient-to-br from-blue-100 to-blue-200"
         />
         <StatCard
           title="Featured Properties"
@@ -129,7 +129,7 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
           }
-          bgColor="bg-yellow-100"
+          bgColor="bg-gradient-to-br from-yellow-100 to-yellow-200"
         />
         <StatCard
           title="Total Users"
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           }
-          bgColor="bg-green-100"
+          bgColor="bg-gradient-to-br from-green-100 to-green-200"
         />
         <StatCard
           title="Property Inquiries"
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
             </svg>
           }
-          bgColor="bg-purple-100"
+          bgColor="bg-gradient-to-br from-purple-100 to-purple-200"
         />
         <StatCard
           title="Offplan Inquiries"
@@ -159,30 +159,39 @@ export default function AdminDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           }
-          bgColor="bg-indigo-100"
+          bgColor="bg-gradient-to-br from-indigo-100 to-indigo-200"
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Properties */}
-        <div className="bg-white rounded-lg shadow-md">
-          <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Recent Properties</h2>
-            <Link href="/admin/properties" className="text-sm text-blue-600 hover:text-blue-800">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+          <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-gray-800 flex items-center">
+              <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+              Recent Properties
+            </h2>
+            <Link
+              href="/admin/properties"
+              className="text-sm font-medium text-teal-600 hover:text-teal-800 flex items-center transition-colors"
+            >
               View All
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="p-4">
             {recentProperties.length > 0 ? (
-              <div className="divide-y">
+              <div className="divide-y divide-gray-100">
                 {recentProperties.map((property) => (
-                  <div key={property.id} className="py-3 flex justify-between items-center">
+                  <div key={property.id} className="py-3 flex justify-between items-center hover:bg-gray-50 px-2 rounded-md transition-colors">
                     <div>
-                      <h3 className="font-medium">{property.title}</h3>
+                      <h3 className="font-medium text-gray-800">{property.title}</h3>
                       <p className="text-sm text-gray-500">{property.location}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold">AED {property.price.toLocaleString()}</p>
+                      <p className="font-bold text-teal-600">AED {property.price.toLocaleString()}</p>
                       <p className="text-xs text-gray-500">
                         {new Date(property.createdAt).toLocaleDateString()}
                       </p>
@@ -197,21 +206,30 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Inquiries */}
-        <div className="bg-white rounded-lg shadow-md">
-          <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Recent Inquiries</h2>
-            <Link href="/admin/inquiries" className="text-sm text-blue-600 hover:text-blue-800">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+          <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-gray-800 flex items-center">
+              <span className="w-1 h-6 bg-purple-500 rounded-full mr-2"></span>
+              Recent Inquiries
+            </h2>
+            <Link
+              href="/admin/inquiries"
+              className="text-sm font-medium text-purple-600 hover:text-purple-800 flex items-center transition-colors"
+            >
               View All
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="p-4">
             {recentInquiries.length > 0 ? (
-              <div className="divide-y">
+              <div className="divide-y divide-gray-100">
                 {recentInquiries.map((inquiry) => (
-                  <div key={inquiry.id} className="py-3">
+                  <div key={inquiry.id} className="py-3 hover:bg-gray-50 px-2 rounded-md transition-colors">
                     <div className="flex justify-between">
-                      <h3 className="font-medium">{inquiry.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
+                      <h3 className="font-medium text-gray-800">{inquiry.name}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         inquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
                         inquiry.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-green-100 text-green-800'
@@ -233,21 +251,30 @@ export default function AdminDashboard() {
         </div>
 
         {/* Recent Offplan Inquiries */}
-        <div className="bg-white rounded-lg shadow-md">
-          <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">Recent Offplan Inquiries</h2>
-            <Link href="/admin/offplan-inquiries" className="text-sm text-blue-600 hover:text-blue-800">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+          <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+            <h2 className="text-lg font-bold text-gray-800 flex items-center">
+              <span className="w-1 h-6 bg-indigo-500 rounded-full mr-2"></span>
+              Recent Offplan Inquiries
+            </h2>
+            <Link
+              href="/admin/offplan-inquiries"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-800 flex items-center transition-colors"
+            >
               View All
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           </div>
           <div className="p-4">
             {recentOffplanInquiries.length > 0 ? (
-              <div className="divide-y">
+              <div className="divide-y divide-gray-100">
                 {recentOffplanInquiries.map((inquiry) => (
-                  <div key={inquiry.id} className="py-3">
+                  <div key={inquiry.id} className="py-3 hover:bg-gray-50 px-2 rounded-md transition-colors">
                     <div className="flex justify-between">
-                      <h3 className="font-medium">{inquiry.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
+                      <h3 className="font-medium text-gray-800">{inquiry.name}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         inquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
                         inquiry.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-green-100 text-green-800'
