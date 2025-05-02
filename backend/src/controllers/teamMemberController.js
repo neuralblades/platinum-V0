@@ -156,8 +156,8 @@ const createTeamMember = async (req, res) => {
       bio,
       email,
       phone,
-      social,
-      specialties,
+      whatsapp,
+      languages,
       isLeadership,
       order
     } = req.body;
@@ -178,8 +178,8 @@ const createTeamMember = async (req, res) => {
       bio,
       email,
       phone,
-      social: social ? JSON.parse(social) : { linkedin: '', twitter: '', instagram: '' },
-      specialties: specialties ? JSON.parse(specialties) : [],
+      whatsapp: whatsapp || '',
+      languages: languages ? JSON.parse(languages) : [],
       isLeadership: isLeadership === 'true',
       order: order ? parseInt(order) : 0
     });
@@ -219,8 +219,8 @@ const updateTeamMember = async (req, res) => {
       bio,
       email,
       phone,
-      social,
-      specialties,
+      whatsapp,
+      languages,
       isLeadership,
       order
     } = req.body;
@@ -237,8 +237,8 @@ const updateTeamMember = async (req, res) => {
     if (bio) teamMember.bio = bio;
     if (email) teamMember.email = email;
     if (phone) teamMember.phone = phone;
-    if (social) teamMember.social = JSON.parse(social);
-    if (specialties) teamMember.specialties = JSON.parse(specialties);
+    if (whatsapp !== undefined) teamMember.whatsapp = whatsapp;
+    if (languages) teamMember.languages = JSON.parse(languages);
     if (isLeadership !== undefined) teamMember.isLeadership = isLeadership === 'true';
     if (order) teamMember.order = parseInt(order);
 

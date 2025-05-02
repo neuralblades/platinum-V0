@@ -8,12 +8,8 @@ export interface TeamMember {
   bio: string;
   email: string;
   phone: string;
-  social: {
-    linkedin: string;
-    twitter: string;
-    instagram: string;
-  };
-  specialties: string[];
+  whatsapp: string;
+  languages: string[];
   isLeadership: boolean;
   order: number;
   createdAt: string;

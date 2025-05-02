@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // Removed unique constraint to reduce number of indexes
     },
     description: {
       type: DataTypes.TEXT,
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     slug: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // Removed unique constraint to reduce number of indexes
     }
   }, {
     tableName: 'developers',

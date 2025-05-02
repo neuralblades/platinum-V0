@@ -26,25 +26,20 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    social: {
-      type: DataTypes.JSON,
-      allowNull: true,
-      defaultValue: {
-        linkedin: '',
-        twitter: '',
-        instagram: ''
-      }
+    whatsapp: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    specialties: {
+    languages: {
       type: DataTypes.TEXT,
       allowNull: true,
       defaultValue: '[]',
       get() {
-        const value = this.getDataValue('specialties');
+        const value = this.getDataValue('languages');
         return value ? JSON.parse(value) : [];
       },
       set(value) {
-        this.setDataValue('specialties', JSON.stringify(value || []));
+        this.setDataValue('languages', JSON.stringify(value || []));
       }
     },
     isLeadership: {

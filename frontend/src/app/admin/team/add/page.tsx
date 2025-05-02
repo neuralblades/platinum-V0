@@ -17,13 +17,11 @@ export default function AddTeamMemberPage() {
     phone: '',
     isLeadership: false,
     order: 0,
-    linkedin: '',
-    twitter: '',
-    instagram: '',
+    whatsapp: '',
   });
 
-  const [specialties, setSpecialties] = useState<string[]>([]);
-  const [newSpecialty, setNewSpecialty] = useState('');
+  const [languages, setLanguages] = useState<string[]>([]);
+  const [newLanguage, setNewLanguage] = useState('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -60,15 +58,15 @@ export default function AddTeamMemberPage() {
     reader.readAsDataURL(file);
   };
 
-  const handleAddSpecialty = () => {
-    if (newSpecialty.trim() && !specialties.includes(newSpecialty.trim())) {
-      setSpecialties([...specialties, newSpecialty.trim()]);
-      setNewSpecialty('');
+  const handleAddLanguage = () => {
+    if (newLanguage.trim() && !languages.includes(newLanguage.trim())) {
+      setLanguages([...languages, newLanguage.trim()]);
+      setNewLanguage('');
     }
   };
 
-  const handleRemoveSpecialty = (index: number) => {
-    setSpecialties(specialties.filter((_, i) => i !== index));
+  const handleRemoveLanguage = (index: number) => {
+    setLanguages(languages.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -87,16 +85,11 @@ export default function AddTeamMemberPage() {
       submitFormData.append('isLeadership', String(formData.isLeadership));
       submitFormData.append('order', String(formData.order));
 
-      // Add social media links
-      const social = {
-        linkedin: formData.linkedin,
-        twitter: formData.twitter,
-        instagram: formData.instagram,
-      };
-      submitFormData.append('social', JSON.stringify(social));
+      // Add WhatsApp
+      submitFormData.append('whatsapp', formData.whatsapp);
 
-      // Add specialties
-      submitFormData.append('specialties', JSON.stringify(specialties));
+      // Add languages
+      submitFormData.append('languages', JSON.stringify(languages));
 
       // Add image if available
       if (imageFile) {
@@ -266,71 +259,49 @@ export default function AddTeamMemberPage() {
                 )}
               </div>
 
-              {/* Social Media */}
+              {/* WhatsApp */}
               <div>
                 <h2 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">
-                  Social Media
+                  WhatsApp
                 </h2>
 
                 <div className="mb-4">
                   <label className="block text-gray-700 text-sm font-medium mb-2">
-                    LinkedIn URL
+                    WhatsApp Number
                   </label>
                   <input
-                    type="url"
-                    name="linkedin"
-                    value={formData.linkedin}
+                    type="text"
+                    name="whatsapp"
+                    value={formData.whatsapp}
                     onChange={handleChange}
+                    placeholder="e.g., +971501234567"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
                   />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">
-                    Twitter URL
-                  </label>
-                  <input
-                    type="url"
-                    name="twitter"
-                    value={formData.twitter}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-medium mb-2">
-                    Instagram URL
-                  </label>
-                  <input
-                    type="url"
-                    name="instagram"
-                    value={formData.instagram}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Include country code for international format (e.g., +971 for UAE)
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Specialties */}
+          {/* Languages */}
           <div>
             <h2 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-200">
-              Specialties
+              Languages
             </h2>
 
             <div className="mb-4 flex">
               <input
                 type="text"
-                value={newSpecialty}
-                onChange={(e) => setNewSpecialty(e.target.value)}
-                placeholder="Add a specialty"
+                value={newLanguage}
+                onChange={(e) => setNewLanguage(e.target.value)}
+                placeholder="Add a language (e.g., English, Arabic)"
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <button
                 type="button"
-                onClick={handleAddSpecialty}
+                onClick={handleAddLanguage}
                 className="px-4 py-2 bg-teal-600 text-white rounded-r-md hover:bg-teal-700"
               >
                 <FaPlus />
@@ -338,23 +309,23 @@ export default function AddTeamMemberPage() {
             </div>
 
             <div className="flex flex-wrap gap-2 mb-4">
-              {specialties.map((specialty, index) => (
+              {languages.map((language, index) => (
                 <div
                   key={index}
                   className="flex items-center bg-gray-100 px-3 py-1 rounded-full"
                 >
-                  <span className="text-gray-800 text-sm">{specialty}</span>
+                  <span className="text-gray-800 text-sm">{language}</span>
                   <button
                     type="button"
-                    onClick={() => handleRemoveSpecialty(index)}
+                    onClick={() => handleRemoveLanguage(index)}
                     className="ml-2 text-gray-500 hover:text-red-500"
                   >
                     <FaTimes size={12} />
                   </button>
                 </div>
               ))}
-              {specialties.length === 0 && (
-                <p className="text-gray-500 text-sm">No specialties added yet.</p>
+              {languages.length === 0 && (
+                <p className="text-gray-500 text-sm">No languages added yet.</p>
               )}
             </div>
           </div>

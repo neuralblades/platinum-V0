@@ -118,13 +118,12 @@ module.exports = {
       }
     });
 
-    // Add indexes
-    await queryInterface.addIndex('blog_posts', ['slug']);
+    // Add indexes (only for columns that don't already have indexes)
+    // Skip slug index since it's already unique
     await queryInterface.addIndex('blog_posts', ['category']);
     await queryInterface.addIndex('blog_posts', ['status']);
-    await queryInterface.addIndex('blog_posts', ['authorId']);
-    await queryInterface.addIndex('blog_comments', ['postId']);
-    await queryInterface.addIndex('blog_comments', ['userId']);
+    // Skip authorId index since it's a foreign key and already has an index
+    // Skip postId and userId indexes since they're foreign keys and already have indexes
     await queryInterface.addIndex('blog_comments', ['status']);
   },
 
