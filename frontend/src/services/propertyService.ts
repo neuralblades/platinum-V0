@@ -20,6 +20,7 @@ export interface Property {
   bedrooms: number;
   bathrooms: number;
   area: number;
+  bedroomRange?: string; // New field for offplan properties
   features: string[];
   images: string[];
   mainImage: string;

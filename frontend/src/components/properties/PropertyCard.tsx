@@ -54,12 +54,12 @@ const PropertyCard = ({
           />
           <div className="absolute top-4 left-4 flex flex-col space-y-2">
             {featured && (
-              <div className="bg-gradient-to-r from-gray-500 to-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="bg-gradient-to-r from-gray-700 to-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
                 Featured
               </div>
             )}
             {isOffplan && (
-              <div className="bg-gradient-to-r from-gray-500 to-gray-900 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <div className="bg-gradient-to-r from-gray-600 to-gray-800 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
                 Off Plan
               </div>
             )}
@@ -69,7 +69,7 @@ const PropertyCard = ({
 
       <div className="p-5">
         <Link href={isOffplan ? `/properties/offplan/${id}` : `/properties/${id}`}>
-          <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-[#a49650] transition duration-300">{title}</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-2 hover:text-gray-600 transition duration-300">{title}</h3>
         </Link>
 
         <p className="text-gray-600 mb-2 flex items-center">
@@ -80,7 +80,7 @@ const PropertyCard = ({
           {location}
         </p>
 
-        <p className="text-2xl font-bold text-[#a49650] mb-4">AED {price.toLocaleString()}</p>
+        <p className="text-2xl font-bold text-gray-700 mb-4">AED {price.toLocaleString()}</p>
 
         <div className="flex justify-between text-gray-600 border-t pt-4">
           <div className="flex items-center">

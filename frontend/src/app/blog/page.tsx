@@ -6,6 +6,7 @@ import Link from 'next/link';
 import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { getBlogPosts, BlogPost, BlogFilter } from '@/services/blogService';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 const BlogPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -74,7 +75,7 @@ const BlogPage: React.FC = () => {
 
     // Calculate range of visible page numbers
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     // Adjust if we're near the end
     if (endPage - startPage + 1 < maxVisiblePages) {
@@ -138,29 +139,15 @@ const BlogPage: React.FC = () => {
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
         <div className="mb-6">
-          <nav className="flex text-sm text-gray-600">
-            <Link href="/" className="hover:text-blue-600 transition duration-300">Home</Link>
-            <span className="mx-2">/</span>
-            <span className="text-gray-900">Blog</span>
-            {category && (
-              <>
-                <span className="mx-2">/</span>
-                <span className="text-gray-900">Category: {category}</span>
-              </>
-            )}
-            {tag && (
-              <>
-                <span className="mx-2">/</span>
-                <span className="text-gray-900">Tag: {tag}</span>
-              </>
-            )}
-            {search && (
-              <>
-                <span className="mx-2">/</span>
-                <span className="text-gray-900">Search: {search}</span>
-              </>
-            )}
-          </nav>
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Blog' },
+              ...(category ? [{ label: `Category: ${category}` }] : []),
+              ...(tag ? [{ label: `Tag: ${tag}` }] : []),
+              ...(search ? [{ label: `Search: ${search}` }] : [])
+            ]}
+          />
         </div>
 
         {/* Page Title */}

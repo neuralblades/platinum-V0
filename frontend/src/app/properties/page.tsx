@@ -6,6 +6,7 @@ import PropertyCard from '@/components/properties/PropertyCard';
 import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
 import Link from 'next/link';
 import { getProperties, PropertyFilter, Property } from '@/services/propertyService';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 // Fallback data for properties
 const fallbackProperties = [
@@ -149,12 +150,12 @@ export default function PropertiesPage() {
     <div className="container mx-auto px-4 py-12">
       {/* Breadcrumbs */}
       <div className="mb-6">
-        <nav className="flex text-gray-600 text-sm">
-          <Link href="/" className="hover:text-[#a49650] transition duration-300">Home</Link>
-          <span className="mx-2">/</span>
-          <Link href="/properties" className="hover:text-[#a49650] transition duration-300">Properties</Link>
-          <span className="mx-2">/</span>
-        </nav>
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Properties' }
+          ]}
+        />
       </div>
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Browse Properties</h1>

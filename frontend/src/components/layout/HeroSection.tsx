@@ -90,7 +90,7 @@ const HeroSection = () => {
 
         {/* Stats */}
         <div className="mt-8 text-center text-md text-white/90 font-medium">
-          <p>1,000+ listings · 100+ agents · Serving Exclusive Properties</p>
+          <p>Premium Properties · Expert Agents · Exclusive Listings</p>
         </div>
       </div>
     </div>

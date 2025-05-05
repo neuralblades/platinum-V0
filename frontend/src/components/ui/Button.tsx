@@ -31,41 +31,41 @@ const Button = ({
 }: ButtonProps) => {
   // Base classes
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2';
-  
+
   // Size classes
   const sizeClasses = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg',
   };
-  
+
   // Variant classes
   const variantClasses = {
-    primary: gradient 
-      ? 'bg-gradient-to-r from-teal-600 to-teal-800 hover:from-teal-700 hover:to-teal-900 text-white font-bold shadow-lg focus:ring-teal-500'
-      : 'bg-teal-600 hover:bg-teal-700 text-white focus:ring-teal-500',
+    primary: gradient
+      ? 'bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white font-bold shadow-lg focus:ring-gray-700'
+      : 'bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-700',
     secondary: gradient
-      ? 'bg-gradient-to-r from-[#a08f7d] to-[#8a7a69] hover:from-[#8a7a69] hover:to-[#756758] text-white font-bold shadow-lg focus:ring-[#a08f7d]'
-      : 'bg-[#a08f7d] hover:bg-[#8a7a69] text-white focus:ring-[#a08f7d]',
+      ? 'bg-gradient-to-r from-[#767d8f] to-[#5e6476] hover:from-[#5e6476] hover:to-[#4a4f5d] text-white font-bold shadow-lg focus:ring-[#767d8f]'
+      : 'bg-[#767d8f] hover:bg-[#5e6476] text-white focus:ring-[#767d8f]',
     accent: gradient
-      ? 'bg-gradient-to-r from-[#a49650] to-[#877b42] hover:from-[#877b42] hover:to-[#6a6034] text-white font-bold shadow-lg focus:ring-[#a49650]'
-      : 'bg-[#a49650] hover:bg-[#877b42] text-white focus:ring-[#a49650]',
-      mj: gradient
-      ? 'bg-gradient-to-r from-gray-500 to-gray-900 hover:from-gray-900 hover:to-gray-500 text-white font-bold shadow-lg'
+      ? 'bg-gradient-to-r from-[#9599a7] to-[#777b8a] hover:from-[#777b8a] hover:to-[#5f6271] text-white font-bold shadow-lg focus:ring-[#9599a7]'
+      : 'bg-[#9599a7] hover:bg-[#777b8a] text-white focus:ring-[#9599a7]',
+    mj: gradient
+      ? 'bg-gradient-to-r from-gray-500 to-gray-900 hover:from-gray-900 hover:to-gray-500 text-white font-bold shadow-lg focus:ring-gray-700'
       : 'border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
-    outline: 'border border-gray-300 bg-transparent text-gray-700 font-bold shadow-lg hover:bg-gray-50 focus:ring-gray-500',
+    outline: 'border border-gray-700 bg-transparent text-gray-700 font-bold shadow-lg hover:bg-gray-50 focus:ring-gray-500',
     ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
     wht: 'bg-gray-100 text-gray-900 font-bold shadow-lg border border-gray-300 hover:bg-gray-50'
   };
-  
+
   // Width classes
   const widthClasses = fullWidth ? 'w-full' : '';
-  
+
   // Disabled classes
-  const disabledClasses = (disabled || isLoading) 
-    ? 'opacity-60 cursor-not-allowed' 
+  const disabledClasses = (disabled || isLoading)
+    ? 'opacity-60 cursor-not-allowed'
     : '';
-  
+
   // Combine all classes
   const buttonClasses = `
     ${baseClasses}
@@ -75,7 +75,7 @@ const Button = ({
     ${disabledClasses}
     ${className}
   `;
-  
+
   // If href is provided, render as Link
   if (href) {
     return (
@@ -94,10 +94,10 @@ const Button = ({
       </Link>
     );
   }
-  
+
   // Otherwise render as button
   return (
-    <button 
+    <button
       className={buttonClasses}
       disabled={disabled || isLoading}
       {...props}

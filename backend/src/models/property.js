@@ -68,6 +68,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    bedroomRange: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     yearBuilt: {
       type: DataTypes.INTEGER,
     },

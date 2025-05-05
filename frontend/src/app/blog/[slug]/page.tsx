@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { getBlogPostBySlug, getBlogImageUrl, addBlogComment, BlogPost } from '@/services/blogService';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface BlogPostDetailClientProps {
   slug: string;
@@ -133,20 +134,14 @@ const BlogPostDetailClient: React.FC<BlogPostDetailClientProps> = ({ slug }) => 
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
         <div className="mb-6">
-          <nav className="flex text-sm text-gray-600">
-            <Link href="/" className="transition duration-300 hover:text-blue-600">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/blog" className="transition duration-300 hover:text-blue-600">Blog</Link>
-            <span className="mx-2">/</span>
-            <Link
-              href={`/blog?category=${encodeURIComponent(post.category)}`}
-              className="transition duration-300 hover:text-blue-600"
-            >
-              {post.category}
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-gray-900">{post.title}</span>
-          </nav>
+          <Breadcrumb
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Blog', href: '/blog' },
+              { label: post.category, href: `/blog?category=${encodeURIComponent(post.category)}` },
+              { label: post.title }
+            ]}
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">

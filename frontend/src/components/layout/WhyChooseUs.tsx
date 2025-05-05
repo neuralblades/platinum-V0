@@ -46,13 +46,13 @@ const WhyChooseUs = () => {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">Why Choose Us</h2>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            At Luxury Estates, we are committed to providing exceptional service and finding the perfect property for our clients.
+            At Platinum Square, we are committed to providing exceptional service and finding the perfect property for our clients.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-gray-50 hover:bg-gradient-to-r from-[#e9ddb0] to-[#b1a569] cursor-pointer p-6 text-gray-900 rounded-lg text-center hover:shadow-lg transition duration-300">
+            <div key={index} className="bg-gray-50 hover:bg-gradient-to-r from-gray-200 to-gray-300 cursor-pointer p-6 text-gray-900 rounded-lg text-center hover:shadow-lg transition duration-300">
               <div className="flex justify-center mb-4">
                 {feature.icon}
               </div>

@@ -1,40 +1,40 @@
-/* Luxury Gold Theme Colors */
+/* Platinum Square Theme Colors */
 :root {
-  /* Primary Colors - Gold */
-  --color-primary-50: #f9f6e9;
-  --color-primary-100: #f3ecd3;
-  --color-primary-200: #e9ddb0;
-  --color-primary-300: #dfce8d;
-  --color-primary-400: #d5bf6a;
-  --color-primary-500: #ccb047;
-  --color-primary-600: #c2a124;
-  --color-primary-700: #a38a1f;
-  --color-primary-800: #84731a;
-  --color-primary-900: #655c15;
+  /* Primary Colors - Platinum/Silver */
+  --color-primary-50: #f9f9fa;
+  --color-primary-100: #f1f1f3;
+  --color-primary-200: #e4e5e9;
+  --color-primary-300: #d2d4db;
+  --color-primary-400: #b5b9c4;
+  --color-primary-500: #9299aa;
+  --color-primary-600: #767d8f;
+  --color-primary-700: #5e6476;
+  --color-primary-800: #4a4f5d;
+  --color-primary-900: #343842;
 
-  /* Secondary Colors - Beige */
-  --color-secondary-50: #f7f5ed;
-  --color-secondary-100: #efeadb;
-  --color-secondary-200: #e6dfc9;
-  --color-secondary-300: #dcd4b7;
-  --color-secondary-400: #d3c9a5;
-  --color-secondary-500: #c9be93;
-  --color-secondary-600: #bfb381;
-  --color-secondary-700: #a59969;
-  --color-secondary-800: #8a7e51;
-  --color-secondary-900: #6f6339;
+  /* Secondary Colors - Dark Gray */
+  --color-secondary-50: #f5f6f7;
+  --color-secondary-100: #e6e8ea;
+  --color-secondary-200: #cfd2d7;
+  --color-secondary-300: #b0b5bd;
+  --color-secondary-400: #8c929d;
+  --color-secondary-500: #6e7482;
+  --color-secondary-600: #575c68;
+  --color-secondary-700: #444851;
+  --color-secondary-800: #343740;
+  --color-secondary-900: #282a32;
 
-  /* Accent Colors - Darker Gold */
-  --color-accent-50: #f2f0e6;
-  --color-accent-100: #e5e1cd;
-  --color-accent-200: #d8d2b4;
-  --color-accent-300: #cbc39b;
-  --color-accent-400: #beb482;
-  --color-accent-500: #b1a569;
-  --color-accent-600: #a49650;
-  --color-accent-700: #877b42;
-  --color-accent-800: #6a6034;
-  --color-accent-900: #4d4526;
+  /* Accent Colors - Darker Platinum */
+  --color-accent-50: #f7f7f8;
+  --color-accent-100: #eeeef0;
+  --color-accent-200: #d9dadf;
+  --color-accent-300: #bbbdc6;
+  --color-accent-400: #9599a7;
+  --color-accent-500: #777b8a;
+  --color-accent-600: #5f6271;
+  --color-accent-700: #4b4d59;
+  --color-accent-800: #3a3c45;
+  --color-accent-900: #2c2d34;
 }
 
 /* Apply theme colors to common elements */

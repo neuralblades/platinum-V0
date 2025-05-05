@@ -44,9 +44,8 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
     status: 'for-sale', // Default to for-sale
     isOffplan: true, // Always true for offplan properties
     developerId: '',
-    bedrooms: '',
-    bathrooms: '',
-    area: '',
+    bedrooms: '1', // Default value, will be used as a fallback
+    bedroomRange: '1-3', // New field for bedroom range
     yearBuilt: '',
     paymentPlan: '70/30', // Default payment plan
     features: [] as string[],
@@ -101,9 +100,8 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               status: property.status || 'for-sale',
               isOffplan: true,
               developerId: property.developer?.id || '',
-              bedrooms: property.bedrooms?.toString() || '',
-              bathrooms: property.bathrooms?.toString() || '',
-              area: property.area?.toString() || '',
+              bedrooms: property.bedrooms?.toString() || '1',
+              bedroomRange: property.bedroomRange || `${property.bedrooms}-${property.bedrooms + 2}`,
               yearBuilt: property.yearBuilt?.toString() || '',
               paymentPlan: property.paymentPlan || '70/30',
               features: property.features || [],
@@ -565,10 +563,28 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="bedroomRange" className="block text-sm font-medium text-gray-700 mb-1">
+                Bedroom Range (e.g., "1-3" or "Studio-2") *
+              </label>
+              <input
+                type="text"
+                id="bedroomRange"
+                name="bedroomRange"
+                value={formData.bedroomRange}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+                placeholder="e.g., 1-3, Studio-2, 2-4"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Specify the range of bedrooms available in this development (e.g., "1-3", "Studio-2")
+              </p>
+            </div>
             <div>
               <label htmlFor="bedrooms" className="block text-sm font-medium text-gray-700 mb-1">
-                Bedrooms *
+                Default Bedrooms (for filtering) *
               </label>
               <input
                 type="number"
@@ -580,37 +596,9 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 min="0"
                 required
               />
-            </div>
-            <div>
-              <label htmlFor="bathrooms" className="block text-sm font-medium text-gray-700 mb-1">
-                Bathrooms *
-              </label>
-              <input
-                type="number"
-                id="bathrooms"
-                name="bathrooms"
-                value={formData.bathrooms}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min="0"
-                step="0.5"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="area" className="block text-sm font-medium text-gray-700 mb-1">
-                Area (sq ft) *
-              </label>
-              <input
-                type="number"
-                id="area"
-                name="area"
-                value={formData.area}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                min="0"
-                required
-              />
+              <p className="text-xs text-gray-500 mt-1">
+                This value is used for filtering properties. Use the minimum number of bedrooms.
+              </p>
             </div>
           </div>
 

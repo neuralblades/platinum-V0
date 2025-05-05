@@ -33,7 +33,7 @@ export default function AdminLayout({
   if (loading || (!user && !loading)) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700 shadow-md"></div>
       </div>
     );
   }
@@ -48,11 +48,11 @@ export default function AdminLayout({
       <div className={`bg-gradient-to-b from-gray-800 to-gray-900 text-white ${isSidebarOpen ? 'w-64' : 'w-20'} transition-all duration-300 ease-in-out`}>
         <div className="p-4 flex items-center justify-between">
           {isSidebarOpen ? (
-            <h1 className="text-xl font-bold bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">Real Estate Admin</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">Platinum Square Admin</h1>
           ) : (
-            <h1 className="text-xl font-bold bg-gradient-to-r from-teal-400 to-teal-600 bg-clip-text text-transparent">RE</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">PS</h1>
           )}
-          <button onClick={toggleSidebar} className="text-white focus:outline-none hover:text-teal-400 transition-colors">
+          <button onClick={toggleSidebar} className="text-white focus:outline-none hover:text-gray-300 transition-colors">
             {isSidebarOpen ? (
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
@@ -67,7 +67,7 @@ export default function AdminLayout({
         <nav className="mt-6">
           <div className="px-4 mb-6">
             <div className={`flex items-center ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}>
-              <div className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-teal-500 shadow-md">
+              <div className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-gray-500 shadow-md">
                 <Image
                   src="/images/admin-avatar.png"
                   alt="Admin"
@@ -79,7 +79,7 @@ export default function AdminLayout({
               {isSidebarOpen && (
                 <div className="ml-3">
                   <p className="text-sm font-medium">Admin User</p>
-                  <p className="text-xs text-teal-400">Administrator</p>
+                  <p className="text-xs text-gray-400">Administrator</p>
                 </div>
               )}
             </div>
@@ -90,7 +90,7 @@ export default function AdminLayout({
                 href="/admin/dashboard"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/dashboard'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -105,7 +105,7 @@ export default function AdminLayout({
                 href="/admin/properties"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname.startsWith('/admin/properties')
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -120,7 +120,7 @@ export default function AdminLayout({
                 href="/admin/developers"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname.startsWith('/admin/developers')
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -135,7 +135,7 @@ export default function AdminLayout({
                 href="/admin/users"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname.startsWith('/admin/users')
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -150,7 +150,7 @@ export default function AdminLayout({
                 href="/admin/inquiries"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/inquiries'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -165,7 +165,7 @@ export default function AdminLayout({
                 href="/admin/general-inquiries"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/general-inquiries'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -180,7 +180,7 @@ export default function AdminLayout({
                 href="/admin/contact-submissions"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/contact-submissions'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -195,7 +195,7 @@ export default function AdminLayout({
                 href="/admin/offplan-inquiries"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/offplan-inquiries'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -210,7 +210,7 @@ export default function AdminLayout({
                 href="/admin/document-requests"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname === '/admin/document-requests'
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -225,7 +225,7 @@ export default function AdminLayout({
                 href="/admin/blog"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname.startsWith('/admin/blog')
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -240,7 +240,7 @@ export default function AdminLayout({
                 href="/admin/team"
                 className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
                   pathname.startsWith('/admin/team')
-                    ? 'bg-gradient-to-r from-teal-500 to-teal-700 text-white shadow-md'
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
                     : 'hover:bg-gray-700 text-gray-300 hover:text-white'
                 } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
               >
@@ -278,7 +278,7 @@ export default function AdminLayout({
         <header className="bg-white shadow-md z-10">
           <div className="px-6 py-4 flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-bold text-gray-800 border-l-4 border-teal-500 pl-3">
+              <h2 className="text-xl font-bold text-gray-800 border-l-4 border-gray-700 pl-3">
                 {pathname === '/admin/dashboard' && 'Dashboard'}
                 {pathname.startsWith('/admin/properties') && 'Properties Management'}
                 {pathname.startsWith('/admin/developers') && 'Developers Management'}
@@ -300,7 +300,7 @@ export default function AdminLayout({
               </button>
               <Link
                 href="/"
-                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 rounded-lg shadow-sm transition-all duration-200"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black rounded-lg shadow-sm transition-all duration-200"
               >
                 View Website
               </Link>

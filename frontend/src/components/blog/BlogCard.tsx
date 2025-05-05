@@ -44,11 +44,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
 
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
           <div className="mb-2 flex items-center space-x-2">
-            <span className="rounded-full bg-[#a49650] shadow-lg px-3 py-1 text-xs font-medium">{post.category}</span>
+            <span className="rounded-full bg-gray-700 shadow-lg px-3 py-1 text-xs font-medium">{post.category}</span>
             <span className="text-sm opacity-80">{formatDate(post.publishedAt || post.createdAt)}</span>
           </div>
 
-          <Link href={`/blog/${post.slug}`} className="group-hover:text-[blue-300]">
+          <Link href={`/blog/${post.slug}`} className="group-hover:text-gray-300">
             <h3 className="mb-2 text-xl font-bold leading-tight transition-colors">{post.title}</h3>
           </Link>
 
@@ -72,7 +72,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
         </div>
 
         <div className="flex-grow">
-          <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
+          <Link href={`/blog/${post.slug}`} className="hover:text-gray-600">
             <h4 className="mb-1 font-medium leading-tight">{post.title}</h4>
           </Link>
           <p className="text-xs text-gray-500">{formatDate(post.publishedAt || post.createdAt)}</p>
@@ -96,11 +96,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
 
       <div className="p-6">
         <div className="mb-3 flex items-center justify-between">
-          <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">{post.category}</span>
+          <span className="rounded-full bg-gray-200 px-3 py-1 text-xs font-medium text-gray-800">{post.category}</span>
           <span className="text-xs text-gray-500">{formatDate(post.publishedAt || post.createdAt)}</span>
         </div>
 
-        <Link href={`/blog/${post.slug}`} className="hover:text-blue-600">
+        <Link href={`/blog/${post.slug}`} className="hover:text-gray-600">
           <h3 className="mb-2 text-xl font-bold leading-tight transition-colors">{post.title}</h3>
         </Link>
 

@@ -6,6 +6,7 @@ import DeveloperCard from '@/components/developers/DeveloperCard';
 import PageHeader from '@/components/ui/PageHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 export default function DevelopersPage() {
   const [developers, setDevelopers] = useState([]);
@@ -31,6 +32,14 @@ export default function DevelopersPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Developers' }
+          ]}
+        />
+      </div>
       <PageHeader
         title="Real Estate Developers"
         subtitle="Explore top real estate developers in Dubai & UAE"

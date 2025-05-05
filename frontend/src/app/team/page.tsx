@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { useState, useEffect } from 'react';
 import { getTeamMembers, TeamMember } from '@/services/teamService';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 // Removed fallback array as we're now fetching from backend
 
@@ -25,7 +26,7 @@ const LeadershipTeamCard = ({ member }: { member: TeamMember }) => {
         {/* Content */}
         <div className="flex-1 text-center md:text-left">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-          <p className="text-teal-600 font-medium mb-4">{member.role}</p>
+          <p className="text-gray-700 font-medium mb-4">{member.role}</p>
 
           {member.bio && (
             <p className="text-gray-600 mb-4 line-clamp-3">{member.bio}</p>
@@ -41,7 +42,7 @@ const LeadershipTeamCard = ({ member }: { member: TeamMember }) => {
           {/* Contact info */}
           <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
             {member.email && (
-              <a href={`mailto:${member.email}`} className="flex items-center text-gray-700 hover:text-teal-600">
+              <a href={`mailto:${member.email}`} className="flex items-center text-gray-700 hover:text-gray-900">
                 <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -50,7 +51,7 @@ const LeadershipTeamCard = ({ member }: { member: TeamMember }) => {
             )}
 
             {member.phone && (
-              <a href={`tel:${member.phone}`} className="flex items-center text-gray-700 hover:text-teal-600">
+              <a href={`tel:${member.phone}`} className="flex items-center text-gray-700 hover:text-gray-900">
                 <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
@@ -61,7 +62,7 @@ const LeadershipTeamCard = ({ member }: { member: TeamMember }) => {
             {member.whatsapp && (
               <a
                 href={`https://wa.me/${member.whatsapp.replace(/[^0-9]/g, '')}`}
-                className="flex items-center text-gray-700 hover:text-teal-600"
+                className="flex items-center text-gray-700 hover:text-gray-900"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -97,7 +98,7 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => {
           {member.email && (
             <a
               href={`mailto:${member.email}`}
-              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-teal-500 hover:text-white transition-colors"
+              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-gray-700 hover:text-white transition-colors"
               title="Email"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +110,7 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => {
           {member.phone && (
             <a
               href={`tel:${member.phone}`}
-              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-teal-500 hover:text-white transition-colors"
+              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-gray-700 hover:text-white transition-colors"
               title="Call"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,7 +123,7 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => {
           {member.whatsapp && (
             <a
               href={`https://wa.me/${member.whatsapp.replace(/[^0-9]/g, '')}`}
-              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-green-500 hover:text-white transition-colors"
+              className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-800 hover:bg-gray-700 hover:text-white transition-colors"
               title="WhatsApp"
               target="_blank"
               rel="noopener noreferrer"
@@ -138,7 +139,7 @@ const TeamMemberCard = ({ member }: { member: TeamMember }) => {
       {/* Content */}
       <div className="p-5 text-center">
         <h3 className="text-lg font-bold text-gray-900 mb-1">{member.name}</h3>
-        <p className="text-teal-600 text-sm font-medium mb-2">{member.role}</p>
+        <p className="text-gray-700 text-sm font-medium mb-2">{member.role}</p>
 
         {/* Languages */}
         {member.languages && member.languages.length > 0 && (
@@ -190,7 +191,7 @@ export default function TeamPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-teal-600"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-700"></div>
       </div>
     );
   }
@@ -222,7 +223,7 @@ export default function TeamPage() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">Meet Our Team</h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-[#a49650] to-[#877b42] mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-gray-700 to-gray-900 mx-auto mb-8"></div>
             <p className="text-xl text-gray-100 mb-8 leading-relaxed">
               Our experienced professionals are dedicated to providing exceptional service and finding the perfect property for you.
             </p>
@@ -233,10 +234,18 @@ export default function TeamPage() {
       {/* Leadership Team Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <Breadcrumb
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Our Team' }
+              ]}
+            />
+          </div>
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block px-3 py-1 text-sm font-semibold text-teal-800 bg-teal-100 rounded-full mb-4">Our Leaders</div>
+            <div className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full mb-4">Our Leaders</div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Leadership Team</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-teal-800 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-gray-700 to-gray-900 mx-auto mb-8"></div>
             <p className="text-gray-700 leading-relaxed">
               Meet the experienced professionals who lead our company to success and ensure we deliver exceptional service to our clients.
             </p>
@@ -255,7 +264,7 @@ export default function TeamPage() {
         <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-5"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <svg className="w-12 h-12 text-[#a49650] mx-auto mb-6 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-12 h-12 text-white mx-auto mb-6 opacity-50" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
             <p className="text-2xl md:text-3xl font-light italic mb-8 leading-relaxed">
@@ -290,9 +299,9 @@ export default function TeamPage() {
       <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-block px-3 py-1 text-sm font-semibold text-teal-800 bg-teal-100 rounded-full mb-4">Our Experts</div>
+            <div className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full mb-4">Our Experts</div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Our Specialists</h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-teal-600 to-teal-800 mx-auto mb-8"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-gray-700 to-gray-900 mx-auto mb-8"></div>
             <p className="text-gray-700 leading-relaxed">
               Our team of specialists brings diverse expertise to ensure all your real estate needs are met with excellence.
             </p>
@@ -312,7 +321,7 @@ export default function TeamPage() {
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 md:p-12 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <div className="inline-block px-3 py-1 text-sm font-semibold text-teal-800 bg-white rounded-full mb-4">Careers</div>
+                <div className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-white rounded-full mb-4">Careers</div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">Join Our Team</h2>
                 <p className="text-gray-700 mb-8 leading-relaxed">
                   We&apos;re always looking for talented individuals who are passionate about real estate and committed to providing exceptional service to clients.
@@ -337,35 +346,6 @@ export default function TeamPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-600/20 to-gray-800/20"></div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-[#e9ddb0] to-[#a49650] text-gray-900">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Work With Our Team?</h2>
-          <p className="text-xl text-gray-800 mb-8 max-w-2xl mx-auto">
-            Contact us today to connect with one of our real estate experts and start your property journey.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button
-              href="/properties"
-              variant="primary"
-              size="lg"
-              gradient={true}
-              className="font-bold shadow-lg"
-            >
-              Browse Properties
-            </Button>
-            <Button
-              href="/contact"
-              variant="outline"
-              size="lg"
-              className="bg-white font-bold shadow-lg"
-            >
-              Contact Us
-            </Button>
           </div>
         </div>
       </section>

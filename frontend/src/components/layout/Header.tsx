@@ -13,32 +13,32 @@ const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="bg-gradient-to-r from-black to-gray-900 shadow-md sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Image src={"/images/logo.svg"} alt="Luxury Estates" width={200} height={200} className="object-contain"/>
+        <Image src={"/images/logo.svg"} alt="Platinum Square" width={200} height={200} className="object-contain"/>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <Link href="/" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/" className="text-gray-300 hover:text-white transition duration-300">
             Home
           </Link>
-          <Link href="/properties" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/properties" className="text-gray-300 hover:text-white transition duration-300">
             Properties
           </Link>
-          <Link href="/properties/offplan" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/properties/offplan" className="text-gray-300 hover:text-white transition duration-300">
             Off Plan
           </Link>
-          <Link href="/developers" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/developers" className="text-gray-300 hover:text-white transition duration-300">
             Developers
           </Link>
-          <Link href="/blog" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/blog" className="text-gray-300 hover:text-white transition duration-300">
             Blog
           </Link>
-          <Link href="/about" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/about" className="text-gray-300 hover:text-white transition duration-300">
             About
           </Link>
-          <Link href="/contact" className="text-gray-500 hover:text-[#a49650] transition duration-300">
+          <Link href="/contact" className="text-gray-300 hover:text-white transition duration-300">
             Contact
           </Link>
         </nav>
@@ -112,10 +112,10 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <Link href="/auth/login" className="px-4 py-2 text-[#a49650] border border-[#a49650] rounded hover:bg-[#a49650] hover:text-white transition duration-300">
+              <Link href="/auth/login" className="px-4 py-2 text-white border border-gray-400 rounded hover:bg-gray-700 hover:text-white transition duration-300">
                 Login
               </Link>
-              <Link href="/auth/register" className="px-4 py-2 bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded hover:from-gray-900 hover:to-gray-700 transition duration-300">
+              <Link href="/auth/register" className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-800 text-white rounded hover:from-gray-700 hover:to-gray-900 transition duration-300">
                 Register
               </Link>
             </>
@@ -135,50 +135,50 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white px-4 py-2 shadow-md">
+        <div className="md:hidden bg-gray-800 px-4 py-2 shadow-md">
           <nav className="flex flex-col space-y-3 pb-3">
-            <Link href="/" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/" className="text-gray-300 hover:text-white transition duration-300">
               Home
             </Link>
-            <Link href="/properties" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/properties" className="text-gray-300 hover:text-white transition duration-300">
               Properties
             </Link>
-            <Link href="/properties/offplan" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/properties/offplan" className="text-gray-300 hover:text-white transition duration-300">
               Off Plan
             </Link>
-            <Link href="/developers" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/developers" className="text-gray-300 hover:text-white transition duration-300">
               Developers
             </Link>
-            <Link href="/blog" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/blog" className="text-gray-300 hover:text-white transition duration-300">
               Blog
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/about" className="text-gray-300 hover:text-white transition duration-300">
               About
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+            <Link href="/contact" className="text-gray-300 hover:text-white transition duration-300">
               Contact
             </Link>
-            <div className="flex flex-col space-y-2 pt-2 border-t">
+            <div className="flex flex-col space-y-2 pt-2 border-t border-gray-700">
               {user ? (
                 <>
-                  <Link href="/profile" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+                  <Link href="/profile" className="text-gray-300 hover:text-white transition duration-300">
                     Profile
                   </Link>
-                  <Link href="/messages" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+                  <Link href="/messages" className="text-gray-300 hover:text-white transition duration-300">
                     Messages
                   </Link>
-                  <Link href="/saved-properties" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+                  <Link href="/saved-properties" className="text-gray-300 hover:text-white transition duration-300">
                     Saved Properties
                   </Link>
 
                   {user.role === 'admin' && (
-                    <Link href="/admin/dashboard" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+                    <Link href="/admin/dashboard" className="text-gray-300 hover:text-white transition duration-300">
                       Admin Dashboard
                     </Link>
                   )}
 
                   {user.role === 'agent' && (
-                    <Link href="/agent/dashboard" className="text-gray-700 hover:text-[#c2a124] transition duration-300">
+                    <Link href="/agent/dashboard" className="text-gray-300 hover:text-white transition duration-300">
                       Agent Dashboard
                     </Link>
                   )}
@@ -188,17 +188,17 @@ const Header = () => {
                       logout();
                       setIsMenuOpen(false);
                     }}
-                    className="text-left text-red-600 hover:text-red-800 transition duration-300"
+                    className="text-left text-red-400 hover:text-red-300 transition duration-300"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/auth/login" className="px-4 py-2 text-center text-[#c2a124] border border-[#c2a124] rounded hover:bg-[#c2a124] hover:text-white transition duration-300">
+                  <Link href="/auth/login" className="px-4 py-2 text-center text-white border border-gray-500 rounded hover:bg-gray-700 hover:text-white transition duration-300">
                     Login
                   </Link>
-                  <Link href="/auth/register" className="px-4 py-2 text-center bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded hover:from-gray-900 hover:to-black transition duration-300">
+                  <Link href="/auth/register" className="px-4 py-2 text-center bg-gradient-to-r from-gray-600 to-gray-800 text-white rounded hover:from-gray-700 hover:to-gray-900 transition duration-300">
                     Register
                   </Link>
                 </>

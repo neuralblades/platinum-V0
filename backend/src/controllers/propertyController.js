@@ -332,7 +332,10 @@ const createProperty = async (req, res) => {
     }
 
     // Create property
-    const property = await Property.create({
+    const isOffplan = req.body.isOffplan === 'true' || req.body.isOffplan === true;
+
+    // Prepare property data
+    const propertyData = {
       title,
       description,
       price,
@@ -343,7 +346,7 @@ const createProperty = async (req, res) => {
       zipCode,
       propertyType,
       status,
-      isOffplan: req.body.isOffplan === 'true' || req.body.isOffplan === true,
+      isOffplan,
       developerId: req.body.developerId || null,
       bedrooms,
       bathrooms,
@@ -351,12 +354,19 @@ const createProperty = async (req, res) => {
       features: parsedFeatures,
       images,
       mainImage,
-      headerImage, // Add header image
-      paymentPlan, // Add payment plan
+      headerImage,
+      paymentPlan,
       agentId: req.user.id,
       yearBuilt,
       featured: false,
-    });
+    };
+
+    // Add bedroomRange for offplan properties
+    if (isOffplan && req.body.bedroomRange) {
+      propertyData.bedroomRange = req.body.bedroomRange;
+    }
+
+    const property = await Property.create(propertyData);
 
     // Fetch the property with agent details
     const propertyWithAgent = await Property.findByPk(property.id, {
@@ -467,6 +477,11 @@ const updateProperty = async (req, res) => {
     // Update developer if provided
     if (req.body.developerId) {
       updateData.developerId = req.body.developerId;
+    }
+
+    // Handle bedroomRange for offplan properties
+    if (updateData.isOffplan && req.body.bedroomRange) {
+      updateData.bedroomRange = req.body.bedroomRange;
     }
     if (bedrooms) updateData.bedrooms = bedrooms;
     if (bathrooms) updateData.bathrooms = bathrooms;

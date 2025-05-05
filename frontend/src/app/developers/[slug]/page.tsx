@@ -10,6 +10,7 @@ import Pagination from '@/components/ui/Pagination';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 export default function DeveloperDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -50,6 +51,15 @@ export default function DeveloperDetailPage({ params }: { params: Promise<{ slug
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Developers', href: '/developers' },
+            { label: developer.name }
+          ]}
+        />
+      </div>
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           {developer.logo && (
@@ -86,7 +96,7 @@ export default function DeveloperDetailPage({ params }: { params: Promise<{ slug
                     href={developer.website.startsWith('http') ? developer.website : `https://${developer.website}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="text-gray-700 hover:underline"
                   >
                     {developer.website}
                   </a>

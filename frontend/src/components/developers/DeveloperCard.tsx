@@ -38,7 +38,7 @@ const DeveloperCard = ({
             </div>
           )}
           {featured && (
-            <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-4 left-4 bg-gray-700 text-white px-3 py-1 rounded-full text-sm font-semibold">
               Featured
             </div>
           )}
@@ -46,8 +46,8 @@ const DeveloperCard = ({
         <div className="p-4">
           <h3 className="text-xl font-semibold text-gray-800 mb-2">{name}</h3>
           <div className="flex justify-between items-center mt-4">
-            <span className="text-blue-600 font-medium">View Projects</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <span className="text-gray-700 font-medium">View Projects</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </div>
