@@ -14,11 +14,18 @@ const db = require('./models');
 const app = express();
 
 // Middleware
+// Define allowed origins based on environment
+const allowedOrigins = process.env.NODE_ENV === 'production'
+  ? [process.env.FRONTEND_URL, 'https://yourdomain.com', 'https://www.yourdomain.com']
+  : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
+// Configure CORS with more flexibility
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: '*', // Allow all origins for now to fix the immediate issue
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  maxAge: 86400 // Cache preflight requests for 24 hours
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -50,9 +57,9 @@ if (!fs.existsSync(blogUploadsDir)) {
 // Serve static files (for uploaded images)
 app.use('/uploads', (req, res, next) => {
   // Set CORS headers specifically for image files
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 }, express.static(uploadsDir, {
   setHeaders: (res, filePath) => {
@@ -71,9 +78,9 @@ app.use('/uploads', (req, res, next) => {
 // Also serve uploads under /api/uploads for compatibility
 app.use('/api/uploads', (req, res, next) => {
   // Set CORS headers specifically for image files
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 }, express.static(uploadsDir, {
   setHeaders: (res, filePath) => {

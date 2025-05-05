@@ -76,15 +76,36 @@ const getBlogPosts = async (req, res) => {
 // Get featured blog posts
 const getFeaturedBlogPosts = async (req, res) => {
   try {
+    console.log('Fetching featured blog posts...');
     const limit = parseInt(req.query.limit) || 3;
+    console.log(`Limit: ${limit}`);
 
-    const posts = await BlogPost.findAll({
+    // First check if we have any published posts with views
+    const count = await BlogPost.count({
       where: {
         status: 'published',
         viewCount: { [Op.gt]: 0 }
-      },
+      }
+    });
+    console.log(`Found ${count} published posts with views > 0`);
+
+    // If no posts with views, just get the most recent published posts
+    let whereClause = {
+      status: 'published'
+    };
+
+    if (count > 0) {
+      whereClause.viewCount = { [Op.gt]: 0 };
+    }
+
+    console.log('Using where clause:', JSON.stringify(whereClause));
+
+    const posts = await BlogPost.findAll({
+      where: whereClause,
       limit,
-      order: [['viewCount', 'DESC'], ['publishedAt', 'DESC']],
+      order: count > 0
+        ? [['viewCount', 'DESC'], ['publishedAt', 'DESC']]
+        : [['publishedAt', 'DESC']],
       include: [
         {
           model: User,
@@ -94,16 +115,20 @@ const getFeaturedBlogPosts = async (req, res) => {
       ]
     });
 
+    console.log(`Successfully retrieved ${posts.length} featured blog posts`);
+
     res.status(200).json({
       success: true,
       posts
     });
   } catch (error) {
     console.error('Error fetching featured blog posts:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Error fetching featured blog posts',
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };

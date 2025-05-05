@@ -1,6 +1,7 @@
 'use client';
 
 import api from './api';
+import { fetchWithErrorHandling, objectToQueryParams } from './utils';
 
 // Types
 export interface Property {
@@ -15,7 +16,6 @@ export interface Property {
   zipCode?: string;
   propertyType: string;
   status: string;
-
   isOffplan?: boolean;
   bedrooms: number;
   bathrooms: number;
@@ -48,7 +48,6 @@ export interface PropertyFilter {
   page?: number;
   type?: string;
   status?: string;
-
   isOffplan?: boolean;
   minPrice?: number;
   maxPrice?: number;
@@ -63,44 +62,27 @@ export interface PropertyFilter {
 
 // Get all properties with filtering
 export const getProperties = async (filters: PropertyFilter = {}) => {
-  try {
-    const queryParams = new URLSearchParams();
-
-    // Add filters to query params
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        queryParams.append(key, value.toString());
-      }
-    });
-
-    const response = await api.get(`/properties?${queryParams.toString()}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching properties:', error);
-    throw error;
-  }
+  const queryParams = objectToQueryParams(filters);
+  return fetchWithErrorHandling(
+    `/api/properties?${queryParams.toString()}`,
+    'Failed to fetch properties'
+  );
 };
 
 // Get featured properties
 export const getFeaturedProperties = async () => {
-  try {
-    const response = await api.get('/properties/featured');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching featured properties:', error);
-    throw error;
-  }
+  return fetchWithErrorHandling(
+    '/api/properties/featured',
+    'Failed to fetch featured properties'
+  );
 };
 
 // Get property by ID
 export const getPropertyById = async (id: string) => {
-  try {
-    const response = await api.get(`/properties/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching property with ID ${id}:`, error);
-    throw error;
-  }
+  return fetchWithErrorHandling(
+    `/api/properties/${id}`,
+    `Failed to fetch property with ID ${id}`
+  );
 };
 
 // Create property (agent only)
@@ -138,13 +120,14 @@ export const deleteProperty = async (id: string) => {
   try {
     const response = await api.delete(`/properties/${id}`);
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(`Error deleting property with ID ${id}:`, error);
     // Return a structured error response instead of throwing
+    const err = error as { response?: { data?: { message?: string } }; message?: string };
     return {
       success: false,
-      message: error.response?.data?.message || 'Failed to delete property',
-      error: error.message
+      message: err.response?.data?.message || 'Failed to delete property',
+      error: err.message
     };
   }
 };

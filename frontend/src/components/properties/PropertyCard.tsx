@@ -37,6 +37,8 @@ const PropertyCard = ({
   featured = false,
   isOffplan = false,
 }: PropertyCardProps) => {
+  console.log(`Property ${id} - isOffplan:`, isOffplan);
+
   return (
     <div className={`bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-xl ${featured ? 'transform hover:-translate-y-2' : 'hover:-translate-y-1'}`}>
       <Link href={isOffplan ? `/properties/offplan/${id}` : `/properties/${id}`}>

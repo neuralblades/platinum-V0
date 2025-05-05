@@ -1,6 +1,7 @@
 'use client';
 
 import api from './api';
+import { fetchWithErrorHandling, objectToQueryParams } from './utils';
 
 // Types
 export interface BlogPost {
@@ -86,15 +87,7 @@ export interface BlogCommentResponse {
 // Get all blog posts with filtering
 export const getBlogPosts = async (filters: BlogFilter = {}) => {
   try {
-    const queryParams = new URLSearchParams();
-
-    // Add filters to query params
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        queryParams.append(key, value.toString());
-      }
-    });
-
+    const queryParams = objectToQueryParams(filters);
     const response = await api.get(`/blog?${queryParams.toString()}`);
     return response.data as BlogPostsResponse;
   } catch (error) {
@@ -105,24 +98,18 @@ export const getBlogPosts = async (filters: BlogFilter = {}) => {
 
 // Get featured blog posts
 export const getFeaturedBlogPosts = async (limit: number = 3) => {
-  try {
-    const response = await api.get(`/blog/featured?limit=${limit}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching featured blog posts:', error);
-    throw error;
-  }
+  return fetchWithErrorHandling(
+    `/api/blog/featured?limit=${limit}`,
+    'Failed to fetch featured blog posts'
+  );
 };
 
 // Get recent blog posts
 export const getRecentBlogPosts = async (limit: number = 5) => {
-  try {
-    const response = await api.get(`/blog/recent?limit=${limit}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching recent blog posts:', error);
-    throw error;
-  }
+  return fetchWithErrorHandling(
+    `/api/blog/recent?limit=${limit}`,
+    'Failed to fetch recent blog posts'
+  );
 };
 
 // Get blog post by ID

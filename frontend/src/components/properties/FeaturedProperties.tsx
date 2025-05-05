@@ -23,6 +23,13 @@ const FeaturedProperties = () => {
           // Filter properties based on the active filter
           let filteredProperties = [...(response.properties || [])];
 
+          console.log('All properties before filtering:', filteredProperties.map(p => ({
+            id: p.id,
+            title: p.title,
+            status: p.status,
+            isOffplan: p.isOffplan
+          })));
+
           if (activeFilter === 'sale') {
             filteredProperties = filteredProperties.filter(p => p.status === 'for-sale' && !p.isOffplan);
           } else if (activeFilter === 'rent') {
@@ -30,6 +37,13 @@ const FeaturedProperties = () => {
           } else if (activeFilter === 'offplan') {
             filteredProperties = filteredProperties.filter(p => p.isOffplan === true);
           }
+
+          console.log(`Filtered properties (${activeFilter}):`, filteredProperties.map(p => ({
+            id: p.id,
+            title: p.title,
+            status: p.status,
+            isOffplan: p.isOffplan
+          })));
 
           // Sort properties by createdAt date (newest first) and take only the latest 3
           const latestProperties = filteredProperties
@@ -110,6 +124,7 @@ const FeaturedProperties = () => {
                 area={property.area}
                 imageUrl={property.mainImage}
                 featured={property.featured}
+                isOffplan={property.isOffplan}
               />
             ))}
           </div>

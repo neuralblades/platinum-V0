@@ -1,87 +1,174 @@
 const { Property, User, Developer } = require('../models');
 const { Op } = require('sequelize');
+const cacheManager = require('../utils/cacheManager');
+const { handleApiError, asyncHandler } = require('../utils/errorHandler');
 
 // @desc    Get all properties with filtering
 // @route   GET /api/properties
 // @access  Public
-const getProperties = async (req, res) => {
+const getProperties = asyncHandler(async (req, res) => {
+  const pageSize = Number(req.query.limit) || 9;
+  const page = Number(req.query.page) || 1;
+
+  // Generate cache key based on query parameters
+  const queryString = JSON.stringify(req.query);
+  const cacheKey = `properties_${queryString}`;
+
+  // Try to get from cache
+  const cachedData = cacheManager.get(cacheKey);
+  if (cachedData) {
+    console.log('Serving properties from cache');
+    return res.json({
+      ...cachedData,
+      fromCache: true
+    });
+  }
+
+  // Build where clause for filtering
+  const whereClause = {};
+
+  // Filter by property type
+  if (req.query.type) {
+    whereClause.propertyType = req.query.type;
+  }
+
+  // Filter by status
+  if (req.query.status) {
+    whereClause.status = req.query.status;
+  }
+
+  // Filter by offplan status
+  if (req.query.isOffplan !== undefined) {
+    whereClause.isOffplan = req.query.isOffplan === 'true';
+  }
+
+  // Filter by price range
+  if (req.query.minPrice || req.query.maxPrice) {
+    whereClause.price = {};
+    if (req.query.minPrice) {
+      whereClause.price[Op.gte] = Number(req.query.minPrice);
+    }
+    if (req.query.maxPrice) {
+      whereClause.price[Op.lte] = Number(req.query.maxPrice);
+    }
+  }
+
+  // Filter by bedrooms
+  if (req.query.bedrooms) {
+    whereClause.bedrooms = { [Op.gte]: Number(req.query.bedrooms) };
+  }
+
+  // Filter by bathrooms
+  if (req.query.bathrooms) {
+    whereClause.bathrooms = { [Op.gte]: Number(req.query.bathrooms) };
+  }
+
+  // Filter by area range
+  if (req.query.minArea || req.query.maxArea) {
+    whereClause.area = {};
+    if (req.query.minArea) {
+      whereClause.area[Op.gte] = Number(req.query.minArea);
+    }
+    if (req.query.maxArea) {
+      whereClause.area[Op.lte] = Number(req.query.maxArea);
+    }
+  }
+
+  // Filter by location
+  if (req.query.location) {
+    whereClause.location = { [Op.like]: `%${req.query.location}%` };
+  }
+
+  // Filter by year built
+  if (req.query.yearBuilt) {
+    whereClause.yearBuilt = Number(req.query.yearBuilt);
+  }
+
+  // Search by keyword
+  if (req.query.keyword) {
+    whereClause[Op.or] = [
+      { title: { [Op.like]: `%${req.query.keyword}%` } },
+      { description: { [Op.like]: `%${req.query.keyword}%` } },
+      { location: { [Op.like]: `%${req.query.keyword}%` } },
+    ];
+  }
+
+  // Get properties with pagination and count
+  const { count, rows: properties } = await Property.findAndCountAll({
+    where: whereClause,
+    include: [
+      {
+        model: User,
+        as: 'agent',
+        attributes: ['id', 'firstName', 'lastName', 'email', 'phone', 'avatar'],
+      },
+      {
+        model: Developer,
+        as: 'developer',
+        attributes: ['id', 'name', 'logo', 'slug'],
+      },
+    ],
+    order: [['createdAt', 'DESC']],
+    limit: pageSize,
+    offset: pageSize * (page - 1),
+  });
+
+  // Prepare response data
+  const responseData = {
+    success: true,
+    properties,
+    page,
+    pages: Math.ceil(count / pageSize),
+    total: count,
+  };
+
+  // Cache the results for 2 minutes (120 seconds)
+  // Only cache if there are results and it's not a very specific query
+  if (count > 0 && !req.query.keyword) {
+    cacheManager.set(cacheKey, responseData, 120);
+  }
+
+  res.json(responseData);
+});
+
+// @desc    Get featured properties
+// @route   GET /api/properties/featured
+// @access  Public
+const getFeaturedProperties = async (_, res) => {
   try {
-    const pageSize = 9;
-    const page = Number(req.query.page) || 1;
+    console.log('Fetching featured properties...');
 
-    // Build where clause for filtering
-    const whereClause = {};
+    // Define cache key
+    const cacheKey = 'featured_properties';
 
-    // Filter by property type
-    if (req.query.type) {
-      whereClause.propertyType = req.query.type;
+    // Try to get data from cache first
+    const cachedData = cacheManager.get(cacheKey);
+    if (cachedData) {
+      console.log('Serving featured properties from cache');
+      return res.json({
+        success: true,
+        properties: cachedData,
+        fromCache: true
+      });
     }
 
-    // Filter by status
-    if (req.query.status) {
-      whereClause.status = req.query.status;
+    // First check if we have any featured properties
+    const count = await Property.count({
+      where: { featured: true }
+    });
+    console.log(`Found ${count} featured properties`);
+
+    // If no featured properties, just get the most recent properties
+    let whereClause = {};
+
+    if (count > 0) {
+      whereClause.featured = true;
     }
 
+    console.log('Using where clause:', JSON.stringify(whereClause));
 
-
-    // Filter by offplan status
-    if (req.query.isOffplan !== undefined) {
-      whereClause.isOffplan = req.query.isOffplan === 'true';
-    }
-
-    // Filter by price range
-    if (req.query.minPrice || req.query.maxPrice) {
-      whereClause.price = {};
-      if (req.query.minPrice) {
-        whereClause.price[Op.gte] = Number(req.query.minPrice);
-      }
-      if (req.query.maxPrice) {
-        whereClause.price[Op.lte] = Number(req.query.maxPrice);
-      }
-    }
-
-    // Filter by bedrooms
-    if (req.query.bedrooms) {
-      whereClause.bedrooms = { [Op.gte]: Number(req.query.bedrooms) };
-    }
-
-    // Filter by bathrooms
-    if (req.query.bathrooms) {
-      whereClause.bathrooms = { [Op.gte]: Number(req.query.bathrooms) };
-    }
-
-    // Filter by area range
-    if (req.query.minArea || req.query.maxArea) {
-      whereClause.area = {};
-      if (req.query.minArea) {
-        whereClause.area[Op.gte] = Number(req.query.minArea);
-      }
-      if (req.query.maxArea) {
-        whereClause.area[Op.lte] = Number(req.query.maxArea);
-      }
-    }
-
-    // Filter by location
-    if (req.query.location) {
-      whereClause.location = { [Op.like]: `%${req.query.location}%` };
-    }
-
-    // Filter by year built
-    if (req.query.yearBuilt) {
-      whereClause.yearBuilt = Number(req.query.yearBuilt);
-    }
-
-    // Search by keyword
-    if (req.query.keyword) {
-      whereClause[Op.or] = [
-        { title: { [Op.like]: `%${req.query.keyword}%` } },
-        { description: { [Op.like]: `%${req.query.keyword}%` } },
-        { location: { [Op.like]: `%${req.query.keyword}%` } },
-      ];
-    }
-
-    // Get properties with pagination and count
-    const { count, rows: properties } = await Property.findAndCountAll({
+    // If not in cache, fetch from database
+    const properties = await Property.findAll({
       where: whereClause,
       include: [
         {
@@ -95,60 +182,27 @@ const getProperties = async (req, res) => {
           attributes: ['id', 'name', 'logo', 'slug'],
         },
       ],
-      order: [['createdAt', 'DESC']],
-      limit: pageSize,
-      offset: pageSize * (page - 1),
-    });
-
-    res.json({
-      success: true,
-      properties,
-      page,
-      pages: Math.ceil(count / pageSize),
-      total: count,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: 'Server Error',
-      error: error.message,
-    });
-  }
-};
-
-// @desc    Get featured properties
-// @route   GET /api/properties/featured
-// @access  Public
-const getFeaturedProperties = async (req, res) => {
-  try {
-    const properties = await Property.findAll({
-      where: { featured: true },
-      include: [
-        {
-          model: User,
-          as: 'agent',
-          attributes: ['id', 'firstName', 'lastName', 'email', 'phone', 'avatar'],
-        },
-        {
-          model: Developer,
-          as: 'developer',
-          attributes: ['id', 'name', 'logo', 'slug'],
-        },
-      ],
+      order: count > 0 ? [] : [['createdAt', 'DESC']],
       limit: 6,
     });
 
+    console.log(`Successfully retrieved ${properties.length} properties`);
+
+    // Store in cache for 10 minutes (600 seconds)
+    cacheManager.set(cacheKey, properties, 600);
+
     res.json({
       success: true,
       properties,
     });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching featured properties:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
-      message: 'Server Error',
+      message: 'Error fetching featured properties',
       error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
@@ -156,58 +210,72 @@ const getFeaturedProperties = async (req, res) => {
 // @desc    Get single property by ID
 // @route   GET /api/properties/:id
 // @access  Public
-const getPropertyById = async (req, res) => {
-  try {
-    // Check if id is valid
-    const id = req.params.id;
-    if (!id || id === 'undefined' || isNaN(Number(id))) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid property ID',
-      });
-    }
-
-    const property = await Property.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: 'agent',
-          attributes: ['id', 'firstName', 'lastName', 'email', 'phone', 'avatar'],
-        },
-        {
-          model: Developer,
-          as: 'developer',
-          attributes: ['id', 'name', 'description', 'logo', 'website', 'established', 'headquarters', 'slug'],
-        },
-      ],
-    });
-
-    if (property) {
-      // Increment views if the field exists
-      if (property.views !== undefined) {
-        property.views = (property.views || 0) + 1;
-        await property.save();
-      }
-
-      res.json({
-        success: true,
-        property,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'Property not found',
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
+const getPropertyById = asyncHandler(async (req, res) => {
+  // Check if id is valid
+  const id = req.params.id;
+  if (!id || id === 'undefined' || isNaN(Number(id))) {
+    return res.status(400).json({
       success: false,
-      message: 'Server Error',
-      error: error.message,
+      message: 'Invalid property ID',
     });
   }
-};
+
+  // Define cache key - we don't cache this by default because views get incremented
+  // But we can cache it if the request specifies noIncrement=true
+  const noIncrement = req.query.noIncrement === 'true';
+  const cacheKey = `property_${id}_${noIncrement}`;
+
+  // Try to get from cache if noIncrement is true
+  if (noIncrement) {
+    const cachedProperty = cacheManager.get(cacheKey);
+    if (cachedProperty) {
+      console.log(`Serving property ${id} from cache`);
+      return res.json({
+        success: true,
+        property: cachedProperty,
+        fromCache: true
+      });
+    }
+  }
+
+  const property = await Property.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: 'agent',
+        attributes: ['id', 'firstName', 'lastName', 'email', 'phone', 'avatar'],
+      },
+      {
+        model: Developer,
+        as: 'developer',
+        attributes: ['id', 'name', 'description', 'logo', 'website', 'established', 'headquarters', 'slug'],
+      },
+    ],
+  });
+
+  if (!property) {
+    return res.status(404).json({
+      success: false,
+      message: 'Property not found',
+    });
+  }
+
+  // Increment views if the field exists and noIncrement is false
+  if (property.views !== undefined && !noIncrement) {
+    property.views = (property.views || 0) + 1;
+    await property.save();
+  }
+
+  // Cache the property for 5 minutes if noIncrement is true
+  if (noIncrement) {
+    cacheManager.set(cacheKey, property, 300);
+  }
+
+  res.json({
+    success: true,
+    property,
+  });
+});
 
 // @desc    Create a new property
 // @route   POST /api/properties
@@ -471,6 +539,24 @@ const updateProperty = async (req, res) => {
 
     // Update the property
     await property.update(updateData);
+
+    // Clear related caches
+    cacheManager.remove(`property_${property.id}_true`);
+    cacheManager.remove(`property_${property.id}_false`);
+
+    // If this is a featured property, clear the featured properties cache
+    if (property.featured || updateData.featured) {
+      cacheManager.remove('featured_properties');
+    }
+
+    // Clear any properties list caches
+    // This is a simple approach - in a more complex system, you might want to be more selective
+    const cacheKeys = Object.keys(cacheManager.getStats());
+    cacheKeys.forEach(key => {
+      if (key.startsWith('properties_')) {
+        cacheManager.remove(key);
+      }
+    });
 
     // Fetch the updated property with agent details
     const updatedProperty = await Property.findByPk(property.id, {

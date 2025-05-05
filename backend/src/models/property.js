@@ -111,6 +111,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+  }, {
+    indexes: [
+      // Composite indexes for common query patterns
+      { fields: ['status', 'propertyType'] },
+      { fields: ['isOffplan'] },
+      { fields: ['featured'] },
+      { fields: ['agentId'] },
+      { fields: ['developerId'] },
+      { fields: ['location'] },
+      // Index for price range queries
+      { fields: ['price'] },
+      // Index for area range queries
+      { fields: ['area'] },
+      // Index for bedroom/bathroom filters
+      { fields: ['bedrooms', 'bathrooms'] }
+    ]
   });
 
   Property.associate = (models) => {

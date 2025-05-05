@@ -7,6 +7,8 @@
     "dev": "nodemon src/server.js",
     "init-db": "node src/scripts/initDb.js",
     "setup-db": "node src/scripts/setupDb.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "check-db": "node src/scripts/check-db-connection.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -25,7 +27,8 @@
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.2",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "umzug": "^3.7.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
