@@ -254,17 +254,17 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
               {developer && (
                 <div className="mb-10 flex items-center">
                   {developer.logo ? (
-                    <div className="relative h-12 w-12 mr-4 rounded-full overflow-hidden border-2 border-gray-400 shadow-lg">
+                    <div className="relative h-16 w-24 mr-4 overflow-hidden bg-white p-2 rounded-lg border border-gray-400 shadow-lg">
                       <Image
                         src={getFullImageUrl(developer.logo)}
                         alt={developer.name}
                         fill
-                        className="object-cover bg-white"
+                        className="object-contain bg-white"
                         unoptimized
                       />
                     </div>
                   ) : (
-                    <div className="h-12 w-12 mr-4 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <div className="h-16 w-24 mr-4 rounded-lg bg-gray-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
                       {developer.name.charAt(0)}
                     </div>
                   )}

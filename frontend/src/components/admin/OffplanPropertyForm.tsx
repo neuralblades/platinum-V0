@@ -50,6 +50,9 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
     paymentPlan: '70/30', // Default payment plan
     features: [] as string[],
     featured: false,
+    // Adding empty values for bathrooms and area to prevent validation errors
+    bathrooms: '1',
+    area: '1000',
   });
 
   // Feature input state
@@ -106,6 +109,9 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               paymentPlan: property.paymentPlan || '70/30',
               features: property.features || [],
               featured: property.featured || false,
+              // Add default values for bathrooms and area
+              bathrooms: property.bathrooms?.toString() || '1',
+              area: property.area?.toString() || '1000',
             });
 
             if (property.images && property.images.length > 0) {
@@ -231,7 +237,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
 
     try {
       // Validate required fields
-      const requiredFields = ['title', 'description', 'price', 'location', 'bedrooms', 'bathrooms', 'area', 'developerId'];
+      const requiredFields = ['title', 'description', 'price', 'location', 'bedrooms', 'bedroomRange', 'developerId'];
       const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData]);
 
       if (missingFields.length > 0) {
