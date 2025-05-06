@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
@@ -102,9 +102,17 @@ export default function AdminLayout({
             <li>
               <Link
                 href="/admin/team"
-                className="flex items-center py-3 px-4 bg-blue-700"
+                className="flex items-center py-3 px-4 hover:bg-gray-800"
               >
                 <span className="ml-3">Team Members</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/admin/testimonials"
+                className="flex items-center py-3 px-4 hover:bg-gray-800"
+              >
+                <span className="ml-3">Testimonials</span>
               </Link>
             </li>
           </ul>

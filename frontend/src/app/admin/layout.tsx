@@ -250,6 +250,21 @@ export default function AdminLayout({
                 {isSidebarOpen && <span className="ml-3 font-medium">Team Members</span>}
               </Link>
             </li>
+            <li>
+              <Link
+                href="/admin/testimonials"
+                className={`flex items-center py-3 px-4 rounded-lg my-1 mx-2 transition-all duration-200 ${
+                  pathname.startsWith('/admin/testimonials')
+                    ? 'bg-gradient-to-r from-gray-600 to-gray-800 text-white shadow-md'
+                    : 'hover:bg-gray-700 text-gray-300 hover:text-white'
+                } ${isSidebarOpen ? 'justify-start' : 'justify-center'}`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                {isSidebarOpen && <span className="ml-3 font-medium">Testimonials</span>}
+              </Link>
+            </li>
             <li className="mt-6 mb-4 relative">
               <div className="border-t border-gray-700 mx-3 mb-4"></div>
               <button
@@ -290,6 +305,7 @@ export default function AdminLayout({
                 {pathname === '/admin/document-requests' && 'Document Requests'}
                 {pathname.startsWith('/admin/blog') && 'Blog Management'}
                 {pathname.startsWith('/admin/team') && 'Team Management'}
+                {pathname.startsWith('/admin/testimonials') && 'Testimonials Management'}
               </h2>
             </div>
             <div className="flex items-center space-x-3">

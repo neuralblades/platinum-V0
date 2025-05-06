@@ -121,6 +121,7 @@ const documentRequestRoutes = require('./routes/documentRequestRoutes');
 const offplanInquiryRoutes = require('./routes/offplanInquiryRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const teamMemberRoutes = require('./routes/teamMemberRoutes');
+const testimonialRoutes = require('./routes/testimonialRoutes');
 
 app.use('/api/properties', propertyRoutes);
 app.use('/api/users', userRoutes);
@@ -132,6 +133,7 @@ app.use('/api/document-requests', documentRequestRoutes);
 app.use('/api/offplan-inquiries', offplanInquiryRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/team', teamMemberRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 // Root route
 app.get('/', (req, res) => {
