@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { loadGoogleMapsApi, isGoogleMapsLoaded } from '@/utils/googleMapsLoader';
+import { loadGoogleMapsApi } from '@/utils/googleMapsLoader';
 
 interface GoogleMapProps {
   apiKey: string;

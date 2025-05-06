@@ -424,41 +424,116 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                 <TabPanel>
                   <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                     <div className="p-8">
-                      <h2 className="text-3xl font-bold text-gray-900 mb-6">About This Project</h2>
+                      <div className="flex flex-col lg:flex-row gap-12">
+                        {/* Left Column - Project Description */}
+                        <div className="flex-1">
+                          <h2 className="text-2xl font-bold text-gray-900 mb-2 uppercase tracking-wide">ABOUT THIS PROJECT</h2>
+                          <div className="w-20 h-1 bg-gray-700 mb-6"></div>
 
-                      {/* Property Description - Styled to match the image */}
-                      <div className="prose max-w-none text-gray-700 mb-10 leading-relaxed">
-                        <div className="whitespace-pre-line text-lg">
-                          {property.description && property.description.split('\n').map((paragraph, index) => (
-                            <p key={index} className={index === 0 ? 'text-xl font-medium text-blue-900 mb-4' : 'mb-4'}>{paragraph}</p>
-                          ))}
-                        </div>
-                      </div>
+                          {/* Project Introduction */}
+                          <div className="prose max-w-none text-gray-700 mb-8">
+                            <div className="text-lg">
+                              <p className="text-xl font-medium text-gray-800 mb-6">
+                                Discover refined living at {property.title}, a sophisticated residential development located in {property.location}.
+                              </p>
+                              <p className="mb-6">
+                                {developer && `Developed by ${developer.name}, this distinguished project offers a collection of meticulously crafted ${property.bedroomRange || property.bedrooms}-bedroom ${property.propertyType}s.`}
+                              </p>
 
-                      {/* Property Specs - Enhanced with modern styling */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-                        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 transform transition-all duration-300 hover:shadow-lg hover:scale-105 border border-gray-200">
-                          <div className="flex items-center mb-3">
-                            <div className="bg-white p-2 rounded-lg mr-3 shadow-sm">
-                              <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                              </svg>
+                              {/* Property Description */}
+                              <div className="whitespace-pre-line">
+                                {property.description && property.description.split('\n').map((paragraph, index) => (
+                                  <p key={index} className="mb-4">{paragraph}</p>
+                                ))}
+                              </div>
                             </div>
-                            <h3 className="font-semibold text-gray-900">Property Type</h3>
                           </div>
-                          <p className="text-lg font-medium text-gray-800 capitalize">{property.propertyType}</p>
+
+                          {/* Property Features */}
+                          <div className="mt-8">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Features</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              {property.features && property.features.slice(0, 6).map((feature, index) => (
+                                <div key={index} className="flex items-start">
+                                  <div className="flex-shrink-0 mt-1">
+                                    <svg className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                  </div>
+                                  <p className="ml-3 text-gray-700">{feature}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 transform transition-all duration-300 hover:shadow-lg hover:scale-105 border border-gray-200">
-                          <div className="flex items-center mb-3">
-                            <div className="bg-white p-2 rounded-lg mr-3 shadow-sm">
-                              <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                              </svg>
+                        {/* Right Column - Property Details */}
+                        <div className="lg:w-80 mt-8 lg:mt-0">
+                          <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                            <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Project Details</h3>
+
+                            {/* Starting Price */}
+                            <div className="mb-6">
+                              <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">STARTING PRICE</h4>
+                              <p className="text-3xl font-bold text-gray-800">AED {property.price?.toLocaleString()}</p>
                             </div>
-                            <h3 className="font-semibold text-gray-900">Bedrooms</h3>
+
+                            {/* Handover */}
+                            <div className="mb-6">
+                              <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">HANDOVER</h4>
+                              <p className="text-2xl font-bold text-gray-800">{property.yearBuilt || '2025'}</p>
+                            </div>
+
+                            {/* Payment Plan */}
+                            <div className="mb-6">
+                              <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">PAYMENT PLAN</h4>
+                              <p className="text-2xl font-bold text-gray-800">{property.paymentPlan || '60/40'}</p>
+                            </div>
+
+                            {/* Property Type */}
+                            <div className="mb-6">
+                              <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">PROPERTY TYPE</h4>
+                              <p className="text-lg font-medium text-gray-800 capitalize">{property.propertyType}</p>
+                            </div>
+
+                            {/* Bedrooms */}
+                            <div className="mb-6">
+                              <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">BEDROOMS</h4>
+                              <p className="text-lg font-medium text-gray-800">{property.bedroomRange || property.bedrooms}</p>
+                            </div>
+
+                            {/* Developer */}
+                            {developer && (
+                              <div className="mb-6">
+                                <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">DEVELOPER</h4>
+                                <div className="flex items-center">
+                                  {developer.logo ? (
+                                    <div className="relative h-10 w-16 mr-3 bg-white p-1 rounded border border-gray-200">
+                                      <Image
+                                        src={getFullImageUrl(developer.logo)}
+                                        alt={developer.name}
+                                        fill
+                                        className="object-contain"
+                                        unoptimized
+                                      />
+                                    </div>
+                                  ) : null}
+                                  <p className="text-lg font-medium text-gray-800">{developer.name}</p>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* CTA Button */}
+                            <button
+                              onClick={() => setIsContactFormOpen(true)}
+                              className="w-full py-3 px-6 bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-800 hover:to-black text-white font-medium rounded-lg transition duration-300 flex items-center justify-center mt-4"
+                            >
+                              <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                              </svg>
+                              Request Information
+                            </button>
                           </div>
-                          <p className="text-lg font-medium text-gray-800">{property.bedroomRange || property.bedrooms}</p>
                         </div>
                       </div>
                     </div>

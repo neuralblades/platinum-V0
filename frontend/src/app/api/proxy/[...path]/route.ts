@@ -12,7 +12,8 @@ export async function GET(
   { params }: { params: { path: string[] } }
 ) {
   // Get the path segments and join them
-  const path = params.path.join('/');
+  const pathSegments = params.path;
+  const path = pathSegments.join('/');
 
   // Construct the full URL
   const url = `${API_BASE_URL}/${path}`;

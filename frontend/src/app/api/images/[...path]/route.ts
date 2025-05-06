@@ -13,7 +13,8 @@ export async function GET(
 ) {
   try {
     // Get the path segments and join them
-    const path = params.path.join('/');
+    const pathSegments = params.path;
+    const path = pathSegments.join('/');
 
     // Construct the full URL
     const url = `${API_BASE_URL}/uploads/${path}`;

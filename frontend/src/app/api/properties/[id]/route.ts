@@ -9,6 +9,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // Extract the id from params
   const id = params.id;
 
   // Get the query parameters
@@ -18,5 +19,6 @@ export async function GET(
   // Construct the full URL
   const url = `${API_BASE_URL}/api/properties/${id}${queryString ? `?${queryString}` : ''}`;
 
+  // Use the fetchFromApi utility to make the request
   return fetchFromApi(url, 'Failed to fetch property details');
 }
