@@ -9,10 +9,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   // Get the path segments and join them
-  const pathSegments = params.path;
+  const resolvedParams = await params;
+  const pathSegments = resolvedParams.path;
   const path = pathSegments.join('/');
 
   // Construct the full URL

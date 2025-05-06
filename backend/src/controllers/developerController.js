@@ -220,10 +220,18 @@ const createDeveloper = async (req, res) => {
       featured,
     } = req.body;
 
-    // Process logo
+    // Process logo and background image
     let logo = '';
-    if (req.file) {
-      logo = `/uploads/${req.file.filename}`;
+    let backgroundImage = '';
+
+    if (req.files) {
+      if (req.files.logo && req.files.logo.length > 0) {
+        logo = `/uploads/${req.files.logo[0].filename}`;
+      }
+
+      if (req.files.backgroundImage && req.files.backgroundImage.length > 0) {
+        backgroundImage = `/uploads/${req.files.backgroundImage[0].filename}`;
+      }
     }
 
     // Create slug from name
@@ -246,6 +254,7 @@ const createDeveloper = async (req, res) => {
       name,
       description,
       logo,
+      backgroundImage,
       website,
       established,
       headquarters,
@@ -290,10 +299,18 @@ const updateDeveloper = async (req, res) => {
       featured,
     } = req.body;
 
-    // Process logo if a new one is uploaded
+    // Process logo and background image if new ones are uploaded
     let logo = developer.logo;
-    if (req.file) {
-      logo = `/uploads/${req.file.filename}`;
+    let backgroundImage = developer.backgroundImage;
+
+    if (req.files) {
+      if (req.files.logo && req.files.logo.length > 0) {
+        logo = `/uploads/${req.files.logo[0].filename}`;
+      }
+
+      if (req.files.backgroundImage && req.files.backgroundImage.length > 0) {
+        backgroundImage = `/uploads/${req.files.backgroundImage[0].filename}`;
+      }
     }
 
     // Update slug if name is changed
@@ -307,6 +324,7 @@ const updateDeveloper = async (req, res) => {
       name: name || developer.name,
       description: description || developer.description,
       logo,
+      backgroundImage,
       website: website || developer.website,
       established: established || developer.established,
       headquarters: headquarters || developer.headquarters,

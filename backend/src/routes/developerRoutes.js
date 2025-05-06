@@ -54,8 +54,14 @@ router.get('/:id', getDeveloperById);
 router.get('/:id/properties', getDeveloperProperties);
 
 // Protected routes
-router.post('/', protect, admin, upload.single('logo'), createDeveloper);
-router.put('/:id', protect, admin, upload.single('logo'), updateDeveloper);
+router.post('/', protect, admin, upload.fields([
+  { name: 'logo', maxCount: 1 },
+  { name: 'backgroundImage', maxCount: 1 }
+]), createDeveloper);
+router.put('/:id', protect, admin, upload.fields([
+  { name: 'logo', maxCount: 1 },
+  { name: 'backgroundImage', maxCount: 1 }
+]), updateDeveloper);
 router.delete('/:id', protect, admin, deleteDeveloper);
 
 module.exports = router;

@@ -7,10 +7,11 @@ import { API_BASE_URL, fetchFromApi } from '../../utils';
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  // Extract the id from params
-  const id = params.id;
+  // Extract the id from params - await the params object
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
 
   // Get the query parameters
   const { searchParams } = new URL(request.url);

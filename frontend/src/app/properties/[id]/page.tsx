@@ -52,6 +52,7 @@ const properties = [
       image: 'https://randomuser.me/api/portraits/women/45.jpg',
     },
     featured: true,
+    isOffplan: false, // This is a regular property, not an offplan property
   },
   {
     id: '2',
@@ -91,6 +92,7 @@ const properties = [
       image: 'https://randomuser.me/api/portraits/men/32.jpg',
     },
     featured: true,
+    isOffplan: false, // This is a regular property, not an offplan property
   },
 ];
 
@@ -153,11 +155,12 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
         if (response.success && response.property) {
           setProperty(response.property);
 
-          // Fetch similar properties
+          // Fetch similar properties - only general properties (not offplan)
           try {
             const similarResponse = await getProperties({
               type: response.property.propertyType,
-              bedrooms: response.property.bedrooms
+              bedrooms: response.property.bedrooms,
+              isOffplan: false // Only fetch general properties, not offplan
             });
             if (similarResponse.success && similarResponse.properties.length > 0) {
               // Filter out the current property
@@ -168,9 +171,9 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
             }
           } catch (err) {
             console.error('Error fetching similar properties:', err);
-            // Use fallback similar properties
+            // Use fallback similar properties - only general properties (not offplan)
             const fallbackSimilar = properties
-              .filter(p => p.id !== id)
+              .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
               .slice(0, 3);
             setSimilarProperties(fallbackSimilar as unknown as Property[]);
           }
@@ -180,7 +183,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
           if (fallbackProperty) {
             setProperty(fallbackProperty as unknown as Property);
             const fallbackSimilar = properties
-              .filter(p => p.id !== id)
+              .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
               .slice(0, 3);
             setSimilarProperties(fallbackSimilar as unknown as Property[]);
           } else {
@@ -194,7 +197,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
         if (fallbackProperty) {
           setProperty(fallbackProperty as unknown as Property);
           const fallbackSimilar = properties
-            .filter(p => p.id !== id)
+            .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
             .slice(0, 3);
           setSimilarProperties(fallbackSimilar as unknown as Property[]);
         } else {

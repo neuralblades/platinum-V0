@@ -19,6 +19,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
   const [loading, setLoading] = useState(isEdit);
   const [submitting, setSubmitting] = useState(false);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [backgroundImagePreview, setBackgroundImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -53,6 +54,10 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
         setLogoPreview(getFullImageUrl(developer.logo));
       }
 
+      if (developer.backgroundImage) {
+        setBackgroundImagePreview(getFullImageUrl(developer.backgroundImage));
+      }
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching developer data:', error);
@@ -63,7 +68,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    
+
     if (type === 'checkbox') {
       const { checked } = e.target as HTMLInputElement;
       setFormData({ ...formData, [name]: checked });
@@ -79,6 +84,18 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleBackgroundImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Preview the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBackgroundImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -101,6 +118,12 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
       const logoInput = document.getElementById('logo') as HTMLInputElement;
       if (logoInput.files && logoInput.files[0]) {
         formDataToSend.append('logo', logoInput.files[0]);
+      }
+
+      // Add background image if a new one was selected
+      const backgroundImageInput = document.getElementById('backgroundImage') as HTMLInputElement;
+      if (backgroundImageInput.files && backgroundImageInput.files[0]) {
+        formDataToSend.append('backgroundImage', backgroundImageInput.files[0]);
       }
 
       if (isEdit) {
@@ -240,6 +263,31 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                   alt="Logo Preview"
                   fill
                   className="object-contain"
+                  unoptimized
+                />
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="backgroundImage" className="block text-sm font-medium text-gray-700 mb-1">
+              Background Image
+            </label>
+            <input
+              type="file"
+              id="backgroundImage"
+              name="backgroundImage"
+              onChange={handleBackgroundImageChange}
+              accept="image/*"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {backgroundImagePreview && (
+              <div className="mt-2 relative h-40 w-full">
+                <Image
+                  src={backgroundImagePreview}
+                  alt="Background Image Preview"
+                  fill
+                  className="object-cover"
                   unoptimized
                 />
               </div>

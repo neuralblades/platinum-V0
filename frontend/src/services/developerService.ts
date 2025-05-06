@@ -8,6 +8,7 @@ export interface Developer {
   name: string;
   description?: string;
   logo?: string;
+  backgroundImage?: string;
   website?: string;
   established?: number;
   headquarters?: string;
