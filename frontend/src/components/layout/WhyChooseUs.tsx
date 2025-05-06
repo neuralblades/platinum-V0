@@ -65,7 +65,7 @@ const WhyChooseUs = () => {
               className="relative bg-gray-50 hover:bg-white cursor-pointer p-6 text-gray-900 rounded-lg text-center transition-all duration-300 group overflow-hidden hover:scale-[1.02] border border-black"
             >
               {/* Inner shadow overlay that appears on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[inset_0_2px_15px_rgba(0,0,0,0.2),inset_0_-2px_15px_rgba(0,0,0,0.2)]"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[inset_0_2px_15px_rgba(0,0,0,0.1),inset_0_-2px_15px_rgba(0,0,0,0.2)]"></div>
 
               {/* Content */}
               <div className="relative z-10">

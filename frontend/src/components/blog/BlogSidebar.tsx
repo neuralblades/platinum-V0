@@ -97,7 +97,7 @@ const BlogSidebar: React.FC<BlogSidebarProps> = ({ currentCategory, currentTag }
               type="text"
               name="search"
               placeholder="Search articles..."
-              className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full rounded-md border border-gray-300 px-4 py-2 pr-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
             />
             <button
               type="submit"
@@ -141,7 +141,7 @@ const BlogSidebar: React.FC<BlogSidebarProps> = ({ currentCategory, currentTag }
                 <div>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="font-medium hover:text-blue-600"
+                    className="font-medium hover:text-gray-600"
                   >
                     {post.title}
                   </Link>
@@ -166,8 +166,8 @@ const BlogSidebar: React.FC<BlogSidebarProps> = ({ currentCategory, currentTag }
                   href={`/blog?category=${encodeURIComponent(category)}`}
                   className={`flex items-center justify-between ${
                     currentCategory === category
-                      ? 'font-medium text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                      ? 'font-medium text-gray-800'
+                      : 'text-gray-700 hover:text-gray-800'
                   }`}
                 >
                   <span>{category}</span>
@@ -192,7 +192,7 @@ const BlogSidebar: React.FC<BlogSidebarProps> = ({ currentCategory, currentTag }
                 href={`/blog?tag=${encodeURIComponent(tag.name)}`}
                 className={`rounded-full px-3 py-1 text-sm ${
                   currentTag === tag.name
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-gray-700 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -204,21 +204,21 @@ const BlogSidebar: React.FC<BlogSidebarProps> = ({ currentCategory, currentTag }
       )}
 
       {/* Newsletter Signup */}
-      <div className="rounded-lg bg-blue-50 p-6 shadow-md">
-        <h3 className="mb-2 text-lg font-bold text-blue-900">Subscribe to Our Newsletter</h3>
-        <p className="mb-4 text-sm text-blue-800">
+      <div className="rounded-lg bg-gray-100 p-6 shadow-md">
+        <h3 className="mb-2 text-lg font-bold text-gray-800">Subscribe to Our Newsletter</h3>
+        <p className="mb-4 text-sm text-gray-700">
           Get the latest real estate news and updates delivered to your inbox.
         </p>
         <form className="space-y-3">
           <input
             type="email"
             placeholder="Your email address"
-            className="w-full rounded-md border border-blue-200 bg-white px-4 py-2 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full rounded-md border border-gray-300 bg-white px-4 py-2 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
             required
           />
           <button
             type="submit"
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+            className="w-full rounded-md bg-gradient-to-r from-gray-600 to-gray-800 px-4 py-2 text-white transition-all hover:from-gray-700 hover:to-gray-900"
           >
             Subscribe
           </button>
