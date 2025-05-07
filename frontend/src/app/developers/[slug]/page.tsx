@@ -92,7 +92,7 @@ export default function DeveloperDetailPage({ params }: { params: Promise<{ slug
                   fill
                   className="object-contain p-2"
                   sizes="224px"
-                  unoptimized
+
                 />
               </div>
             )}

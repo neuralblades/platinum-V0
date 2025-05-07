@@ -200,7 +200,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
             className="object-cover"
             sizes="100vw"
             priority
-            unoptimized
+
           />
           {/* Modern Gradient Overlay - Enhanced for better text visibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-black/90"></div>
@@ -262,7 +262,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                         fill
                         className="object-contain bg-white"
                         sizes="96px"
-                        unoptimized
+
                       />
                     </div>
                   ) : (
@@ -516,7 +516,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                                         alt={developer.name}
                                         fill
                                         className="object-contain"
-                                        unoptimized
+
                                       />
                                     </div>
                                   ) : null}
@@ -577,7 +577,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                               fill
                               className="object-cover transition-transform duration-500 group-hover:scale-110"
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              unoptimized
+
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                               <div className="p-4 w-full">
@@ -956,7 +956,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                             alt="Brochure Cover"
                             fill
                             className="object-cover"
-                            unoptimized
+
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                             <div className="p-6 text-white">
@@ -983,7 +983,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                   alt="Contact Section Background"
                   fill
                   className="object-cover"
-                  unoptimized
+
                 />
                 {/* Keep the gradient overlay on top of the image */}
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-700 to-gray-900 opacity-65"></div>
@@ -1175,7 +1175,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                       className="object-contain"
                       sizes="100vw"
                       priority
-                      unoptimized
+                      
                     />
                   )}
 
@@ -1223,7 +1223,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                           fill
                           className="object-cover"
                           sizes="96px"
-                          unoptimized
+                          
                         />
                       </button>
                     ))}

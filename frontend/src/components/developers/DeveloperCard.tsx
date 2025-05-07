@@ -36,7 +36,7 @@ const DeveloperCard = ({
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={featured}
-              unoptimized
+
             />
           )}
 
@@ -52,7 +52,7 @@ const DeveloperCard = ({
                     className="object-contain"
                     sizes="150px"
                     priority={featured}
-                    unoptimized
+
                   />
                 </div>
               </div>

@@ -264,7 +264,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                   fill
                   className="object-contain"
                   sizes="100%"
-                  unoptimized
+
                 />
               </div>
             )}
@@ -290,7 +290,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                   fill
                   className="object-cover"
                   sizes="100%"
-                  unoptimized
+
                 />
               </div>
             )}

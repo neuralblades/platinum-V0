@@ -121,7 +121,7 @@ export default function DevelopersPage() {
                               fill
                               className="object-contain rounded-lg border border-gray-100 shadow-sm"
                               sizes="40px"
-                              unoptimized
+
                             />
                           ) : (
                             <div className="h-10 w-10 rounded-lg bg-gray-100 border border-gray-200 shadow-sm flex items-center justify-center">

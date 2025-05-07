@@ -264,7 +264,7 @@ export default function AdminPropertiesPage() {
                               fill
                               sizes="(max-width: 768px) 100vw, 40px"
                               className="object-cover rounded-md"
-                              unoptimized
+
                             />
                           ) : (
                             <div className="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">

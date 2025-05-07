@@ -692,7 +692,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
-                unoptimized
+
               />
             </div>
             <button
@@ -742,7 +742,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  unoptimized
+
                 />
               </div>
               <button
@@ -772,7 +772,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  unoptimized
+
                 />
               </div>
               <button

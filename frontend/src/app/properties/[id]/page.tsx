@@ -598,7 +598,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                       fill
                       sizes="(max-width: 768px) 100vw, 64px"
                       className="object-contain"
-                      unoptimized
+
                     />
                   </div>
                 ) : (
@@ -640,7 +640,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                   fill
                   sizes="(max-width: 768px) 100vw, 64px"
                   className="object-cover"
-                  unoptimized
+
                 />
               </div>
               <div>
@@ -861,7 +861,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                         fill
                         className="object-contain"
                         sizes="100vw"
-                        unoptimized
+
                       />
                     </div>
 
@@ -908,7 +908,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                           fill
                           className="object-cover"
                           sizes="96px"
-                          unoptimized
+
                         />
                       </button>
                     ))}

@@ -205,7 +205,7 @@ export default function TestimonialForm({ testimonialId, isEdit = false }: Testi
                         alt="Client Photo Preview"
                         fill
                         className="object-cover"
-                        unoptimized
+
                       />
                     </div>
                   )}

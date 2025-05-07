@@ -36,7 +36,7 @@ const ChatbotMessage: React.FC<ChatbotMessageProps> = ({ message }) => {
                 fill
                 className="object-cover"
                 sizes="32px"
-                unoptimized
+
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-gray-500 to-gray-900 text-white text-xs font-bold">

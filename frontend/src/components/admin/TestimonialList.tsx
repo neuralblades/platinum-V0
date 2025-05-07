@@ -129,7 +129,7 @@ export default function TestimonialList() {
                             alt={testimonial.name}
                             fill
                             className="object-cover"
-                            unoptimized
+
                           />
                         ) : (
                           <div className="h-full w-full bg-gray-300 flex items-center justify-center text-gray-500">
