@@ -71,6 +71,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'blog_posts',
     timestamps: true,
+    indexes: [
+      { fields: ['slug'], unique: true },
+      { fields: ['authorId'] },
+      // Index for filtering by status and sorting by date
+      { fields: ['status', 'createdAt'] },
+      { fields: ['category'] }
+    ],
     hooks: {
       beforeCreate: (post) => {
         if (post.status === 'published' && !post.publishedAt) {

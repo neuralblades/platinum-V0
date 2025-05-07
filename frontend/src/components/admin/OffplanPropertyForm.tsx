@@ -691,6 +691,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 alt="Header Image"
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 unoptimized
               />
             </div>
@@ -740,6 +741,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                   alt={`Property Image ${index + 1}`}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   unoptimized
                 />
               </div>
@@ -769,6 +771,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                   alt={`New Property Image ${index + 1}`}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   unoptimized
                 />
               </div>

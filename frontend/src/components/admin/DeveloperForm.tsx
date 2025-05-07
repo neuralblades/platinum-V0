@@ -263,6 +263,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                   alt="Logo Preview"
                   fill
                   className="object-contain"
+                  sizes="100%"
                   unoptimized
                 />
               </div>
@@ -288,6 +289,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                   alt="Background Image Preview"
                   fill
                   className="object-cover"
+                  sizes="100%"
                   unoptimized
                 />
               </div>

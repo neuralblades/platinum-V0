@@ -117,17 +117,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     indexes: [
-      // Composite indexes for common query patterns
-      { fields: ['status', 'propertyType'] },
-      { fields: ['isOffplan'] },
-      { fields: ['featured'] },
+      // Composite indexes for common query patterns - combine related fields
+      { fields: ['status', 'propertyType', 'featured'] },
+      { fields: ['isOffplan', 'developerId'] },
       { fields: ['agentId'] },
-      { fields: ['developerId'] },
-      { fields: ['location'] },
-      // Index for price range queries
-      { fields: ['price'] },
-      // Index for area range queries
-      { fields: ['area'] },
+      { fields: ['location', 'city'] },
+      // Index for price and area range queries combined
+      { fields: ['price', 'area'] },
       // Index for bedroom/bathroom filters
       { fields: ['bedrooms', 'bathrooms'] }
     ]

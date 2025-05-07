@@ -198,6 +198,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
             alt={property.title}
             fill
             className="object-cover"
+            sizes="100vw"
             priority
             unoptimized
           />
@@ -260,6 +261,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                         alt={developer.name}
                         fill
                         className="object-contain bg-white"
+                        sizes="96px"
                         unoptimized
                       />
                     </div>

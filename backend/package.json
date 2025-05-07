@@ -9,6 +9,8 @@
     "setup-db": "node src/scripts/setupDb.js",
     "migrate": "npx sequelize-cli db:migrate",
     "check-db": "node src/scripts/check-db-connection.js",
+    "convert-images": "node src/scripts/convertImagesToWebP.js",
+    "convert-images:force": "node src/scripts/convertImagesToWebP.js --force --verbose",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -27,6 +29,7 @@
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.2",
+    "sharp": "^0.34.1",
     "slugify": "^1.6.6",
     "umzug": "^3.7.0"
   },

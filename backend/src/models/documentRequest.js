@@ -40,7 +40,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'pending'
     }
   }, {
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      // Index for filtering by status
+      { fields: ['status'] },
+      // Index for property document requests
+      { fields: ['propertyId'] }
+    ]
   });
 
   DocumentRequest.associate = (models) => {

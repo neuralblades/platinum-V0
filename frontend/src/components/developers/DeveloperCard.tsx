@@ -11,6 +11,7 @@ interface DeveloperCardProps {
   backgroundImage?: string;
   slug: string;
   featured?: boolean;
+  description?: string; // Added description property
 }
 
 const DeveloperCard = ({
@@ -20,6 +21,7 @@ const DeveloperCard = ({
   backgroundImage,
   slug,
   featured = false,
+  description,
 }: DeveloperCardProps) => {
   return (
     <div className={`bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 ${featured ? 'transform hover:-translate-y-2' : 'hover:-translate-y-1'}`}>
@@ -33,6 +35,7 @@ const DeveloperCard = ({
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={featured}
               unoptimized
             />
           )}
@@ -41,14 +44,17 @@ const DeveloperCard = ({
           {logo ? (
             <div className="relative z-10 h-full w-full flex items-center justify-center">
               <div className="bg-white/80 p-4 rounded-lg shadow-sm">
-                <Image
-                  src={getFullImageUrl(logo)}
-                  alt={name}
-                  width={150}
-                  height={80}
-                  className="object-contain"
-                  unoptimized
-                />
+                <div style={{ width: '150px', height: '80px', position: 'relative' }}>
+                  <Image
+                    src={getFullImageUrl(logo)}
+                    alt={name}
+                    fill
+                    className="object-contain"
+                    sizes="150px"
+                    priority={featured}
+                    unoptimized
+                  />
+                </div>
               </div>
             </div>
           ) : (
@@ -64,7 +70,10 @@ const DeveloperCard = ({
           )}
         </div>
         <div className="p-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-3">{name}</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">{name}</h3>
+          {description && (
+            <p className="text-gray-600 text-sm mb-3 line-clamp-2">{description}</p>
+          )}
           <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
             <span className="text-gray-700 font-medium">View Projects</span>
             <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors duration-300">

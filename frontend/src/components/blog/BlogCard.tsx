@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BlogPost, getBlogImageUrl } from '@/services/blogService';
+import { getResponsiveSizes } from '@/utils/imageOptimizationUtils';
 
 interface BlogCardProps {
   post: BlogPost;
@@ -36,8 +37,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
             alt={post.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes={getResponsiveSizes('hero')}
+            quality={85}
             priority
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
         </div>
@@ -68,6 +72,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
             fill
             className="object-cover"
             sizes="64px"
+            quality={80}
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
           />
         </div>
 
@@ -90,7 +98,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
           alt={post.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes={getResponsiveSizes('card')}
+          quality={80}
+          loading="lazy"
+          placeholder="blur"
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
         />
       </div>
 

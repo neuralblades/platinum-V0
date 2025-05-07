@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getFullImageUrl, handleImageError } from '@/utils/imageUtils';
+import { getResponsiveSizes, shouldLoadWithPriority } from '@/utils/imageOptimizationUtils';
 
 interface PropertyCardProps {
   id: string;
@@ -37,7 +38,6 @@ const PropertyCard = ({
   featured = false,
   isOffplan = false,
 }: PropertyCardProps) => {
-  console.log(`Property ${id} - isOffplan:`, isOffplan);
 
   return (
     <div className={`bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-xl ${featured ? 'transform hover:-translate-y-2' : 'hover:-translate-y-1'}`}>
@@ -48,8 +48,11 @@ const PropertyCard = ({
             alt={title}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized
+            sizes={getResponsiveSizes('card')}
+            quality={80}
+            loading={featured ? "eager" : "lazy"}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
             onError={handleImageError}
           />
           <div className="absolute top-4 left-4 flex flex-col space-y-2">

@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    domains: ['localhost'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,23 +20,17 @@ const nextConfig: NextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '5000',
-        pathname: '/api/uploads/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '5000',
-        pathname: '/uploads/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'hostinger.com',
-        pathname: '/api/uploads/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: '*.hostinger.com',
-        pathname: '/api/uploads/**',
+        pathname: '/**',
       },
     ],
     dangerouslyAllowSVG: true,

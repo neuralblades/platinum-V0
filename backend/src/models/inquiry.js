@@ -31,6 +31,13 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
     },
+  }, {
+    indexes: [
+      // Combined index for property inquiries and their status
+      { fields: ['propertyId', 'status'] },
+      // Index for user inquiries
+      { fields: ['userId'] }
+    ]
   });
 
   Inquiry.associate = (models) => {

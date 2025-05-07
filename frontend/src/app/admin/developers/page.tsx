@@ -120,6 +120,7 @@ export default function DevelopersPage() {
                               alt={developer.name}
                               fill
                               className="object-contain rounded-lg border border-gray-100 shadow-sm"
+                              sizes="40px"
                               unoptimized
                             />
                           ) : (

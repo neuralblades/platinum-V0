@@ -31,7 +31,13 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     tableName: 'blog_comments',
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      // Index for comments on a post
+      { fields: ['postId', 'createdAt'] },
+      // Index for user's comments
+      { fields: ['userId'] }
+    ]
   });
 
   BlogComment.associate = (models) => {

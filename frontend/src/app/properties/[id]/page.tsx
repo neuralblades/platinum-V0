@@ -1,13 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, Usable } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useAuth } from '@/contexts/AuthContext';
 import PropertyCard from '@/components/properties/PropertyCard';
 import { getPropertyById, getProperties, Property } from '@/services/propertyService';
 import { createInquiry } from '@/services/inquiryService';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import { getResponsiveSizes } from '@/utils/imageOptimizationUtils';
+import { generatePropertySchema, generateBreadcrumbSchema } from '@/utils/structuredDataUtils';
 import { Dialog, Transition } from '@headlessui/react';
 import MapComponent from '@/components/Map';
 import Chatbot from '@/components/chatbot/Chatbot';
@@ -275,18 +278,52 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
 
   // Property details content starts here
 
+  // Generate structured data for the property
+  const propertyStructuredData = generatePropertySchema(property);
+
+  // Generate breadcrumb structured data
+  const breadcrumbStructuredData = generateBreadcrumbSchema([
+    { label: 'Home', href: '/' },
+    { label: 'Properties', href: '/properties' },
+    { label: property.title }
+  ]);
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Breadcrumbs */}
-      <div className="mb-6">
-        <nav className="flex text-gray-600 text-sm">
-          <Link href="/" className="hover:text-gray-700 transition duration-300">Home</Link>
-          <span className="mx-2">/</span>
-          <Link href="/properties" className="hover:text-gray-700 transition duration-300">Properties</Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-900">{property.title}</span>
-        </nav>
-      </div>
+    <>
+      <Head>
+        <title>{property.title} | Platinum Square Real Estate</title>
+        <meta name="description" content={property.description?.substring(0, 160) || `${property.bedrooms} bedroom property in ${property.location}, Dubai`} />
+        <meta property="og:title" content={property.title} />
+        <meta property="og:description" content={property.description?.substring(0, 160) || `${property.bedrooms} bedroom property in ${property.location}, Dubai`} />
+        <meta property="og:image" content={getFullImageUrl(property.images[0])} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={property.title} />
+        <meta name="twitter:description" content={property.description?.substring(0, 160) || `${property.bedrooms} bedroom property in ${property.location}, Dubai`} />
+        <meta name="twitter:image" content={getFullImageUrl(property.images[0])} />
+
+        {/* Structured data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(propertyStructuredData) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+        />
+      </Head>
+
+      <div className="container mx-auto px-4 py-12">
+        {/* Breadcrumbs */}
+        <div className="mb-6">
+          <nav className="flex text-gray-600 text-sm">
+            <Link href="/" className="hover:text-gray-700 transition duration-300">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/properties" className="hover:text-gray-700 transition duration-300">Properties</Link>
+            <span className="mx-2">/</span>
+            <span className="text-gray-900">{property.title}</span>
+          </nav>
+        </div>
 
       {/* Property Images */}
       <div className="mb-12">
@@ -298,9 +335,11 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
               alt={property.title}
               fill
               className="object-cover rounded-lg"
-              sizes="(max-width: 768px) 100vw, 66vw"
+              sizes={getResponsiveSizes('hero')}
+              quality={85}
               priority
-              unoptimized
+              placeholder="blur"
+              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
             />
           </div>
 
@@ -313,8 +352,11 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 alt={`${property.title} - Image 2`}
                 fill
                 className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                unoptimized
+                sizes={getResponsiveSizes('gallery')}
+                quality={80}
+                loading="eager"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
               />
             </div>
 
@@ -325,8 +367,11 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 alt={`${property.title} - Image 3`}
                 fill
                 className="object-cover rounded-lg"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                unoptimized
+                sizes={getResponsiveSizes('gallery')}
+                quality={80}
+                loading="eager"
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
               />
             </div>
           </div>
@@ -878,13 +923,14 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
       {/* Property-specific chatbot */}
       <Chatbot currentProperty={property} />
     </div>
+    </>
   );
 }
 
 
 // Server component that passes the ID to the client component
-export default function PropertyDetailPage({ params }: { params: Usable<{ id: string }> }) {
-  // Properly unwrap params using React.use()
+export default function PropertyDetailPage({ params }: { params: { id: string } }) {
+  // Properly unwrap params using React.use() to avoid the warning
   const unwrappedParams = React.use(params);
   const propertyId = unwrappedParams.id;
   return <PropertyDetailClient propertyId={propertyId} />;

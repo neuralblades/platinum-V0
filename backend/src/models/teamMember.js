@@ -52,6 +52,11 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: 0
     }
+  }, {
+    indexes: [
+      // Combined index for filtering and sorting team members
+      { fields: ['isLeadership', 'order'] }
+    ]
   });
 
   return TeamMember;

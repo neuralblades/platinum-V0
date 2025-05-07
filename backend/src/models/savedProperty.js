@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     tableName: 'SavedProperties',
+    indexes: [
+      // Composite index for user's saved properties
+      { fields: ['userId', 'propertyId'], unique: true }
+    ]
   });
 
   return SavedProperty;

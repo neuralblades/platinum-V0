@@ -63,6 +63,7 @@ export default function DevelopersPage() {
                 backgroundImage={developer.backgroundImage}
                 slug={developer.slug}
                 featured={developer.featured}
+                description={developer.description}
               />
             ))}
           </div>

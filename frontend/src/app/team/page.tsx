@@ -280,6 +280,7 @@ export default function TeamPage() {
                     width={48}
                     height={48}
                     className="object-cover"
+                    style={{ width: 'auto', height: 'auto', maxWidth: '48px', maxHeight: '48px' }}
                   />
                 ) : (
                   <div className="w-12 h-12 bg-gray-300 flex items-center justify-center text-gray-500">

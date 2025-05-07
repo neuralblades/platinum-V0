@@ -66,6 +66,7 @@ export default function AboutPage() {
                   alt="Our Office"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 w-48 h-48 bg-gray-700/10 rounded-lg -z-10"></div>

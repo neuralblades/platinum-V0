@@ -122,6 +122,7 @@ const offplanInquiryRoutes = require('./routes/offplanInquiryRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const teamMemberRoutes = require('./routes/teamMemberRoutes');
 const testimonialRoutes = require('./routes/testimonialRoutes');
+const imageRoutes = require('./routes/imageRoutes');
 
 app.use('/api/properties', propertyRoutes);
 app.use('/api/users', userRoutes);
@@ -134,6 +135,7 @@ app.use('/api/offplan-inquiries', offplanInquiryRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/team', teamMemberRoutes);
 app.use('/api/testimonials', testimonialRoutes);
+app.use('/api/images', imageRoutes);
 
 // Root route
 app.get('/', (req, res) => {
@@ -145,7 +147,8 @@ const PORT = process.env.PORT || 5000;
 
 // Sync database and start server
 db.sequelize
-  .sync({ alter: process.env.NODE_ENV === 'development' })
+  // Use sync without force or alter to avoid schema changes
+  .sync({ force: false, alter: false })
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

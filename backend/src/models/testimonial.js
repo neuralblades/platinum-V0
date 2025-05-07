@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'testimonials',
     timestamps: true,
+    indexes: [
+      // Combined index for active testimonials and their order
+      { fields: ['isActive', 'order'] }
+    ]
   });
 
   return Testimonial;

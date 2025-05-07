@@ -43,6 +43,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     tableName: 'developers',
     timestamps: true,
+    indexes: [
+      // Only add essential indexes
+      { fields: ['slug'], unique: true },
+      { fields: ['featured'] }
+    ]
   });
 
   Developer.associate = (models) => {

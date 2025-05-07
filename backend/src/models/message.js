@@ -22,6 +22,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+  }, {
+    indexes: [
+      // Combined index for inquiry messages
+      { fields: ['inquiryId', 'createdAt'] },
+      // Index for user's messages (sent or received)
+      { fields: ['senderId', 'receiverId'] }
+    ]
   });
 
   Message.associate = (models) => {

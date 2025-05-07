@@ -49,7 +49,13 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'new'
     }
   }, {
-    timestamps: true
+    timestamps: true,
+    indexes: [
+      // Index for property inquiries
+      { fields: ['propertyId'] },
+      // Index for filtering by status
+      { fields: ['status'] }
+    ]
   });
 
   OffplanInquiry.associate = (models) => {

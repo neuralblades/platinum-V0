@@ -16,7 +16,14 @@ const Header = () => {
     <header className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Image src={"/images/logo.svg"} alt="Platinum Square" width={200} height={200} className="object-contain"/>
+        <Image
+          src={"/images/logo.svg"}
+          alt="Platinum Square"
+          width={200}
+          height={42}
+          className="object-contain"
+          style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '42px' }}
+        />
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
