@@ -324,7 +324,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
             <div className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300">
               <h3 className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium">STARTING PRICE</h3>
-              <p className="text-4xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">AED {property.price.toLocaleString()}</p>
+              <p className="text-4xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}</p>
             </div>
             <div className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300">
               <h3 className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium">HANDOVER</h3>
@@ -477,7 +477,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                             {/* Starting Price */}
                             <div className="mb-6">
                               <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-1">STARTING PRICE</h4>
-                              <p className="text-3xl font-bold text-gray-800">AED {property.price?.toLocaleString()}</p>
+                              <p className="text-3xl font-bold text-gray-800">AED {property.price ? (typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()) : '0'}</p>
                             </div>
 
                             {/* Handover */}
@@ -1143,7 +1143,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
       </div>
 
       {/* Photo Gallery Modal */}
-      <Transition show={isGalleryOpen} as="div">
+      <Transition show={isGalleryOpen} as={React.Fragment}>
         <Dialog
           open={isGalleryOpen}
           onClose={() => setIsGalleryOpen(false)}
@@ -1175,7 +1175,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                       className="object-contain"
                       sizes="100vw"
                       priority
-                      
+
                     />
                   )}
 
@@ -1223,7 +1223,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                           fill
                           className="object-cover"
                           sizes="96px"
-                          
+
                         />
                       </button>
                     ))}
@@ -1250,8 +1250,8 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
 
 // Server component that passes the ID to the client component
 export default function OffplanPropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  // Properly unwrap params using React.use()
-  const resolvedParams = use(params);
-  const propertyId = resolvedParams.id;
+  // Use React.use() to unwrap the params object
+  const unwrappedParams = use(params);
+  const propertyId = unwrappedParams.id;
   return <OffplanPropertyDetailClient propertyId={propertyId} />;
 }

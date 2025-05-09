@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -11,7 +12,6 @@ import { createInquiry } from '@/services/inquiryService';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { getResponsiveSizes } from '@/utils/imageOptimizationUtils';
 import { generatePropertySchema, generateBreadcrumbSchema } from '@/utils/structuredDataUtils';
-import { Dialog, Transition } from '@headlessui/react';
 import MapComponent from '@/components/Map';
 import Chatbot from '@/components/chatbot/Chatbot';
 
@@ -404,7 +404,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
             <div className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full mb-4">
               {property.status === 'for-sale' ? 'For Sale' : property.status === 'for-rent' ? 'For Rent' : property.status}
             </div>
-            <p className="text-5xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-4">AED {property.price.toLocaleString()}</p>
+            <p className="text-5xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-4">AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}</p>
             <h1 className="text-xl md:text-4xl font-bold text-gray-900 mb-3">{property.title}</h1>
             <p className="text-gray-600 text-lg flex items-center">
               <svg className="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -437,7 +437,16 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <span className="text-gray-600 font-medium">Bathrooms</span>
-                <span className="text-xl font-bold text-gray-900 mt-1">{property.bathrooms}</span>
+                <span className="text-xl font-bold text-gray-900 mt-1">
+                  {(() => {
+                    // Convert to number first to handle string inputs
+                    const bathroomsNum = typeof property.bathrooms === 'string' ? parseFloat(property.bathrooms) : property.bathrooms;
+                    // Format based on whether it's an integer
+                    return Number.isInteger(bathroomsNum) ?
+                      bathroomsNum :
+                      bathroomsNum.toFixed(1).replace('.0', '');
+                  })()}
+                </span>
               </div>
 
               <div className="flex flex-col items-center p-5 bg-gray-50 rounded-lg hover:shadow-md transition-all duration-300 border border-gray-100">
@@ -801,7 +810,12 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
               price={property.price}
               location={property.location}
               bedrooms={property.bedrooms}
-              bathrooms={property.bathrooms}
+              bathrooms={(() => {
+                // Convert to number first to handle string inputs
+                const bathroomsNum = typeof property.bathrooms === 'string' ? parseFloat(property.bathrooms) : property.bathrooms;
+                // Format based on whether it's an integer
+                return Number.isInteger(bathroomsNum) ? bathroomsNum : Number(bathroomsNum.toFixed(1).replace('.0', ''));
+              })()}
               area={property.area}
               imageUrl={property.mainImage || ''}
               featured={property.featured}
@@ -812,113 +826,84 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
       </div>
 
       {/* Photo Gallery Modal */}
-      <Transition show={isGalleryOpen} as="div">
-        <Dialog
-          open={isGalleryOpen}
-          onClose={() => setIsGalleryOpen(false)}
-          className="relative z-50"
-        >
-          {/* Backdrop */}
-          <Transition.Child
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/70" />
-          </Transition.Child>
+      {isGalleryOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="fixed inset-0 bg-black/90" aria-hidden="true" />
+          <div className="flex min-h-full items-center justify-center p-4">
+            <div className="w-full max-w-6xl transform overflow-hidden rounded-lg bg-black p-6 shadow-xl transition-all">
+              <div className="relative">
+                {/* Close button */}
+                <button
+                  onClick={() => setIsGalleryOpen(false)}
+                  className="absolute right-0 top-0 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
 
-          {/* Full-screen container */}
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4">
-              <Transition.Child
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-6xl transform overflow-hidden rounded-lg bg-black p-6 shadow-xl transition-all">
-                  <div className="relative">
-                    {/* Close button */}
-                    <button
-                      onClick={() => setIsGalleryOpen(false)}
-                      className="absolute right-0 top-0 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
-                    >
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+                {/* Main image */}
+                <div className="relative h-[70vh] w-full">
+                  <Image
+                    src={getFullImageUrl(property.images[currentPhotoIndex])}
+                    alt={`${property.title} - Image ${currentPhotoIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                  />
+                </div>
 
-                    {/* Main image */}
-                    <div className="relative h-[70vh] w-full">
-                      <Image
-                        src={getFullImageUrl(property.images[currentPhotoIndex])}
-                        alt={`${property.title} - Image ${currentPhotoIndex + 1}`}
-                        fill
-                        className="object-contain"
-                        sizes="100vw"
+                {/* Navigation buttons */}
+                <div className="absolute inset-y-0 left-0 flex items-center">
+                  <button
+                    onClick={() => setCurrentPhotoIndex((prev) => (prev === 0 ? property.images.length - 1 : prev - 1))}
+                    className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 ml-2"
+                  >
+                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                </div>
 
-                      />
-                    </div>
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    onClick={() => setCurrentPhotoIndex((prev) => (prev === property.images.length - 1 ? 0 : prev + 1))}
+                    className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 mr-2"
+                  >
+                    <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
 
-                    {/* Navigation buttons */}
-                    <div className="absolute inset-y-0 left-0 flex items-center">
-                      <button
-                        onClick={() => setCurrentPhotoIndex((prev) => (prev === 0 ? property.images.length - 1 : prev - 1))}
-                        className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 ml-2"
-                      >
-                        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                      </button>
-                    </div>
+                {/* Image counter */}
+                <div className="absolute bottom-4 left-0 right-0 text-center text-white">
+                  {currentPhotoIndex + 1} / {property.images.length}
+                </div>
+              </div>
 
-                    <div className="absolute inset-y-0 right-0 flex items-center">
-                      <button
-                        onClick={() => setCurrentPhotoIndex((prev) => (prev === property.images.length - 1 ? 0 : prev + 1))}
-                        className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 mr-2"
-                      >
-                        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </div>
-
-                    {/* Image counter */}
-                    <div className="absolute bottom-4 left-0 right-0 text-center text-white">
-                      {currentPhotoIndex + 1} / {property.images.length}
-                    </div>
-                  </div>
-
-                  {/* Thumbnails */}
-                  <div className="mt-4 flex space-x-2 overflow-x-auto pb-2">
-                    {property.images.map((image: string, index: number) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentPhotoIndex(index)}
-                        className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : ''}`}
-                      >
-                        <Image
-                          src={getFullImageUrl(image)}
-                          alt={`Thumbnail ${index + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="96px"
-
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
+              {/* Thumbnails */}
+              <div className="mt-4 flex space-x-2 overflow-x-auto pb-2">
+                {property.images.map((image: string, index: number) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPhotoIndex(index)}
+                    className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : ''}`}
+                  >
+                    <Image
+                      src={getFullImageUrl(image)}
+                      alt={`Thumbnail ${index + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="96px"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </Dialog>
-      </Transition>
+        </div>
+      )}
 
       {/* Property-specific chatbot */}
       <Chatbot currentProperty={property} />
@@ -929,9 +914,9 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
 
 
 // Server component that passes the ID to the client component
-export default function PropertyDetailPage({ params }: { params: { id: string } }) {
-  // Properly unwrap params using React.use() to avoid the warning
-  const unwrappedParams = React.use(params);
+export default function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Use React.use() to unwrap the params object
+  const unwrappedParams = use(params);
   const propertyId = unwrappedParams.id;
   return <PropertyDetailClient propertyId={propertyId} />;
 }

@@ -208,8 +208,16 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
       // Create FormData object for file upload
       const propertyFormData = new FormData();
 
+      // Create a copy of formData to modify bathrooms if needed
+      const formDataCopy = { ...formData };
+
+      // If bathrooms is a whole number, convert it to an integer
+      if (Number.isInteger(Number(formDataCopy.bathrooms))) {
+        formDataCopy.bathrooms = parseInt(formDataCopy.bathrooms.toString());
+      }
+
       // Add text fields
-      Object.entries(formData).forEach(([key, value]) => {
+      Object.entries(formDataCopy).forEach(([key, value]) => {
         if (key === 'features') {
           propertyFormData.append(key, JSON.stringify(value));
         } else {

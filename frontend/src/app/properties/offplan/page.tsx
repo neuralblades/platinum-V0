@@ -2,7 +2,6 @@
 import Button from '@/components/ui/Button';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import PropertyCard from '@/components/properties/PropertyCard';
 import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
 import { getProperties, PropertyFilter, Property } from '@/services/propertyService';
@@ -61,11 +60,6 @@ export default function OffPlanPropertiesPage() {
   // Handle page change
   const handlePageChange = (page: number) => {
     setFilters({ ...filters, page, isOffplan: true });
-  };
-
-  // Handle search
-  const handleSearch = (keyword: string) => {
-    setFilters({ ...filters, keyword, page: 1, isOffplan: true });
   };
 
   // Apply filters and fetch properties
@@ -136,11 +130,14 @@ export default function OffPlanPropertiesPage() {
                 price={property.price}
                 location={property.location}
                 bedrooms={property.bedrooms}
+                bedroomRange={property.bedroomRange}
                 bathrooms={property.bathrooms}
                 area={property.area}
                 imageUrl={property.mainImage}
                 featured={property.featured}
                 isOffplan={true}
+                yearBuilt={property.yearBuilt}
+                paymentPlan={property.paymentPlan}
                 agent={property.agent}
               />
             ))}
