@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllInquiries, updateInquiryStatus } from '@/services/inquiryService';
+import Button from '@/components/ui/Button';
 
 export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<any[]>([]);
@@ -91,7 +92,7 @@ export default function AdminInquiriesPage() {
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-          <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+          <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
           Inquiries Management
         </h1>
       </div>
@@ -126,18 +127,19 @@ export default function AdminInquiriesPage() {
             </select>
           </div>
           <div>
-            <button
+            <Button
               onClick={() => {
                 setSearchTerm('');
                 setStatusFilter('');
               }}
-              className="w-full px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
+              variant="outline"
+              className="w-full flex items-center justify-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
               Clear Filters
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -241,16 +243,18 @@ export default function AdminInquiriesPage() {
                       {new Date(inquiry.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button
+                      <Button
                         onClick={() => handleViewInquiry(inquiry)}
-                        className="text-white bg-teal-500 hover:bg-teal-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
+                        variant="primary"
+                        size="sm"
+                        className="!py-1 !px-2 inline-flex items-center"
                       >
                         <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                         View Details
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 ))}
@@ -266,7 +270,7 @@ export default function AdminInquiriesPage() {
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl border border-gray-100">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-bold text-gray-800 flex items-center">
-                <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+                <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
                 Inquiry Details
               </h3>
               <button
@@ -387,15 +391,16 @@ export default function AdminInquiriesPage() {
             </div>
 
             <div className="mt-6 flex justify-end">
-              <button
+              <Button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 text-gray-700 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center font-medium"
+                variant="outline"
+                className="flex items-center"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>

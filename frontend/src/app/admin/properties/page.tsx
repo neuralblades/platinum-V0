@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getProperties, deleteProperty } from '@/services/propertyService';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import Button from '@/components/ui/Button';
 
 // Define Property interface to avoid using 'any'
 interface Property {
@@ -120,28 +121,32 @@ export default function AdminPropertiesPage() {
       {/* Header with Add Property Buttons */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-          <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+          <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
           Properties Management
         </h1>
         <div className="flex space-x-4">
-          <Link
+          <Button
             href="/admin/properties/add-offplan"
-            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
+            variant="primary"
+            gradient={true}
+            className="flex items-center"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Add Offplan Property
-          </Link>
-          <Link
+          </Button>
+          <Button
             href="/admin/properties/add"
-            className="px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
+            variant="primary"
+            gradient={true}
+            className="flex items-center"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Add Regular Property
-          </Link>
+          </Button>
         </div>
       </div>
 
@@ -322,35 +327,41 @@ export default function AdminPropertiesPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end space-x-2">
                         {property.isOffplan ? (
-                          <Link
+                          <Button
                             href={`/admin/properties/edit-offplan/${property.id}`}
-                            className="text-white bg-purple-500 hover:bg-purple-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
+                            variant="primary"
+                            size="sm"
+                            className="!py-1 !px-2 inline-flex items-center"
                           >
                             <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                             Edit
-                          </Link>
+                          </Button>
                         ) : (
-                          <Link
+                          <Button
                             href={`/admin/properties/edit/${property.id}`}
-                            className="text-white bg-teal-500 hover:bg-teal-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
+                            variant="primary"
+                            size="sm"
+                            className="!py-1 !px-2 inline-flex items-center"
                           >
                             <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                             </svg>
                             Edit
-                          </Link>
+                          </Button>
                         )}
-                        <button
+                        <Button
                           onClick={() => handleDeleteClick(property)}
-                          className="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
+                          variant="primary"
+                          size="sm"
+                          className="!py-1 !px-2 inline-flex items-center !bg-red-500 hover:!bg-red-600"
                         >
                           <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
                           Delete
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>
@@ -365,53 +376,40 @@ export default function AdminPropertiesPage() {
       {!loading && !error && totalPages > 1 && (
         <div className="flex justify-center mt-6">
           <nav className="flex items-center space-x-2">
-            <button
+            <Button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-4 py-2 border rounded-lg shadow-sm ${
-                currentPage === 1
-                  ? 'border-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200'
-              }`}
+              variant="outline"
+              className="flex items-center"
             >
-              <div className="flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Previous
-              </div>
-            </button>
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Previous
+            </Button>
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
+              <Button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded-lg shadow-sm ${
-                  currentPage === page
-                    ? 'border-teal-600 bg-gradient-to-r from-teal-500 to-teal-700 text-white'
-                    : 'border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200'
-                }`}
+                variant={currentPage === page ? "primary" : "outline"}
+                gradient={currentPage === page}
               >
                 {page}
-              </button>
+              </Button>
             ))}
 
-            <button
+            <Button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 border rounded-lg shadow-sm ${
-                currentPage === totalPages
-                  ? 'border-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors duration-200'
-              }`}
+              variant="outline"
+              className="flex items-center"
             >
-              <div className="flex items-center">
-                Next
-                <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </button>
+              Next
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Button>
           </nav>
         </div>
       )}
@@ -432,35 +430,27 @@ export default function AdminPropertiesPage() {
               Are you sure you want to delete the property &quot;{propertyToDelete?.title}&quot;? This action cannot be undone.
             </p>
             <div className="flex justify-end space-x-4">
-              <button
+              <Button
                 onClick={() => setShowDeleteModal(false)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium"
+                variant="outline"
                 disabled={isDeleting}
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleDeleteConfirm}
-                className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 font-medium flex items-center"
+                variant="primary"
+                className="!bg-red-500 hover:!bg-red-600 flex items-center"
+                isLoading={isDeleting}
                 disabled={isDeleting}
               >
-                {isDeleting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Deleting...
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                    Delete
-                  </>
+                {!isDeleting && (
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
                 )}
-              </button>
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </Button>
             </div>
           </div>
         </div>

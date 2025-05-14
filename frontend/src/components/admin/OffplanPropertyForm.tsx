@@ -276,13 +276,20 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
       });
 
       // Add existing images if editing
-      if (isEdit && existingImages.length > 0) {
+      // This is the key part - we ALWAYS send the existingImages array when editing,
+      // even if it's empty, to ensure the backend knows to remove all existing images
+      // when none are specified
+      if (isEdit) {
         propertyFormData.append('existingImages', JSON.stringify(existingImages));
       }
 
       // Set main image (first image)
       if (existingImages.length > 0) {
         propertyFormData.append('mainImage', existingImages[0]);
+      } else if (uploadedImages.length > 0 && imagePreviewUrls.length > 0) {
+        // If no existing images but we have new uploads, the first new image will be the main image
+        // The backend will handle this, but we're being explicit here
+        propertyFormData.append('mainImage', 'new_upload_0');
       }
 
       // Add header image if available
@@ -291,8 +298,10 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
       }
 
       // Add existing header image if editing
-      if (isEdit && existingHeaderImage) {
-        propertyFormData.append('existingHeaderImage', existingHeaderImage);
+      if (isEdit) {
+        // Always send the existingHeaderImage value, even if it's empty
+        // This ensures the backend knows to remove it if it's been cleared
+        propertyFormData.append('existingHeaderImage', existingHeaderImage || '');
       }
 
       // Submit the form

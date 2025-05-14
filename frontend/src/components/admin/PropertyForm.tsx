@@ -214,7 +214,8 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
 
       // If bathrooms is a whole number, convert it to an integer
       if (Number.isInteger(Number(formDataCopy.bathrooms))) {
-        formDataCopy.bathrooms = parseInt(formDataCopy.bathrooms.toString());
+        // Use type assertion to handle the type mismatch
+        (formDataCopy as any).bathrooms = parseInt(formDataCopy.bathrooms.toString());
       }
 
       // Add text fields
@@ -227,6 +228,8 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
       });
 
       // Add existing images if in edit mode
+      // Always send the existingImages array when editing, even if it's empty
+      // This ensures the backend knows to remove all existing images when none are specified
       if (isEdit) {
         propertyFormData.append('existingImages', JSON.stringify(existingImages));
       }

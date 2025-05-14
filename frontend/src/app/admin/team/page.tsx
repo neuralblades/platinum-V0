@@ -95,7 +95,7 @@ export default function TeamMembersPage() {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
           </div>
         ) : teamMembers.length === 0 ? (
           <div className="bg-gray-100 p-6 rounded-lg text-center">
@@ -154,20 +154,24 @@ export default function TeamMembersPage() {
                     <td className="py-3 px-4 text-gray-600">{member.order}</td>
                     <td className="py-3 px-4">
                       <div className="flex space-x-2">
-                        <button
+                        <Button
                           onClick={() => handleEditMember(member.id)}
-                          className="text-blue-600 hover:text-blue-800"
+                          variant="ghost"
+                          size="sm"
+                          className="!p-1"
                           title="Edit"
                         >
                           <FaEdit />
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={() => handleDeleteClick(member)}
-                          className="text-red-600 hover:text-red-800"
+                          variant="ghost"
+                          size="sm"
+                          className="!p-1"
                           title="Delete"
                         >
                           <FaTrash />
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>
