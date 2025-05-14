@@ -2,6 +2,7 @@ const { Property, User, Developer } = require('../models');
 const { Op } = require('sequelize');
 const cacheManager = require('../utils/cacheManager');
 const { handleApiError, asyncHandler } = require('../utils/errorHandler');
+const { deleteUnusedImages, deleteFile } = require('../utils/fileUtils');
 
 // @desc    Get all properties with filtering
 // @route   GET /api/properties
@@ -511,6 +512,11 @@ const updateProperty = async (req, res) => {
       try {
         // Parse the existingImages JSON string
         const parsedImages = JSON.parse(existingImages);
+
+        // Store the old images for later cleanup
+        const oldImages = property.images || [];
+
+        // Update the images in the database
         updateData.images = parsedImages;
 
         // If images array is empty or if the main image was removed, update main image
@@ -519,6 +525,9 @@ const updateProperty = async (req, res) => {
         } else if (!parsedImages.includes(property.mainImage)) {
           updateData.mainImage = parsedImages[0];
         }
+
+        // Delete unused images from the server
+        await deleteUnusedImages(oldImages, parsedImages);
       } catch (e) {
         console.error('Error parsing existingImages:', e);
       }
@@ -529,8 +538,19 @@ const updateProperty = async (req, res) => {
       // With upload.fields(), files are organized by field name
       // Process header image if available
       if (req.files.headerImage && req.files.headerImage.length > 0) {
+        // If there's an existing header image, delete it
+        if (property.headerImage) {
+          await deleteFile(property.headerImage);
+        }
+
         const headerImageFile = req.files.headerImage[0];
         updateData.headerImage = `/uploads/${headerImageFile.filename}`;
+      } else if (req.body.existingHeaderImage === '') {
+        // If existingHeaderImage is empty string, it means the header image was removed
+        if (property.headerImage) {
+          await deleteFile(property.headerImage);
+        }
+        updateData.headerImage = null;
       }
 
       // Process regular images if available
@@ -677,11 +697,28 @@ const deleteProperty = async (req, res) => {
         transaction
       });
 
+      // Get all images associated with the property before deleting it
+      const propertyImages = property.images || [];
+      const headerImage = property.headerImage;
+
       // Then delete the property
       await property.destroy({ transaction });
 
       // Commit the transaction
       await transaction.commit();
+
+      // After successful transaction, delete all image files
+      if (propertyImages.length > 0) {
+        console.log(`Deleting ${propertyImages.length} property images`);
+        for (const image of propertyImages) {
+          await deleteFile(image);
+        }
+      }
+
+      // Delete header image if it exists
+      if (headerImage) {
+        await deleteFile(headerImage);
+      }
     } catch (error) {
       // Rollback the transaction if any operation fails
       await transaction.rollback();
