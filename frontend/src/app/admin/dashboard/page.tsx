@@ -103,7 +103,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700 shadow-md"></div>
       </div>
     );
   }
@@ -168,12 +168,12 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
           <div className="p-4 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-bold text-gray-800 flex items-center">
-              <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+              <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
               Recent Properties
             </h2>
             <Link
               href="/admin/properties"
-              className="text-sm font-medium text-teal-600 hover:text-teal-800 flex items-center transition-colors"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center transition-colors"
             >
               View All
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
                       <p className="text-sm text-gray-500">{property.location}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-teal-600">AED {property.price.toLocaleString()}</p>
+                      <p className="font-bold text-gray-700">AED {property.price.toLocaleString()}</p>
                       <p className="text-xs text-gray-500">
                         {new Date(property.createdAt).toLocaleDateString()}
                       </p>
@@ -209,12 +209,12 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
           <div className="p-4 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-bold text-gray-800 flex items-center">
-              <span className="w-1 h-6 bg-purple-500 rounded-full mr-2"></span>
+              <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
               Recent Inquiries
             </h2>
             <Link
               href="/admin/inquiries"
-              className="text-sm font-medium text-purple-600 hover:text-purple-800 flex items-center transition-colors"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center transition-colors"
             >
               View All
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,12 +254,12 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
           <div className="p-4 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-bold text-gray-800 flex items-center">
-              <span className="w-1 h-6 bg-indigo-500 rounded-full mr-2"></span>
+              <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
               Recent Offplan Inquiries
             </h2>
             <Link
               href="/admin/offplan-inquiries"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-800 flex items-center transition-colors"
+              className="text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center transition-colors"
             >
               View All
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

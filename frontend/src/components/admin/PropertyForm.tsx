@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createProperty, updateProperty, getPropertyById } from '@/services/propertyService';
 import { getDevelopers } from '@/services/developerService';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import Button from '@/components/ui/Button';
 
 interface PropertyFormProps {
   propertyId?: string;
@@ -696,22 +697,24 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
         </div>
 
         {/* Submit Button */}
-        <div className="mt-8 flex justify-end">
-          <button
+        <div className="mt-8 flex justify-end space-x-3">
+          <Button
             type="button"
             onClick={() => router.push('/admin/properties')}
-            className="px-6 py-2 border border-gray-300 rounded-md mr-4 hover:bg-gray-50"
+            variant="outline"
             disabled={loading}
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400"
+            variant="primary"
+            gradient={true}
+            isLoading={loading}
             disabled={loading}
           >
-            {loading ? 'Saving...' : isEdit ? 'Update Property' : 'Create Property'}
-          </button>
+            {isEdit ? 'Update Property' : 'Create Property'}
+          </Button>
         </div>
       </form>
     </div>

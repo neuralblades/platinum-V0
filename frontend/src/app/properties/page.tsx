@@ -177,6 +177,13 @@ export default function PropertiesPage() {
           >
             Off Plan Properties
           </Button>
+          <Button
+            href="/properties/map"
+            variant="outline"
+            size="lg"
+          >
+            Map View
+          </Button>
         </div>
       </div>
 

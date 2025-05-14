@@ -47,6 +47,7 @@ export interface Property {
 
 export interface PropertyFilter {
   page?: number;
+  limit?: number;
   type?: string;
   status?: string;
   isOffplan?: boolean;

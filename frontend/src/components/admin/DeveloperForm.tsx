@@ -7,6 +7,7 @@ import { getDeveloperById, createDeveloper, updateDeveloper } from '@/services/d
 import { useToast } from '@/contexts/ToastContext';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Button from '@/components/ui/Button';
 
 interface DeveloperFormProps {
   developerId?: string;
@@ -299,22 +300,22 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
       </div>
 
       <div className="mt-6 flex justify-end space-x-3">
-        <button
+        <Button
           type="button"
           onClick={() => router.push('/admin/developers')}
-          className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-300"
+          variant="outline"
         >
           Cancel
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
+          variant="primary"
+          gradient={true}
+          isLoading={submitting}
           disabled={submitting}
-          className={`px-4 py-2 rounded-md text-white transition duration-300 ${
-            submitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-          }`}
         >
-          {submitting ? 'Saving...' : isEdit ? 'Update Developer' : 'Create Developer'}
-        </button>
+          {isEdit ? 'Update Developer' : 'Create Developer'}
+        </Button>
       </div>
     </form>
   );

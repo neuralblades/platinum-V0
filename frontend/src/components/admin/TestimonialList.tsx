@@ -162,20 +162,24 @@ export default function TestimonialList() {
                     <td className="py-3 px-4 text-gray-600">{testimonial.order}</td>
                     <td className="py-3 px-4">
                       <div className="flex space-x-2">
-                        <button
+                        <Button
                           onClick={() => handleEdit(testimonial.id)}
-                          className="text-gray-600 hover:text-gray-900"
+                          variant="ghost"
+                          size="sm"
+                          className="!p-1"
                           title="Edit"
                         >
                           <FaEdit />
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={() => handleDelete(testimonial.id)}
-                          className="text-gray-600 hover:text-gray-900"
+                          variant="ghost"
+                          size="sm"
+                          className="!p-1"
                           title="Delete"
                         >
                           <FaTrash />
-                        </button>
+                        </Button>
                       </div>
                     </td>
                   </tr>

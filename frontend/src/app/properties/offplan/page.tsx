@@ -99,6 +99,13 @@ export default function OffPlanPropertiesPage() {
           >
             Off Plan Properties
           </Button>
+          <Button
+            href="/properties/map?isOffplan=true"
+            variant="outline"
+            size="lg"
+          >
+            Map View
+          </Button>
         </div>
       </div>
         {/* Integrated Search and Filters */}

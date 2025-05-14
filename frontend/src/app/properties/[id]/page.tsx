@@ -15,89 +15,7 @@ import { generatePropertySchema, generateBreadcrumbSchema } from '@/utils/struct
 import MapComponent from '@/components/Map';
 import Chatbot from '@/components/chatbot/Chatbot';
 
-// Mock data for properties
-const properties = [
-  {
-    id: '1',
-    title: 'Luxury Penthouse with Ocean View',
-    price: 2500000,
-    location: 'Miami Beach, FL',
-    bedrooms: 3,
-    bathrooms: 3.5,
-    area: 2800,
-    description: `This stunning penthouse offers breathtaking ocean views from every room. The open floor plan features floor-to-ceiling windows, a gourmet kitchen with top-of-the-line appliances, and a spacious living area perfect for entertaining. The master suite includes a luxurious bathroom with a soaking tub and a walk-in closet. Two additional bedrooms provide ample space for family or guests. The large private terrace is ideal for outdoor dining and relaxation while enjoying the panoramic views of the Atlantic Ocean. Building amenities include a fitness center, swimming pool, concierge service, and 24-hour security.`,
-    features: [
-      'Ocean Views',
-      'Private Terrace',
-      'Floor-to-ceiling Windows',
-      'Gourmet Kitchen',
-      'Marble Bathrooms',
-      'Walk-in Closets',
-      'Central Air Conditioning',
-      'In-unit Laundry',
-      'Concierge Service',
-      'Swimming Pool',
-      'Fitness Center',
-      '24-hour Security',
-    ],
-    imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop',
-    images: [
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=2074&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600607687644-c7f34b5e0f01?q=80&w=2070&auto=format&fit=crop',
-    ],
-    agent: {
-      name: 'Jennifer Smith',
-      phone: '+1 (305) 555-1234',
-      email: 'jennifer@luxuryestates.com',
-      image: 'https://randomuser.me/api/portraits/women/45.jpg',
-    },
-    featured: true,
-    isOffplan: false, // This is a regular property, not an offplan property
-  },
-  {
-    id: '2',
-    title: 'Modern Villa with Private Pool',
-    price: 1800000,
-    location: 'Beverly Hills, CA',
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 4200,
-    description: `This modern architectural masterpiece offers the perfect blend of luxury and comfort. The open-concept design features high ceilings, natural light, and seamless indoor-outdoor living. The gourmet kitchen is equipped with custom cabinetry and professional-grade appliances. The spacious primary suite includes a spa-like bathroom and a private balcony. Four additional bedrooms provide ample space for family and guests. The backyard oasis features a private pool, spa, and outdoor kitchen, perfect for entertaining. Located in a prestigious neighborhood, this property offers privacy and convenience with proximity to high-end shopping, dining, and entertainment.`,
-    features: [
-      'Private Pool',
-      'Outdoor Kitchen',
-      'High Ceilings',
-      'Smart Home Technology',
-      'Custom Cabinetry',
-      'Professional-grade Appliances',
-      'Home Theater',
-      'Wine Cellar',
-      'Spa-like Bathrooms',
-      'Private Balcony',
-      'Landscaped Garden',
-      '3-Car Garage',
-    ],
-    imageUrl: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
-    images: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1600566752355-35792bedcfea?q=80&w=2070&auto=format&fit=crop',
-    ],
-    agent: {
-      name: 'Michael Johnson',
-      phone: '+1 (310) 555-5678',
-      email: 'michael@luxuryestates.com',
-      image: 'https://randomuser.me/api/portraits/men/32.jpg',
-    },
-    featured: true,
-    isOffplan: false, // This is a regular property, not an offplan property
-  },
-];
+
 
 // Create a client component wrapper
 function PropertyDetailClient({ propertyId }: { propertyId: string }) {
@@ -174,38 +92,17 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
             }
           } catch (err) {
             console.error('Error fetching similar properties:', err);
-            // Use fallback similar properties - only general properties (not offplan)
-            const fallbackSimilar = properties
-              .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
-              .slice(0, 3);
-            setSimilarProperties(fallbackSimilar as unknown as Property[]);
+            // No fallback, just set empty array
+            setSimilarProperties([]);
           }
         } else {
-          // If API fails, use fallback data
-          const fallbackProperty = properties.find(p => p.id === id);
-          if (fallbackProperty) {
-            setProperty(fallbackProperty as unknown as Property);
-            const fallbackSimilar = properties
-              .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
-              .slice(0, 3);
-            setSimilarProperties(fallbackSimilar as unknown as Property[]);
-          } else {
-            setError('Property not found');
-          }
+          // If API fails, show error
+          setError('Property not found');
         }
       } catch (err) {
         console.error('Error fetching property details:', err);
-        // Use fallback data
-        const fallbackProperty = properties.find(p => p.id === id);
-        if (fallbackProperty) {
-          setProperty(fallbackProperty as unknown as Property);
-          const fallbackSimilar = properties
-            .filter(p => p.id !== id && !p.isOffplan) // Exclude offplan properties
-            .slice(0, 3);
-          setSimilarProperties(fallbackSimilar as unknown as Property[]);
-        } else {
-          setError('Property not found');
-        }
+        setError('Failed to load property details');
+        setSimilarProperties([]);
       } finally {
         setLoading(false);
       }

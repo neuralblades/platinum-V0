@@ -8,6 +8,7 @@ import { getDevelopers } from '@/services/developerService';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { useToast } from '@/contexts/ToastContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Button from '@/components/ui/Button';
 
 interface OffplanPropertyFormProps {
   propertyId?: string;
@@ -795,16 +796,23 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
       </div>
 
       {/* Submit Button */}
-      <div className="mt-8 flex justify-end">
-        <button
-          type="submit"
-          disabled={loading}
-          className={`px-6 py-3 rounded-md text-white font-medium transition duration-300 ${
-            loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-          }`}
+      <div className="mt-8 flex justify-end space-x-3">
+        <Button
+          type="button"
+          onClick={() => router.push('/admin/properties')}
+          variant="outline"
         >
-          {loading ? 'Saving...' : isEdit ? 'Update Property' : 'Create Property'}
-        </button>
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          variant="primary"
+          gradient={true}
+          isLoading={loading}
+          disabled={loading}
+        >
+          {isEdit ? 'Update Property' : 'Create Property'}
+        </Button>
       </div>
     </form>
   );
