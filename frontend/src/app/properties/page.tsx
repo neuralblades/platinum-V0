@@ -1,83 +1,17 @@
 "use client";
-import Button from '@/components/ui/Button';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PropertyCard from '@/components/properties/PropertyCard';
 import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
-import Link from 'next/link';
 import { getProperties, PropertyFilter, Property } from '@/services/propertyService';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import Button from '@/components/ui/Button';
 
-// Fallback data for properties
-const fallbackProperties = [
-  {
-    id: '1',
-    title: 'Luxury Penthouse with Ocean View',
-    price: 2500000,
-    location: 'Miami Beach, FL',
-    bedrooms: 3,
-    bathrooms: 3.5,
-    area: 2800,
-    mainImage: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop',
-    featured: true,
-  },
-  {
-    id: '2',
-    title: 'Modern Villa with Private Pool',
-    price: 1800000,
-    location: 'Beverly Hills, CA',
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 4200,
-    mainImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop',
-    featured: true,
-  },
-  {
-    id: '3',
-    title: 'Elegant Apartment in Downtown',
-    price: 950000,
-    location: 'New York, NY',
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 1500,
-    mainImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
-    featured: true,
-  },
-  {
-    id: '4',
-    title: 'Waterfront Home with Private Dock',
-    price: 3200000,
-    location: 'Naples, FL',
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 3600,
-    mainImage: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2074&auto=format&fit=crop',
-  },
-  {
-    id: '5',
-    title: 'Contemporary Townhouse',
-    price: 780000,
-    location: 'Seattle, WA',
-    bedrooms: 3,
-    bathrooms: 2.5,
-    area: 1800,
-    mainImage: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2070&auto=format&fit=crop',
-  },
-  {
-    id: '6',
-    title: 'Historic Brownstone',
-    price: 1450000,
-    location: 'Boston, MA',
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 2400,
-    mainImage: 'https://images.unsplash.com/photo-1605146769289-440113cc3d00?q=80&w=2070&auto=format&fit=crop',
-  },
-];
+
 
 export default function PropertiesPage() {
   const searchParams = useSearchParams();
-  const [properties, setProperties] = useState<Property[]>(fallbackProperties as unknown as Property[]);
+  const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -200,7 +134,7 @@ export default function PropertiesPage() {
       {/* Property Grid */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
         </div>
       ) : error ? (
         <div className="text-center text-red-600 mb-8">{error}</div>
@@ -230,13 +164,14 @@ export default function PropertiesPage() {
       {totalPages > 1 && (
         <div className="mt-12 flex justify-center">
           <nav className="flex items-center space-x-2">
-            <button
+            <Button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`px-4 py-2 border rounded-md ${currentPage === 1 ? 'border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+              variant="outline"
+              size="sm"
             >
               Previous
-            </button>
+            </Button>
 
             {[...Array(totalPages)].map((_, index) => {
               const page = index + 1;
@@ -247,13 +182,15 @@ export default function PropertiesPage() {
                 (page >= currentPage - 1 && page <= currentPage + 1)
               ) {
                 return (
-                  <button
+                  <Button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-4 py-2 border rounded-md ${currentPage === page ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                    variant={currentPage === page ? "primary" : "outline"}
+                    size="sm"
+                    className="mx-1"
                   >
                     {page}
-                  </button>
+                  </Button>
                 );
               } else if (
                 (page === 2 && currentPage > 3) ||
@@ -265,13 +202,15 @@ export default function PropertiesPage() {
               return null;
             })}
 
-            <button
+            <Button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 border rounded-md ${currentPage === totalPages ? 'border-gray-200 text-gray-400 cursor-not-allowed' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+              variant="outline"
+              size="sm"
+              className="ml-1"
             >
               Next
-            </button>
+            </Button>
           </nav>
         </div>
       )}

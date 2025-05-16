@@ -6,6 +6,8 @@ import { getProperties } from '@/services/propertyService';
 import { getAllInquiries } from '@/services/inquiryService';
 import { getAllUsers } from '@/services/userService';
 import { getAllOffplanInquiries } from '@/services/offplanInquiryService';
+import { clearServerCache } from '@/utils/cacheUtils';
+import Button from '@/components/ui/Button';
 
 // Dashboard Stat Card Component
 const StatCard = ({ title, value, icon, bgColor }: { title: string; value: number; icon: React.ReactNode; bgColor: string }) => (
@@ -32,6 +34,38 @@ export default function AdminDashboard() {
   const [recentInquiries, setRecentInquiries] = useState<any[]>([]);
   const [recentOffplanInquiries, setRecentOffplanInquiries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [clearingCache, setClearingCache] = useState(false);
+  const [cacheMessage, setCacheMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+
+  const handleClearCache = async () => {
+    try {
+      setClearingCache(true);
+      setCacheMessage(null);
+
+      // Clear all cache
+      const success = await clearServerCache();
+
+      if (success) {
+        setCacheMessage({
+          text: 'Cache cleared successfully! The website will now show the latest data.',
+          type: 'success'
+        });
+      } else {
+        setCacheMessage({
+          text: 'Failed to clear cache. Please try again.',
+          type: 'error'
+        });
+      }
+    } catch (error) {
+      console.error('Error clearing cache:', error);
+      setCacheMessage({
+        text: 'An error occurred while clearing the cache.',
+        type: 'error'
+      });
+    } finally {
+      setClearingCache(false);
+    }
+  };
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -110,6 +144,47 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Cache Management Section */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-300">
+        <h2 className="text-lg font-bold text-gray-800 flex items-center mb-4">
+          <span className="w-1 h-6 bg-gray-700 rounded-full mr-2"></span>
+          Cache Management
+        </h2>
+        <p className="mb-4 text-gray-600">
+          If you've made changes to the website content and they're not appearing immediately, you can clear the server cache to force an update.
+        </p>
+
+        {cacheMessage && (
+          <div className={`mb-4 p-4 rounded-md ${cacheMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+            {cacheMessage.text}
+          </div>
+        )}
+
+        <Button
+          onClick={handleClearCache}
+          disabled={clearingCache}
+          variant="primary"
+          className="flex items-center"
+        >
+          {clearingCache ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Clearing Cache...
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Clear Server Cache
+            </>
+          )}
+        </Button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <StatCard
           title="Total Properties"

@@ -123,6 +123,7 @@ const blogRoutes = require('./routes/blogRoutes');
 const teamMemberRoutes = require('./routes/teamMemberRoutes');
 const testimonialRoutes = require('./routes/testimonialRoutes');
 const imageRoutes = require('./routes/imageRoutes');
+const cacheRoutes = require('./routes/cacheRoutes');
 
 app.use('/api/properties', propertyRoutes);
 app.use('/api/users', userRoutes);
@@ -136,6 +137,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/team', teamMemberRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/images', imageRoutes);
+app.use('/api/cache', cacheRoutes);
 
 // Root route
 app.get('/', (req, res) => {

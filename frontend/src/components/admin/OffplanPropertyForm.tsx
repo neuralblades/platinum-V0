@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createProperty, updateProperty, getPropertyById } from '@/services/propertyService';
 import { getDevelopers } from '@/services/developerService';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import { clearServerCache } from '@/utils/cacheUtils';
 import { useToast } from '@/contexts/ToastContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Button from '@/components/ui/Button';
@@ -315,6 +316,14 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
       if (response.success) {
         setSuccess(isEdit ? 'Property updated successfully!' : 'Property created successfully!');
         showToast(isEdit ? 'Property updated successfully!' : 'Property created successfully!', 'success');
+
+        // Clear the cache for featured properties to ensure the homepage shows the latest data
+        await clearServerCache('featuredProperties');
+
+        // If this is a featured property, also clear the homepage cache
+        if (formData.featured) {
+          await clearServerCache('homepage');
+        }
 
         // Redirect to properties list
         setTimeout(() => {

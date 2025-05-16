@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { createProperty, updateProperty, getPropertyById } from '@/services/propertyService';
 import { getDevelopers } from '@/services/developerService';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import { clearServerCache } from '@/utils/cacheUtils';
 import Button from '@/components/ui/Button';
 
 interface PropertyFormProps {
@@ -250,6 +251,14 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
 
       if (response.success) {
         setSuccess(isEdit ? 'Property updated successfully!' : 'Property created successfully!');
+
+        // Clear the cache for featured properties to ensure the homepage shows the latest data
+        await clearServerCache('featuredProperties');
+
+        // If this is a featured property, also clear the homepage cache
+        if (formData.featured) {
+          await clearServerCache('homepage');
+        }
 
         // Redirect to properties list after a short delay
         setTimeout(() => {

@@ -121,7 +121,7 @@ export default function OffPlanPropertiesPage() {
         {/* Property Grid */}
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
           </div>
         ) : error ? (
           <div className="text-center text-red-600 mb-8">{error}</div>
@@ -155,41 +155,35 @@ export default function OffPlanPropertiesPage() {
         {totalPages > 1 && (
           <div className="mt-12 flex justify-center">
             <nav className="flex items-center">
-              <button
+              <Button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`px-3 py-1 rounded-md mr-2 ${
-                  currentPage === 1
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+                variant="outline"
+                size="sm"
+                className="mr-2"
               >
                 Previous
-              </button>
+              </Button>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
+                <Button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 rounded-md mx-1 ${
-                    currentPage === page
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
+                  variant={currentPage === page ? "primary" : "outline"}
+                  size="sm"
+                  className="mx-1"
                 >
                   {page}
-                </button>
+                </Button>
               ))}
-              <button
+              <Button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`px-3 py-1 rounded-md ml-2 ${
-                  currentPage === totalPages
-                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+                variant="outline"
+                size="sm"
+                className="ml-2"
               >
                 Next
-              </button>
+              </Button>
             </nav>
           </div>
         )}
