@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProperties, PropertyFilter } from '@/services/propertyService';
 import Button from '@/components/ui/Button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface IntegratedSearchFiltersProps {
   filters: PropertyFilter;
@@ -295,8 +296,13 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
         <div className="relative flex flex-col md:flex-row gap-2">
           {/* Search input */}
           <div className="flex-grow relative">
-            <div className="relative flex items-center">
-              <input
+            <motion.div
+              className="relative flex items-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.input
                 ref={inputRef}
                 type="text"
                 value={query}
@@ -324,12 +330,18 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 placeholder="Search by area, project or community..."
                 className="w-full px-4 py-3 pr-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 placeholder-gray-500"
                 aria-label="Search"
+                whileFocus={{
+                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
+                  borderColor: "rgba(59, 130, 246, 0.5)"
+                }}
               />
-              <button
+              <motion.button
                 type="button"
                 onClick={handleSearch}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                 aria-label="Search"
+                whileHover={{ scale: 1.1, color: "#2563eb" }}
+                whileTap={{ scale: 0.95 }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -345,15 +357,20 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             {/* Suggestions dropdown */}
-            {showSuggestions && (
-              <div
-                ref={suggestionsRef}
-                className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-              >
+            <AnimatePresence>
+              {showSuggestions && (
+                <motion.div
+                  ref={suggestionsRef}
+                  className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+                  initial={{ opacity: 0, y: -10, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto' }}
+                  exit={{ opacity: 0, y: -10, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                 {loading ? (
                   <div className="p-3 text-center text-gray-500">
                     <div className="flex justify-center items-center">
@@ -407,19 +424,33 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     </button>
                   </div>
                 ) : null}
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Quick filters */}
-          <div className="flex flex-wrap gap-2">
+          <motion.div
+            className="flex flex-wrap gap-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
             {/* Property Type Filter */}
-            <div className="min-w-[120px]">
-              <select
+            <motion.div
+              className="min-w-[120px]"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <motion.select
                 id="property-type"
                 className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
                 value={filters.type || ''}
                 onChange={handleFilterChange}
+                whileFocus={{
+                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
+                  borderColor: "rgba(59, 130, 246, 0.5)"
+                }}
               >
                 <option value="">Property Type</option>
                 {propertyTypes.map((option) => (
@@ -429,16 +460,24 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     </option>
                   )
                 ))}
-              </select>
-            </div>
+              </motion.select>
+            </motion.div>
 
             {/* Bedrooms Filter */}
-            <div className="min-w-[100px]">
-              <select
+            <motion.div
+              className="min-w-[100px]"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <motion.select
                 id="bedrooms"
                 className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
                 value={filters.bedrooms?.toString() || ''}
                 onChange={handleFilterChange}
+                whileFocus={{
+                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
+                  borderColor: "rgba(59, 130, 246, 0.5)"
+                }}
               >
                 <option value="">Beds</option>
                 {bedroomOptions.map((option) => (
@@ -448,28 +487,51 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     </option>
                   )
                 ))}
-              </select>
-            </div>
+              </motion.select>
+            </motion.div>
 
             {/* Advanced Filters Toggle */}
-            <div className="min-w-[100px]">
-              <button
+            <motion.div
+              className="min-w-[100px]"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <motion.button
                 type="button"
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className="filter-toggle w-full h-full px-3 py-3 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-center"
+                className="filter-toggle w-full h-full px-3 py-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-center"
+                whileHover={{ backgroundColor: "#F9FAFB" }}
+                whileTap={{ scale: 0.98 }}
               >
                 <span>Filters</span>
-                <svg className={`ml-2 h-4 w-4 transition-transform ${showAdvancedFilters ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <motion.svg
+                  className="ml-2 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  animate={{ rotate: showAdvancedFilters ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+                </motion.svg>
                 {hasActiveFilters && (
-                  <span className="ml-1 flex h-2 w-2 rounded-full bg-blue-600"></span>
+                  <motion.span
+                    className="ml-1 flex h-2 w-2 rounded-full bg-blue-600"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                  />
                 )}
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
 
             {/* Search Button */}
-            <div className="min-w-[100px]">
+            <motion.div
+              className="min-w-[100px]"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
               <Button
                 type="submit"
                 variant="primary"
@@ -477,16 +539,21 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
               >
                 Search
               </Button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
         {/* Advanced filters panel */}
-        {showAdvancedFilters && (
-          <div
-            ref={filtersRef}
-            className="absolute z-10 left-0 right-0 mt-2 p-4 border border-gray-200 rounded-md bg-white shadow-lg"
-          >
+        <AnimatePresence>
+          {showAdvancedFilters && (
+            <motion.div
+              ref={filtersRef}
+              className="absolute z-10 left-0 right-0 mt-2 p-4 border border-gray-200 rounded-md bg-white shadow-lg"
+              initial={{ opacity: 0, y: -20, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: 'auto' }}
+              exit={{ opacity: 0, y: -20, height: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               {/* Status Filter */}
               <div>
@@ -620,8 +687,9 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 Apply Filters
               </Button>
             </div>
-          </div>
-        )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </form>
     </div>
   );
