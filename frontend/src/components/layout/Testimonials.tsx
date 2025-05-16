@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { getTestimonials, Testimonial } from '@/services/testimonialService';
+import { motion } from 'framer-motion';
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -85,12 +87,21 @@ const Testimonials = () => {
 
   // Render testimonial card
   const renderTestimonialCard = (testimonial: Testimonial, index: number) => (
-    <div
+    <motion.div
       key={`${testimonial.id}-${index}`}
       className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col mx-4 min-w-[300px] md:min-w-[350px]"
+      whileHover={{
+        y: -10,
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
     >
       <div className="flex items-center mb-4">
-        <div className="relative h-12 w-12 rounded-full overflow-hidden mr-4">
+        <motion.div
+          className="relative h-12 w-12 rounded-full overflow-hidden mr-4"
+          initial={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+        >
           {testimonial.image ? (
             <Image
               src={getFullImageUrl(testimonial.image)}
@@ -106,7 +117,7 @@ const Testimonials = () => {
               </span>
             </div>
           )}
-        </div>
+        </motion.div>
         <div>
           <h3 className="text-lg font-bold text-gray-900">{testimonial.name}</h3>
           <p className="text-gray-600">{testimonial.role}</p>
@@ -118,7 +129,7 @@ const Testimonials = () => {
       <div className="mt-4">
         {renderStars(testimonial.rating)}
       </div>
-    </div>
+    </motion.div>
   );
 
   // Duplicate testimonials for seamless loop
@@ -129,44 +140,68 @@ const Testimonials = () => {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <FadeInUp className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about their experience with Platinum Square.
           </p>
-        </div>
+        </FadeInUp>
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+            <motion.div
+              className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 py-8">{error}</div>
+          <FadeInUp>
+            <div className="text-center text-red-500 py-8">{error}</div>
+          </FadeInUp>
         ) : testimonials.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">No testimonials available at the moment.</div>
+          <FadeInUp>
+            <div className="text-center text-gray-500 py-8">No testimonials available at the moment.</div>
+          </FadeInUp>
         ) : testimonials.length <= 3 ? (
           // If we have 3 or fewer testimonials, just show them in a grid
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => renderTestimonialCard(testimonial, 0))}
-          </div>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <StaggerItem key={testimonial.id}>
+                {renderTestimonialCard(testimonial, index)}
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         ) : (
           // If we have more than 3 testimonials, show them in a marquee
-          <div className="relative overflow-hidden">
-            <div
-              ref={marqueeRef}
-              className="flex"
-              style={{
-                animation: 'testimonialMarquee 30s linear infinite',
-                width: 'fit-content'
-              }}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              {allTestimonials.map((testimonial, index) => (
-                renderTestimonialCard(testimonial, index)
-              ))}
+          <FadeInUp>
+            <div className="relative overflow-hidden">
+              <motion.div
+                ref={marqueeRef}
+                className="flex"
+                style={{
+                  width: 'fit-content'
+                }}
+                animate={{
+                  x: [0, testimonials.length <= 3 ? 0 : '-50%']
+                }}
+                transition={{
+                  x: {
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                    repeatType: "loop"
+                  }
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                {allTestimonials.map((testimonial, index) => (
+                  renderTestimonialCard(testimonial, index)
+                ))}
+              </motion.div>
             </div>
-          </div>
+          </FadeInUp>
         )}
       </div>
     </section>

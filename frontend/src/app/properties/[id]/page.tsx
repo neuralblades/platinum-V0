@@ -14,6 +14,8 @@ import { getResponsiveSizes } from '@/utils/imageOptimizationUtils';
 import { generatePropertySchema, generateBreadcrumbSchema } from '@/utils/structuredDataUtils';
 import MapComponent from '@/components/Map';
 import Chatbot from '@/components/chatbot/Chatbot';
+import { motion } from 'framer-motion';
+import { FadeInUp, FadeInLeft, StaggerContainer } from '@/components/animations/MotionWrapper';
 
 
 
@@ -155,7 +157,11 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12 flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+        <motion.div
+          className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
       </div>
     );
   }
@@ -164,11 +170,15 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
   if (error || !property) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Property Not Found</h1>
-        <p className="text-gray-600 mb-8">The property you are looking for does not exist or has been removed.</p>
-        <Link href="/properties" className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-md hover:shadow-lg transition duration-300">
-          Browse All Properties
-        </Link>
+        <FadeInUp>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Property Not Found</h1>
+          <p className="text-gray-600 mb-8">The property you are looking for does not exist or has been removed.</p>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/properties" className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-md hover:shadow-lg transition duration-300">
+              Browse All Properties
+            </Link>
+          </motion.div>
+        </FadeInUp>
       </div>
     );
   }
@@ -223,10 +233,15 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
         </div>
 
       {/* Property Images */}
-      <div className="mb-12">
+      <FadeInUp className="mb-12">
         <div className="grid grid-cols-12 gap-4">
           {/* Main large image (left side) */}
-          <div className="col-span-12 md:col-span-8 relative h-[500px]">
+          <motion.div
+            className="col-span-12 md:col-span-8 relative h-[500px]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Image
               src={getFullImageUrl(property.images[0])}
               alt={property.title}
@@ -238,12 +253,17 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
               placeholder="blur"
               blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
             />
-          </div>
+          </motion.div>
 
           {/* Right side column with two images */}
           <div className="col-span-12 md:col-span-4 grid grid-rows-2 gap-4">
             {/* Top right image */}
-            <div className="relative h-[240px]">
+            <motion.div
+              className="relative h-[240px]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <Image
                 src={getFullImageUrl(property.images[1] || property.images[0])}
                 alt={`${property.title} - Image 2`}
@@ -255,10 +275,15 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
               />
-            </div>
+            </motion.div>
 
             {/* Bottom right image */}
-            <div className="relative h-[240px]">
+            <motion.div
+              className="relative h-[240px]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <Image
                 src={getFullImageUrl(property.images[2] || property.images[0])}
                 alt={`${property.title} - Image 3`}
@@ -270,26 +295,33 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
               />
-            </div>
+            </motion.div>
           </div>
 
           {/* View all photos button */}
-          <div className="col-span-12 flex justify-start mt-2">
-            <button
+          <motion.div
+            className="col-span-12 flex justify-start mt-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <motion.button
               onClick={() => {
                 setCurrentPhotoIndex(0);
                 setIsGalleryOpen(true);
               }}
               className="flex items-center text-gray-700 hover:text-gray-900 transition-colors"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               View all {property.images.length} photos
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
-      </div>
+      </FadeInUp>
 
       {/* Property Details and Contact Form */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
@@ -297,30 +329,63 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
         <div className="lg:col-span-2">
           {/* Overview */}
           {/* Property Title and Price */}
-          <div className="mb-8">
-            <div className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full mb-4">
+          <FadeInLeft className="mb-8">
+            <motion.div
+              className="inline-block px-3 py-1 text-sm font-semibold text-gray-800 bg-gray-200 rounded-full mb-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               {property.status === 'for-sale' ? 'For Sale' : property.status === 'for-rent' ? 'For Rent' : property.status}
-            </div>
-            <p className="text-5xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-4">AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}</p>
-            <h1 className="text-xl md:text-4xl font-bold text-gray-900 mb-3">{property.title}</h1>
-            <p className="text-gray-600 text-lg flex items-center">
+            </motion.div>
+            <motion.p
+              className="text-5xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}
+            </motion.p>
+            <motion.h1
+              className="text-xl md:text-4xl font-bold text-gray-900 mb-3"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {property.title}
+            </motion.h1>
+            <motion.p
+              className="text-gray-600 text-lg flex items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <svg className="h-5 w-5 mr-2 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               {property.location}
-            </p>
-          </div>
-          <div className="bg-white p-8 rounded-xl shadow-md mb-8 border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              <span className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+            </motion.p>
+          </FadeInLeft>
+          <FadeInUp className="bg-white p-8 rounded-xl shadow-md mb-8 border border-gray-100">
+            <motion.h2
+              className="text-2xl font-bold text-gray-900 mb-6 flex items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.span
+                className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
                 <svg className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-              </span>
+              </motion.span>
               Overview
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            </motion.h2>
+            <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8" delay={0.2}>
               <div className="flex flex-col items-center p-5 bg-gray-50 rounded-lg hover:shadow-md transition-all duration-300 border border-gray-100">
                 <svg className="h-8 w-8 text-gray-700 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -362,7 +427,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 <span className="text-gray-600 font-medium">Location</span>
                 <span className="text-xl font-bold text-gray-900 mt-1">{property.location.split(',')[0]}</span>
               </div>
-            </div>
+            </StaggerContainer>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
               {property.isOffplan && (
@@ -438,7 +503,7 @@ function PropertyDetailClient({ propertyId }: { propertyId: string }) {
                 </li>
               ))}
             </ul>
-          </div>
+          </FadeInUp>
 
           {/* Location */}
           <div className="bg-white p-8 rounded-xl shadow-md mb-8 border border-gray-100">

@@ -6,6 +6,8 @@ import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters
 import { getProperties, PropertyFilter, Property } from '@/services/propertyService';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import Button from '@/components/ui/Button';
+import { motion } from 'framer-motion';
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
 
 
 
@@ -91,87 +93,104 @@ export default function PropertiesPage() {
           ]}
         />
       </div>
-      <div className="mb-8">
+      <FadeInUp className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Browse Properties</h1>
         <p className="text-gray-600 mb-4">
           Explore our collection of premium properties in the most desirable locations.
         </p>
         <div className="flex space-x-4">
-          <Button
-            href="/properties"
-            variant="accent"
-            size="lg"
-          >
-            Ready Properties
-          </Button>
-          <Button
-            href="/properties/offplan"
-            variant="outline"
-            size="lg"
-          >
-            Off Plan Properties
-          </Button>
-          <Button
-            href="/properties/map"
-            variant="outline"
-            size="lg"
-          >
-            Map View
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              href="/properties"
+              variant="accent"
+              size="lg"
+            >
+              Ready Properties
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              href="/properties/offplan"
+              variant="outline"
+              size="lg"
+            >
+              Off Plan Properties
+            </Button>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              href="/properties/map"
+              variant="outline"
+              size="lg"
+            >
+              Map View
+            </Button>
+          </motion.div>
         </div>
-      </div>
+      </FadeInUp>
 
       {/* Integrated Search and Filters */}
-      <div className="mb-8">
+      <FadeInUp delay={0.2} className="mb-8">
         <IntegratedSearchFilters
           filters={filters}
           onFilterChange={handleFilterChange}
           onApplyFilters={applyFilters}
           className="w-full"
         />
-      </div>
+      </FadeInUp>
 
       {/* Property Grid */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+          <motion.div
+            className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          />
         </div>
       ) : error ? (
-        <div className="text-center text-red-600 mb-8">{error}</div>
+        <FadeInUp>
+          <div className="text-center text-red-600 mb-8">{error}</div>
+        </FadeInUp>
       ) : properties.length === 0 ? (
-        <div className="text-center text-gray-600 mb-8">No properties found matching your criteria.</div>
+        <FadeInUp>
+          <div className="text-center text-gray-600 mb-8">No properties found matching your criteria.</div>
+        </FadeInUp>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" delay={0.3}>
           {properties.map((property) => (
-            <PropertyCard
-              key={property.id}
-              id={property.id}
-              title={property.title}
-              price={property.price}
-              location={property.location}
-              bedrooms={property.bedrooms}
-              bathrooms={property.bathrooms}
-              area={property.area}
-              imageUrl={property.mainImage}
-              featured={property.featured}
-              agent={property.agent}
-            />
+            <StaggerItem key={property.id}>
+              <PropertyCard
+                id={property.id}
+                title={property.title}
+                price={property.price}
+                location={property.location}
+                bedrooms={property.bedrooms}
+                bathrooms={property.bathrooms}
+                area={property.area}
+                imageUrl={property.mainImage}
+                featured={property.featured}
+                agent={property.agent}
+              />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       )}
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="mt-12 flex justify-center">
+        <FadeInUp delay={0.4} className="mt-12 flex justify-center">
           <nav className="flex items-center space-x-2">
-            <Button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              variant="outline"
-              size="sm"
-            >
-              Previous
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                variant="outline"
+                size="sm"
+              >
+                Previous
+              </Button>
+            </motion.div>
 
             {[...Array(totalPages)].map((_, index) => {
               const page = index + 1;
@@ -182,15 +201,16 @@ export default function PropertiesPage() {
                 (page >= currentPage - 1 && page <= currentPage + 1)
               ) {
                 return (
-                  <Button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    variant={currentPage === page ? "primary" : "outline"}
-                    size="sm"
-                    className="mx-1"
-                  >
-                    {page}
-                  </Button>
+                  <motion.div key={page} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      onClick={() => handlePageChange(page)}
+                      variant={currentPage === page ? "primary" : "outline"}
+                      size="sm"
+                      className="mx-1"
+                    >
+                      {page}
+                    </Button>
+                  </motion.div>
                 );
               } else if (
                 (page === 2 && currentPage > 3) ||
@@ -202,17 +222,19 @@ export default function PropertiesPage() {
               return null;
             })}
 
-            <Button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              variant="outline"
-              size="sm"
-              className="ml-1"
-            >
-              Next
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                variant="outline"
+                size="sm"
+                className="ml-1"
+              >
+                Next
+              </Button>
+            </motion.div>
           </nav>
-        </div>
+        </FadeInUp>
       )}
     </div>
   );

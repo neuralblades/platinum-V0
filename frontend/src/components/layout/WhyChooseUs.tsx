@@ -1,5 +1,8 @@
 "use client";
 
+import { motion } from 'framer-motion';
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
+
 const WhyChooseUs = () => {
   const features = [
     {
@@ -51,33 +54,43 @@ const WhyChooseUs = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-gray-700 to-gray-900">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <FadeInUp className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">Why Choose Us</h2>
           <p className="text-gray-300 max-w-2xl mx-auto">
             At Platinum Square, we are committed to providing exceptional service and finding the perfect property for our clients.
           </p>
-        </div>
+        </FadeInUp>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" delay={0.2}>
           {features.map((feature, index) => (
-            <div
-              key={index}
-              className="relative bg-gray-50 hover:bg-white cursor-pointer p-6 text-gray-900 rounded-lg text-center transition-all duration-300 group overflow-hidden hover:scale-[1.02] border border-black"
-            >
-              {/* Inner shadow overlay that appears on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[inset_0_2px_15px_rgba(0,0,0,0.1),inset_0_-2px_15px_rgba(0,0,0,0.2)]"></div>
+            <StaggerItem key={index}>
+              <motion.div
+                className="relative bg-gray-50 hover:bg-white cursor-pointer p-6 text-gray-900 rounded-lg text-center transition-all duration-300 group overflow-hidden border border-black"
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                }}
+              >
+                {/* Inner shadow overlay that appears on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-[inset_0_2px_15px_rgba(0,0,0,0.1),inset_0_-2px_15px_rgba(0,0,0,0.2)]"></div>
 
-              {/* Content */}
-              <div className="relative z-10">
-                <div className="flex justify-center mb-4 text-gray-700">
-                  {feature.icon}
+                {/* Content */}
+                <div className="relative z-10">
+                  <motion.div
+                    className="flex justify-center mb-4 text-gray-700"
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    {feature.icon}
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">{feature.title}</h3>
+                  <p className="text-gray-700">{feature.description}</p>
                 </div>
-                <h3 className="text-xl font-bold mb-4 text-gray-800">{feature.title}</h3>
-                <p className="text-gray-700">{feature.description}</p>
-              </div>
-            </div>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
