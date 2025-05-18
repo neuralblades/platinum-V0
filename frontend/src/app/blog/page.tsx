@@ -7,6 +7,8 @@ import BlogCard from '@/components/blog/BlogCard';
 import BlogSidebar from '@/components/blog/BlogSidebar';
 import { getBlogPosts, BlogPost, BlogFilter } from '@/services/blogService';
 import Breadcrumb from '@/components/ui/Breadcrumb';
+import { motion } from 'framer-motion';
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
 
 const BlogPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -138,7 +140,12 @@ const BlogPage: React.FC = () => {
     <div className="bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         {/* Breadcrumbs */}
-        <div className="mb-6">
+        <motion.div
+          className="mb-6"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <Breadcrumb
             items={[
               { label: 'Home', href: '/' },
@@ -148,23 +155,33 @@ const BlogPage: React.FC = () => {
               ...(search ? [{ label: `Search: ${search}` }] : [])
             ]}
           />
-        </div>
+        </motion.div>
 
         {/* Page Title */}
-        <div className="mb-10">
-          <h1 className="text-4xl font-bold text-gray-900">
+        <FadeInUp className="mb-10">
+          <motion.h1
+            className="text-4xl font-bold text-gray-900"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             {category ? `${category} Articles` :
              tag ? `Articles Tagged "${tag}"` :
              search ? `Search Results for "${search}"` :
              'Our Blog'}
-          </h1>
-          <p className="mt-2 text-lg text-gray-600">
+          </motion.h1>
+          <motion.p
+            className="mt-2 text-lg text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             {category ? `Browse our latest articles in the ${category} category` :
              tag ? `Browse articles related to ${tag}` :
              search ? `Found ${totalPosts} articles matching your search` :
              'Insights, tips, and news from the real estate world'}
-          </p>
-        </div>
+          </motion.p>
+        </FadeInUp>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Main Content */}
@@ -172,56 +189,106 @@ const BlogPage: React.FC = () => {
             {loading ? (
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {[...Array(6)].map((_, index) => (
-                  <div key={index} className="h-80 animate-pulse rounded-xl bg-gray-200"></div>
+                  <motion.div
+                    key={index}
+                    className="h-80 rounded-xl bg-gray-200"
+                    initial={{ opacity: 0.3 }}
+                    animate={{ opacity: 0.8 }}
+                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                  />
                 ))}
               </div>
             ) : error ? (
-              <div className="rounded-lg bg-red-50 p-4 text-red-800">
-                <p>{error}</p>
-              </div>
+              <FadeInUp>
+                <div className="rounded-lg bg-red-50 p-4 text-red-800">
+                  <p>{error}</p>
+                </div>
+              </FadeInUp>
             ) : posts.length === 0 ? (
-              <div className="rounded-lg bg-white p-8 text-center shadow-md">
-                <h3 className="mb-2 text-xl font-bold">No Articles Found</h3>
-                <p className="mb-4 text-gray-600">
-                  {search
-                    ? `We couldn't find any articles matching "${search}"`
-                    : category
-                    ? `No articles found in the ${category} category`
-                    : tag
-                    ? `No articles found with the tag "${tag}"`
-                    : 'No articles have been published yet'}
-                </p>
-                <Link
-                  href="/blog"
-                  className="inline-block rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+              <FadeInUp>
+                <motion.div
+                  className="rounded-lg bg-white p-8 text-center shadow-md"
+                  whileHover={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                  transition={{ duration: 0.3 }}
                 >
-                  View All Articles
-                </Link>
-              </div>
+                  <motion.h3
+                    className="mb-2 text-xl font-bold"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    No Articles Found
+                  </motion.h3>
+                  <motion.p
+                    className="mb-4 text-gray-600"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                  >
+                    {search
+                      ? `We couldn't find any articles matching "${search}"`
+                      : category
+                      ? `No articles found in the ${category} category`
+                      : tag
+                      ? `No articles found with the tag "${tag}"`
+                      : 'No articles have been published yet'}
+                  </motion.p>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link
+                      href="/blog"
+                      className="inline-block rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+                    >
+                      View All Articles
+                    </Link>
+                  </motion.div>
+                </motion.div>
+              </FadeInUp>
             ) : (
               <>
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <StaggerContainer className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3" delay={0.1}>
                   {posts.map((post) => (
-                    <BlogCard key={post.id} post={post} />
+                    <StaggerItem key={post.id}>
+                      <motion.div
+                        whileHover={{
+                          y: -10,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        <BlogCard post={post} />
+                      </motion.div>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerContainer>
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="mt-10 flex justify-center">
+                  <motion.div
+                    className="mt-10 flex justify-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
+                  >
                     <div className="flex space-x-2">
                       {getPaginationLinks()}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </>
             )}
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
+          <motion.div
+            className="lg:col-span-1"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <BlogSidebar currentCategory={category} currentTag={tag} />
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

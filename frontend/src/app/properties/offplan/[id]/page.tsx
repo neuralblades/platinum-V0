@@ -21,6 +21,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import MapComponent from '@/components/maps/MapComponent';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import ContactFormPopup from '@/components/ContactFormPopup';
+import { motion } from 'framer-motion';
+import { FadeInUp } from '@/components/animations/MotionWrapper';
 
 // Client component wrapper
 function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
@@ -168,7 +170,11 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12 flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+        <motion.div
+          className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+        />
       </div>
     );
   }
@@ -177,11 +183,15 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
   if (error || !property) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Property Not Found</h1>
-        <p className="text-gray-600 mb-8">{error || 'The property you are looking for does not exist or has been removed.'}</p>
-        <Link href="/properties/offplan" className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-md hover:shadow-lg transition duration-300">
-          Browse All Offplan Properties
-        </Link>
+        <FadeInUp>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Property Not Found</h1>
+          <p className="text-gray-600 mb-8">{error || 'The property you are looking for does not exist or has been removed.'}</p>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link href="/properties/offplan" className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-md hover:shadow-lg transition duration-300">
+              Browse All Offplan Properties
+            </Link>
+          </motion.div>
+        </FadeInUp>
       </div>
     );
   }
@@ -191,7 +201,12 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
       {/* Hero Section - Full Width Header Image with Modern Design */}
       <div className="relative h-[90vh] w-full">
         {/* Background Image with Parallax Effect */}
-        <div className="absolute inset-0 transform transition-transform duration-1000 ease-out">
+        <motion.div
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5 }}
+        >
           <Image
             src={property.headerImage ? getFullImageUrl(property.headerImage) :
                  (property.images && property.images.length > 0 ? getFullImageUrl(property.images[0]) : '/images/default-property.jpg')}
@@ -200,14 +215,18 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
             className="object-cover"
             sizes="100vw"
             priority
-
           />
           {/* Modern Gradient Overlay - Enhanced for better text visibility */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/70 to-black/90"></div>
-        </div>
+        </motion.div>
 
         {/* Breadcrumbs with Frosted Glass Effect */}
-        <div className="absolute top-0 left-0 right-0 p-4 z-10">
+        <motion.div
+          className="absolute top-0 left-0 right-0 p-4 z-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
           <div className="container mx-auto">
             <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full">
               <Breadcrumb
@@ -220,132 +239,278 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Content with Modern Layout */}
         <div className="absolute inset-0 flex flex-col justify-end">
           <div className="container mx-auto px-4 pb-24 relative z-10 text-white">
-            <div className="max-w-5xl">
+            <motion.div
+              className="max-w-5xl"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
               {/* Property Tags */}
-              <div className="flex flex-wrap gap-3 mb-6">
-                <span className="px-4 py-1.5 bg-gradient-to-r from-gray-700 to-gray-800 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg">
+              <motion.div
+                className="flex flex-wrap gap-3 mb-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                <motion.span
+                  className="px-4 py-1.5 bg-gradient-to-r from-gray-700 to-gray-800 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                   {property.status === 'for-sale' ? 'For Sale' : 'For Rent'}
-                </span>
-                <span className="px-4 py-1.5 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg">
+                </motion.span>
+                <motion.span
+                  className="px-4 py-1.5 bg-gradient-to-r from-gray-600 to-gray-700 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                   Offplan
-                </span>
-                <span className="px-4 py-1.5 bg-gradient-to-r from-gray-500 to-gray-600 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg">
+                </motion.span>
+                <motion.span
+                  className="px-4 py-1.5 bg-gradient-to-r from-gray-500 to-gray-600 text-white text-sm font-medium rounded-full uppercase tracking-wider shadow-lg"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                   {property.propertyType}
-                </span>
-              </div>
+                </motion.span>
+              </motion.div>
 
               {/* Property Title with Animation */}
-              <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{property.title}</h1>
+              <motion.h1
+                className="text-5xl md:text-7xl font-bold mb-4 leading-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.7 }}
+              >
+                {property.title}
+              </motion.h1>
 
               {/* Location with Icon */}
-              <div className="flex items-center text-white/90 mb-6">
+              <motion.div
+                className="flex items-center text-white/90 mb-6"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
                 <svg className="h-6 w-6 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <p className="text-xl">{property.location}</p>
-              </div>
+              </motion.div>
 
               {/* Developer Info with Modern Design */}
               {developer && (
-                <div className="mb-10 flex items-center">
+                <motion.div
+                  className="mb-10 flex items-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.9 }}
+                >
                   {developer.logo ? (
-                    <div className="relative h-16 w-24 mr-4 overflow-hidden bg-white p-2 rounded-lg border border-gray-400 shadow-lg">
+                    <motion.div
+                      className="relative h-16 w-24 mr-4 overflow-hidden bg-white p-2 rounded-lg border border-gray-400 shadow-lg"
+                      whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)" }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
                       <Image
                         src={getFullImageUrl(developer.logo)}
                         alt={developer.name}
                         fill
                         className="object-contain bg-white"
                         sizes="96px"
-
                       />
-                    </div>
+                    </motion.div>
                   ) : (
-                    <div className="h-16 w-24 mr-4 rounded-lg bg-gray-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                    <motion.div
+                      className="h-16 w-24 mr-4 rounded-lg bg-gray-700 flex items-center justify-center text-white font-bold text-xl shadow-lg"
+                      whileHover={{ scale: 1.05, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)" }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
                       {developer.name.charAt(0)}
-                    </div>
+                    </motion.div>
                   )}
                   <div>
                     <span className="text-gray-300 text-sm">Developed by</span>
                     <h3 className="text-2xl font-semibold">{developer.name}</h3>
                   </div>
-                </div>
+                </motion.div>
               )}
 
               {/* Action Buttons with Modern Design */}
-              <div className="flex flex-wrap gap-4">
-                <button
+              <motion.div
+                className="flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <motion.button
                   onClick={() => {
                     setIsGalleryOpen(true);
                     setCurrentPhotoIndex(0);
                   }}
-                  className="px-8 py-4 bg-white text-gray-800 font-medium rounded-lg hover:bg-gray-100 transition duration-300 shadow-lg flex items-center"
+                  className="px-8 py-4 bg-white text-gray-800 font-medium rounded-lg shadow-lg flex items-center"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)",
+                    backgroundColor: "#f9fafb"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   View Gallery
-                </button>
-                <a
+                </motion.button>
+                <motion.a
                   href="#inquiry-form"
-                  className="px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-lg hover:from-gray-800 hover:to-black transition duration-300 shadow-lg flex items-center"
+                  className="px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium rounded-lg shadow-lg flex items-center"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)",
+                    backgroundImage: "linear-gradient(to right, #1f2937, #111827)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>
                   Register Interest
-                </a>
-                  <button
-                    onClick={() => {
-                      setContactFormType('brochure');
-                      setIsContactFormOpen(true);
-                    }}
-                    className="px-8 py-4 border border-white/50 bg-white/10 backdrop-blur-sm text-white font-medium rounded-lg hover:bg-white/20 transition duration-300 shadow-lg flex items-center"
-                  >
-                    <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Download Brochure
-                  </button>
-              </div>
-            </div>
+                </motion.a>
+                <motion.button
+                  onClick={() => {
+                    setContactFormType('brochure');
+                    setIsContactFormOpen(true);
+                  }}
+                  className="px-8 py-4 border border-white/50 bg-white/10 backdrop-blur-sm text-white font-medium rounded-lg shadow-lg flex items-center"
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2)",
+                    backgroundColor: "rgba(255, 255, 255, 0.2)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <svg className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download Brochure
+                </motion.button>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>
 
       {/* Project Header - Key Information */}
-      <div className="container mx-auto px-4 -mt-20 relative z-10">
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
+      <motion.div
+        className="container mx-auto px-4 -mt-20 relative z-10"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.5 }}
+      >
+        <motion.div
+          className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100"
+          whileHover={{ boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)" }}
+          transition={{ duration: 0.3 }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-            <div className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300">
-              <h3 className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium">STARTING PRICE</h3>
-              <p className="text-4xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}</p>
-            </div>
-            <div className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300">
-              <h3 className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium">HANDOVER</h3>
-              <p className="text-4xl font-semibold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">{property.yearBuilt}</p>
-            </div>
-            <div className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300">
-              <h3 className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium">PAYMENT PLAN</h3>
-              <p className="text-4xl font-semibold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent">{property.paymentPlan || '70/30'}</p>
-            </div>
+            <motion.div
+              className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300"
+              whileHover={{ backgroundColor: "#F9FAFB" }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.h3
+                className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                STARTING PRICE
+              </motion.h3>
+              <motion.p
+                className="text-4xl font-bold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                AED {typeof property.price === 'number' ? property.price.toLocaleString() : Number(property.price).toLocaleString()}
+              </motion.p>
+            </motion.div>
+            <motion.div
+              className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300"
+              whileHover={{ backgroundColor: "#F9FAFB" }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.h3
+                className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                HANDOVER
+              </motion.h3>
+              <motion.p
+                className="text-4xl font-semibold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                {property.yearBuilt}
+              </motion.p>
+            </motion.div>
+            <motion.div
+              className="flex flex-col p-8 hover:bg-gray-50 transition-colors duration-300"
+              whileHover={{ backgroundColor: "#F9FAFB" }}
+              transition={{ duration: 0.2 }}
+            >
+              <motion.h3
+                className="text-sm uppercase text-gray-500 mb-2 tracking-wider font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                PAYMENT PLAN
+              </motion.h3>
+              <motion.p
+                className="text-4xl font-semibold bg-gradient-to-r from-gray-700 to-gray-900 bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
+              >
+                {property.paymentPlan || '70/30'}
+              </motion.p>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <motion.div
+        className="container mx-auto px-4 py-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
         <div className="flex flex-col gap-8">
           {/* Project Details */}
           <div className="w-full">
             {/* Tabs Navigation */}
             <TabGroup>
-              <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+              <motion.div
+                className="bg-white rounded-xl shadow-md overflow-hidden mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+              >
                 <TabList className="flex overflow-x-auto scrollbar-hide">
                   <Tab className={({ selected }) =>
                     `py-4 px-6 text-sm font-medium outline-none transition-all duration-200 ${selected ? 'text-gray-800 border-b-2 border-gray-700 bg-gray-100' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`
@@ -419,7 +584,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
                     </div>
                   </Tab>
                 </TabList>
-              </div>
+              </motion.div>
 
               <TabPanels>
                 {/* Details Tab */}
@@ -1140,7 +1305,7 @@ function OffplanPropertyDetailClient({ propertyId }: { propertyId: string }) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Photo Gallery Modal */}
       <Transition show={isGalleryOpen} as={React.Fragment}>

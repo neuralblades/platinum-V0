@@ -4,16 +4,52 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePathname } from 'next/navigation';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Get the current pathname to determine if we're on the home page
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
 
   // Use the auth context instead of local state
   const { user, logout } = useAuth();
 
+  // Get scroll information
+  const { scrollY } = useScroll();
+
+  // Listen to scroll events and update state
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const scrollThreshold = 50;
+    if (latest > scrollThreshold && !isScrolled) {
+      setIsScrolled(true);
+    } else if (latest <= scrollThreshold && isScrolled) {
+      setIsScrolled(false);
+    }
+  });
+
+  // Determine the header background class based on page and scroll position
+  const headerBgClass = isHomePage
+    ? isScrolled
+      ? "bg-gradient-to-r from-gray-800 to-gray-900 shadow-md"
+      : "bg-transparent"
+    : "bg-gradient-to-r from-gray-800 to-gray-900 shadow-md";
+
+  // Use absolute positioning for homepage to overlay the hero section, change to fixed when scrolled, sticky for other pages
+  const positionClass = isHomePage
+    ? isScrolled ? "fixed w-full" : "absolute w-full"
+    : "sticky";
+
   return (
-    <header className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-md sticky top-0 z-50">
+    <motion.header
+      className={`${headerBgClass} ${positionClass} top-0 z-[100] transition-colors duration-300`}
+      animate={{
+        backgroundColor: isHomePage && !isScrolled ? 'rgba(0, 0, 0, 0)' : undefined,
+      }}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Image
@@ -27,25 +63,46 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <Link href="/" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Home
           </Link>
-          <Link href="/properties" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/properties"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Properties
           </Link>
-          <Link href="/properties/offplan" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/properties/offplan"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Off Plan
           </Link>
-          <Link href="/developers" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/developers"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Developers
           </Link>
-          <Link href="/blog" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/blog"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Blog
           </Link>
-          <Link href="/about" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/about"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             About
           </Link>
-          <Link href="/contact" className="text-gray-300 hover:text-white transition duration-300">
+          <Link
+            href="/contact"
+            className={`${isHomePage && !isScrolled ? 'text-white' : 'text-gray-300'} hover:text-white transition duration-300`}
+          >
             Contact
           </Link>
         </nav>
@@ -119,10 +176,16 @@ const Header = () => {
             </div>
           ) : (
             <>
-              <Link href="/auth/login" className="px-4 py-2 text-white border border-gray-400 rounded hover:bg-gray-700 hover:text-white transition duration-300">
+              <Link
+                href="/auth/login"
+                className={`px-4 py-2 text-white border ${isHomePage && !isScrolled ? 'border-white/50' : 'border-gray-400'} rounded hover:bg-gray-700 hover:text-white transition duration-300`}
+              >
                 Login
               </Link>
-              <Link href="/auth/register" className="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-800 text-white rounded hover:from-gray-700 hover:to-gray-900 transition duration-300">
+              <Link
+                href="/auth/register"
+                className={`px-4 py-2 ${isHomePage && !isScrolled ? 'bg-white/20 backdrop-blur-sm text-white' : 'bg-gradient-to-r from-gray-600 to-gray-800 text-white'} rounded hover:bg-gray-700 hover:text-white transition duration-300`}
+              >
                 Register
               </Link>
             </>
@@ -131,7 +194,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-gray-700"
+          className={`md:hidden ${isHomePage && !isScrolled ? 'text-white' : 'text-gray-700'}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
@@ -214,7 +277,7 @@ const Header = () => {
           </nav>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { getProperties, PropertyFilter } from '@/services/propertyService';
+import { getProperties, getPropertyById, PropertyFilter } from '@/services/propertyService';
 import Button from '@/components/ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,6 +17,7 @@ interface Suggestion {
   id: string;
   title: string;
   location: string;
+  isOffplan?: boolean;
 }
 
 // Property type options
@@ -122,10 +123,11 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
             setSuggestions([]);
           } else {
             // Map properties to suggestions
-            const propertyResults = response.properties.map((property: { id: string; title: string; location: string }) => ({
+            const propertyResults = response.properties.map((property: { id: string; title: string; location: string; isOffplan?: boolean }) => ({
               id: property.id,
               title: property.title,
               location: property.location,
+              isOffplan: property.isOffplan,
             }));
             setSuggestions(propertyResults.slice(0, 5)); // Limit to 5 suggestions
           }
@@ -213,7 +215,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
     setError(null); // Clear any previous errors
   };
 
-  const handleSuggestionClick = (suggestion: Suggestion) => {
+  const handleSuggestionClick = async (suggestion: Suggestion) => {
     try {
       if (!suggestion || !suggestion.id) {
         console.error('Invalid suggestion:', suggestion);
@@ -221,9 +223,21 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
         return;
       }
 
-      router.push(`/properties/${suggestion.id}`);
-      setShowSuggestions(false);
-      setError(null);
+      // Fetch the property details to check if it's an offplan property
+      const response = await getPropertyById(suggestion.id);
+
+      if (response.success && response.property) {
+        // Check if the property is offplan and route accordingly
+        if (response.property.isOffplan) {
+          router.push(`/properties/offplan/${suggestion.id}`);
+        } else {
+          router.push(`/properties/${suggestion.id}`);
+        }
+        setShowSuggestions(false);
+        setError(null);
+      } else {
+        throw new Error('Failed to fetch property details');
+      }
     } catch (error) {
       console.error('Error navigating to property:', error);
       setError('Unable to navigate to this property. Please try again later.');

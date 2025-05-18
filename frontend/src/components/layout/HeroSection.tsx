@@ -38,7 +38,7 @@ const HeroSection = () => {
       </div>
 
       <motion.div
-        className="w-full relative z-10 py-20 md:py-55 flex flex-col items-center"
+        className="w-full relative z-10 py-20 md:py-65 flex flex-col items-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}

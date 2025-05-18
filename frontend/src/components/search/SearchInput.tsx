@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { getProperties } from '@/services/propertyService';
+import { getProperties, getPropertyById, Property } from '@/services/propertyService';
 
 interface SearchInputProps {
   placeholder?: string;
@@ -15,6 +15,7 @@ interface Suggestion {
   id: string;
   title: string;
   location: string;
+  isOffplan?: boolean;
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
@@ -44,10 +45,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
       try {
         const response = await getProperties({ keyword: query, page: 1 });
         if (response.success && response.properties) {
-          const propertyResults = response.properties.map((property: any) => ({
+          const propertyResults = response.properties.map((property: Property) => ({
             id: property.id,
             title: property.title,
             location: property.location,
+            isOffplan: property.isOffplan,
           }));
           setSuggestions(propertyResults.slice(0, 5)); // Limit to 5 suggestions
         } else {
@@ -123,8 +125,28 @@ const SearchInput: React.FC<SearchInputProps> = ({
     }
   };
 
-  const handleSuggestionClick = (suggestion: Suggestion) => {
-    router.push(`/properties/${suggestion.id}`);
+  const handleSuggestionClick = async (suggestion: Suggestion) => {
+    try {
+      // Fetch the property details to check if it's an offplan property
+      const response = await getPropertyById(suggestion.id);
+
+      if (response.success && response.property) {
+        // Check if the property is offplan and route accordingly
+        if (response.property.isOffplan) {
+          router.push(`/properties/offplan/${suggestion.id}`);
+        } else {
+          router.push(`/properties/${suggestion.id}`);
+        }
+      } else {
+        // Fallback to regular property route if fetch fails
+        router.push(`/properties/${suggestion.id}`);
+      }
+    } catch (error) {
+      console.error('Error fetching property details:', error);
+      // Fallback to regular property route if fetch fails
+      router.push(`/properties/${suggestion.id}`);
+    }
+
     setShowSuggestions(false);
   };
 
