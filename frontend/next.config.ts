@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'platinum-square-backend.onrender.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'hostinger.com',
         pathname: '/**',
       },

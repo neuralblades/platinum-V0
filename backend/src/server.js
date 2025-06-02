@@ -16,12 +16,17 @@ const app = express();
 // Middleware
 // Define allowed origins based on environment
 const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.FRONTEND_URL, 'https://yourdomain.com', 'https://www.yourdomain.com']
+  ? [
+      process.env.CORS_ORIGIN,
+      'https://platinum-square-frontend.onrender.com',
+      'https://platinumsquare.com',
+      'https://www.platinumsquare.com'
+    ].filter(Boolean)
   : ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
-// Configure CORS with more flexibility
+// Configure CORS
 app.use(cors({
-  origin: '*', // Allow all origins for now to fix the immediate issue
+  origin: process.env.NODE_ENV === 'production' ? allowedOrigins : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
@@ -142,6 +147,16 @@ app.use('/api/cache', cacheRoutes);
 // Root route
 app.get('/', (req, res) => {
   res.send('Real Estate API is running...');
+});
+
+// Health check endpoint for Render
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    message: 'Server is healthy',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 // Set port
