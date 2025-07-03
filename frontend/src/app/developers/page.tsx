@@ -1,34 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getDevelopers } from '@/services/developerService';
+import { useQuery } from '@tanstack/react-query';
+import { getDevelopers, Developer } from '@/services/developerService';
 import DeveloperCard from '@/components/developers/DeveloperCard';
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import { motion } from 'framer-motion';
-import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 export default function DevelopersPage() {
-  const [developers, setDevelopers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchDevelopers = async () => {
-      try {
-        setLoading(true);
-        const response = await getDevelopers();
-        setDevelopers(response.developers);
-        setLoading(false);
-      } catch (err) {
-        console.error('Error fetching developers:', err);
-        setError('Failed to load developers. Please try again later.');
-        setLoading(false);
-      }
-    };
-
-    fetchDevelopers();
-  }, []);
+  const { data = { developers: [] }, isLoading, isError } = useQuery({
+    queryKey: ['developers'],
+    queryFn: getDevelopers,
+  });
 
   return (
     <div className="bg-gray-50">
@@ -41,60 +24,37 @@ export default function DevelopersPage() {
             ]}
           />
         </div>
-        <FadeInUp className="mb-8">
-          <motion.h1
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+        <div className="animate-fade-in-up mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Real Estate Developers
-          </motion.h1>
-          <motion.p
-            className="text-gray-600 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
+          </h1>
+          <p className="text-gray-600 mb-4">
             Explore top real estate developers in Dubai & UAE
-          </motion.p>
-        </FadeInUp>
+          </p>
+        </div>
 
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <motion.div
-              className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : isError ? (
+          <div className="animate-fade-in-up">
+            <ErrorDisplay message="Failed to load developers. Please try again later." />
           </div>
-        ) : error ? (
-          <FadeInUp>
-            <ErrorDisplay message={error} />
-          </FadeInUp>
         ) : (
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8" delay={0.05}>
-            {developers.map((developer: any) => (
-              <StaggerItem key={developer.id}>
-                <motion.div
-                  whileHover={{
-                    y: -10,
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  <DeveloperCard
-                    id={developer.id}
-                    name={developer.name}
-                    logo={developer.logo}
-                    backgroundImage={developer.backgroundImage}
-                    slug={developer.slug}
-                    featured={developer.featured}
-                    description={developer.description}
-                  />
-                </motion.div>
-              </StaggerItem>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+            {data.developers.map((developer: Developer) => (
+              <div key={developer.id} className="transition-transform duration-200 hover:-translate-y-2">
+                <DeveloperCard
+                  id={developer.id}
+                  name={developer.name}
+                  logo={developer.logo}
+                  backgroundImage={developer.backgroundImage}
+                  slug={developer.slug}
+                  featured={developer.featured}
+                  description={developer.description}
+                />
+              </div>
             ))}
-          </StaggerContainer>
+          </div>
         )}
       </div>
     </div>

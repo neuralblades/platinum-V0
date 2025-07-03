@@ -4,9 +4,11 @@ import api from './api';
 
 // Types
 export interface Inquiry {
-  _id: string;
+  _id?: string;
+  id?: string | number;
   property: string | {
-    _id: string;
+    _id?: string;
+    id?: string | number;
     title: string;
     mainImage: string;
   };

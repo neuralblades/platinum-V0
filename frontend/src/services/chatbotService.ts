@@ -5,35 +5,185 @@ import { ChatMessage } from '@/components/chatbot/ChatbotMessage';
 import { createInquiry } from './inquiryService';
 import { Property } from './propertyService';
 
-// Predefined responses
+// Enhanced predefined responses
 const GREETING_RESPONSES = [
-  "Hello! Welcome to Luxury Estates. How can I help you today?",
-  "Hi there! I'm your real estate assistant. What are you looking for?",
-  "Welcome to Luxury Estates! I can help you find your dream property. What are you interested in?"
+  "Hello! Welcome to Luxury Estates. I'm here to help you find your perfect property. Are you looking to buy, sell, or just browse?",
+  "Hi there! I'm your AI real estate assistant. How can I help you today - are you interested in buying, selling, or viewing properties?",
+  "Welcome to Luxury Estates! I can help you find your dream property, connect you with agents, or answer any questions. What interests you most?"
 ];
 
 const FALLBACK_RESPONSES = [
-  "I'm not sure I understand. Could you rephrase that?",
-  "I'm still learning. Can you try asking in a different way?",
-  "I didn't quite catch that. Would you like to speak with a real agent instead?"
+  "I want to make sure I understand you correctly. Are you looking to buy, sell, or view properties? Or would you like to speak with an agent?",
+  "I'm here to help! Could you tell me if you're interested in buying, selling, or browsing properties?",
+  "Let me help you better - are you looking for properties to buy, wanting to sell, or need to speak with one of our agents?"
 ];
 
-// Keywords for intent recognition
+// Enhanced keywords for better intent recognition
 const INTENTS = {
-  PROPERTY_SEARCH: ['find', 'search', 'looking for', 'property', 'house', 'apartment', 'condo', 'buy', 'rent', 'purchase', 'want to buy', 'interested in buying', 'looking to buy'],
-  PRICE_INQUIRY: ['price', 'cost', 'how much', 'afford', 'budget', 'expensive', 'cheap', 'pricing', 'worth', 'value'],
-  LOCATION_INQUIRY: ['where', 'location', 'area', 'neighborhood', 'city', 'near', 'close to', 'address', 'located'],
-  AGENT_CONTACT: ['agent', 'speak', 'talk', 'contact', 'call', 'message', 'human', 'person', 'representative', 'sales'],
-  VIEWING_REQUEST: ['view', 'visit', 'tour', 'see', 'schedule', 'appointment', 'showing', 'look at', 'check out', 'inspect'],
-  GREETING: ['hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', 'howdy'],
-  HELP: ['help', 'assist', 'support', 'guide', 'information', 'info', 'what can you do', 'how does this work'],
-  THANKS: ['thanks', 'thank you', 'appreciate', 'grateful', 'thx', 'ty'],
-  BUY_INTENT: ['want to buy', 'interested in buying', 'looking to buy', 'purchase', 'make an offer', 'buy this', 'buy it', 'get this property'],
-  SELL_INTENT: ['want to sell', 'interested in selling', 'looking to sell', 'sell my', 'sell a property', 'list my home', 'put my house on the market'],
-  VIEW_LISTINGS: ['show listings', 'available listings', 'show available', 'view listings', 'see properties', 'show properties', 'show me properties', 'what do you have'],
+  PROPERTY_SEARCH: [
+    'find', 'search', 'looking for', 'property', 'house', 'apartment', 'condo', 'buy', 'rent', 'purchase', 
+    'want to buy', 'interested in buying', 'looking to buy', 'show me', 'browse', 'explore'
+  ],
+  PRICE_INQUIRY: [
+    'price', 'cost', 'how much', 'afford', 'budget', 'expensive', 'cheap', 'pricing', 'worth', 'value',
+    'what does it cost', 'price range', 'affordable', 'within budget'
+  ],
+  LOCATION_INQUIRY: [
+    'where', 'location', 'area', 'neighborhood', 'city', 'near', 'close to', 'address', 'located',
+    // Dubai Areas - Premium/Luxury
+    'downtown dubai', 'downtown', 'business bay', 'dubai marina', 'marina', 'jbr', 'jumeirah beach residence',
+    'palm jumeirah', 'palm', 'jumeirah', 'jumeirah 1', 'jumeirah 2', 'jumeirah 3', 'umm suqeim',
+    'difc', 'dubai international financial centre', 'city walk', 'la mer', 'graywaters island',
+    'dubai hills estate', 'dubai hills', 'emirates hills', 'meadows', 'springs', 'lakes', 'greens',
+    'views', 'jlt', 'jumeirah lake towers', 'tecom', 'barsha heights', 'sheikh zayed road',
+    // Dubai Areas - Traditional/Cultural
+    'deira', 'bur dubai', 'karama', 'satwa', 'al fahidi', 'bastakiya', 'creek', 'dubai creek',
+    'festival city', 'healthcare city', 'academic city', 'knowledge village', 'media city',
+    'internet city', 'dubai south', 'al barsha', 'mall of emirates', 'ibn battuta',
+    // Dubai Areas - Residential
+    'mirdif', 'rashidiya', 'garhoud', 'oud metha', 'bur dubai', 'mankhool', 'al qusais',
+    'muhaisnah', 'al mizhar', 'nad al sheba', 'zabeel', 'al wasl', 'al safa', 'al manara',
+    'villa', 'townhouse area', 'family area', 'residential area',
+    // Dubai Areas - Emerging/New
+    'mohammed bin rashid city', 'mbr city', 'meydan', 'nad al sheba', 'sobha hartland',
+    'dubai water canal', 'dubai design district', 'd3', 'al jadaf', 'culture village',
+    'sports city', 'motor city', 'studio city', 'production city', 'discovery gardens',
+    'jvc', 'jumeirah village circle', 'jvt', 'jumeirah village triangle', 'arabian ranches',
+    'town square', 'nshama', 'tilal al ghaf', 'dubai land', 'remraam', 'the villa',
+    // Dubai Areas - Investment/Affordable
+    'international city', 'dragon mart', 'warsan', 'silicon oasis', 'dubiotech', 'impz',
+    'dubai investment park', 'dip', 'green community', 'living legends', 'the sustainable city',
+    // Dubai Areas - Waterfront/Beach
+    'marina walk', 'marina promenade', 'the beach', 'kite beach', 'sunset beach', 'black palace beach',
+    'la mer beach', 'jumeirah open beach', 'marina beach', 'jbr beach', 'palm beach',
+    // Dubai Transportation Hubs
+    'dubai mall', 'mall of emirates', 'ibn battuta mall', 'city centre', 'airport', 'metro station',
+    'metro', 'tram', 'near metro', 'walking distance metro'
+  ],
+  AGENT_CONTACT: [
+    'agent', 'speak', 'talk', 'contact', 'call', 'message', 'human', 'person', 'representative', 'sales',
+    'speak to someone', 'talk to agent', 'real person', 'contact agent', 'speak with agent'
+  ],
+  VIEWING_REQUEST: [
+    'view', 'visit', 'tour', 'see', 'schedule', 'appointment', 'showing', 'look at', 'check out', 'inspect',
+    'visit property', 'schedule viewing', 'book tour', 'arrange visit'
+  ],
+  GREETING: [
+    'hello', 'hi', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening', 'howdy',
+    'what\'s up', 'how are you'
+  ],
+  HELP: [
+    'help', 'assist', 'support', 'guide', 'information', 'info', 'what can you do', 'how does this work',
+    'can you help', 'need help', 'assist me'
+  ],
+  THANKS: ['thanks', 'thank you', 'appreciate', 'grateful', 'thx', 'ty', 'cheers'],
+  BUY_INTENT: [
+    'want to buy', 'interested in buying', 'looking to buy', 'purchase', 'make an offer', 'buy this', 
+    'buy it', 'get this property', 'interested in this', 'i want this'
+  ],
+  SELL_INTENT: [
+    'want to sell', 'interested in selling', 'looking to sell', 'sell my', 'sell a property', 
+    'list my home', 'put my house on the market', 'property valuation', 'how much is my house worth'
+  ],
+  VIEW_LISTINGS: [
+    'show listings', 'available listings', 'show available', 'view listings', 'see properties', 
+    'show properties', 'show me properties', 'what do you have', 'browse properties', 'available properties'
+  ],
+  AMENITIES_INQUIRY: [
+    'amenities', 'facilities', 'features', 'gym', 'pool', 'parking', 'balcony', 'kitchen', 'furnished',
+    'what does it include', 'what features', 'amenities available'
+  ],
+  FINANCING_INQUIRY: [
+    'mortgage', 'loan', 'financing', 'payment plan', 'installment', 'down payment', 'can i finance',
+    'payment options', 'bank loan', 'mortgage options'
+  ]
 };
 
-// Generate a bot message
+// Helper function to extract specific information
+const extractInfo = (text: string, type: 'phone' | 'email' | 'bedrooms' | 'name'): string | null => {
+  const cleanText = text.trim();
+  
+  switch (type) {
+    case 'phone':
+      // Enhanced phone detection for UAE numbers
+      const phonePatterns = [
+        /(\+971|971|0)?[\s-]?5[0-9][\s-]?[0-9]{3}[\s-]?[0-9]{4}/g, // UAE mobile
+        /(\+971|971|0)?[\s-]?[2-9][\s-]?[0-9]{3}[\s-]?[0-9]{4}/g, // UAE landline
+        /(\+?\d{1,3}[-.\s]?)?\(?\d{3,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,6}/g // International
+      ];
+      for (const pattern of phonePatterns) {
+        const match = cleanText.match(pattern);
+        if (match) return match[0].replace(/\s+/g, ' ').trim();
+      }
+      return null;
+      
+    case 'email':
+      const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+      const emailMatch = cleanText.match(emailPattern);
+      return emailMatch ? emailMatch[0] : null;
+      
+    case 'bedrooms':
+      // Enhanced bedroom extraction
+      const bedroomPatterns = [
+        /\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|studio)\s*(bed|bedroom|br)s?\b/i,
+        /^(\d+|one|two|three|four|five|six|seven|eight|nine|ten|studio)$/i
+      ];
+      
+      for (const pattern of bedroomPatterns) {
+        const match = cleanText.match(pattern);
+        if (match) {
+          const num = match[1].toLowerCase();
+          const numberMap: { [key: string]: string } = {
+            'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 
+            'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'ten': '10', 'studio': '0'
+          };
+          return numberMap[num] || num;
+        }
+      }
+      return null;
+      
+    case 'name':
+      // Enhanced name detection with better filtering
+      const nameStopWords = [
+        'i', 'am', 'is', 'my', 'name', 'the', 'a', 'an', 'and', 'or', 'but', 'call', 'me', 'yes', 'no', 
+        'ok', 'okay', 'sure', 'thanks', 'thank', 'you', 'hi', 'hello', 'hey', 'greetings', 'good', 
+        'morning', 'afternoon', 'evening', 'buy', 'sell', 'property', 'house', 'apartment'
+      ];
+      
+      // Look for "my name is", "i'm", "call me" patterns first
+      const namePatterns = [
+        /(?:my name is|i'm|i am|call me|this is)\s+([a-zA-Z\s]{2,30})/i,
+        /^([a-zA-Z]{2,15}\s+[a-zA-Z]{2,15})$/i // First Last name pattern
+      ];
+      
+      for (const pattern of namePatterns) {
+        const match = cleanText.match(pattern);
+        if (match) {
+          const extractedName = match[1].trim();
+          const words = extractedName.split(/\s+/);
+          const validWords = words.filter(word => 
+            word.length > 1 && 
+            !nameStopWords.includes(word.toLowerCase()) &&
+            /^[A-Za-z]+$/.test(word)
+          );
+          if (validWords.length > 0) {
+            return validWords.join(' ');
+          }
+        }
+      }
+      
+      // Fallback: if input is short and doesn't contain common words
+      if (cleanText.length > 1 && cleanText.length < 25 && 
+          !nameStopWords.some(word => cleanText.toLowerCase().includes(word)) &&
+          !/\d/.test(cleanText) && /^[a-zA-Z\s]+$/.test(cleanText)) {
+        return cleanText;
+      }
+      
+      return null;
+  }
+};
+
+// Generate message functions
 export const generateBotMessage = (content: string): ChatMessage => {
   return {
     id: uuidv4(),
@@ -43,7 +193,6 @@ export const generateBotMessage = (content: string): ChatMessage => {
   };
 };
 
-// Generate a user message
 export const generateUserMessage = (content: string): ChatMessage => {
   return {
     id: uuidv4(),
@@ -53,7 +202,6 @@ export const generateUserMessage = (content: string): ChatMessage => {
   };
 };
 
-// Generate an agent message
 export const generateAgentMessage = (content: string, agentName: string, agentAvatar?: string): ChatMessage => {
   return {
     id: uuidv4(),
@@ -67,85 +215,74 @@ export const generateAgentMessage = (content: string, agentName: string, agentAv
   };
 };
 
-// Get a random greeting response
 export const getGreetingResponse = (): string => {
   const randomIndex = Math.floor(Math.random() * GREETING_RESPONSES.length);
   return GREETING_RESPONSES[randomIndex];
 };
 
-// Get a random fallback response
 export const getFallbackResponse = (): string => {
   const randomIndex = Math.floor(Math.random() * FALLBACK_RESPONSES.length);
   return FALLBACK_RESPONSES[randomIndex];
 };
 
-// Detect intent from user message
+// Enhanced intent detection
 export const detectIntent = (message: string, conversationState?: ChatbotConversationState): string | null => {
-  const lowerMessage = message.toLowerCase();
-
-  // Check for greetings first to prevent misinterpretation
-  if (/^(hi|hello|hey|hi there|hello there|greetings)$/i.test(message.trim()) ||
-      /^(good morning|good afternoon|good evening)$/i.test(message.trim())) {
-    return 'GREETING';
-  }
-
-  // Check for view listings intent
-  if (/^(show|view|see|display|list)\s+(available\s+)?(listing|listings|properties|homes|houses|apartments)$/i.test(message.trim()) ||
-      /^(show|view|see)\s+me\s+(available\s+)?(listing|listings|properties|homes|houses|apartments)$/i.test(message.trim())) {
-    return 'VIEW_LISTINGS';
-  }
-
-  // Check for buy/sell intent (higher priority)
-  if (/^(want to buy|interested in buying|looking to buy|buy this|buy it|purchase)$/i.test(message.trim()) ||
-      /^i (want|would like) to (buy|purchase)/i.test(message.trim())) {
-    return 'BUY_INTENT';
-  }
-
-  if (/^(want to sell|interested in selling|looking to sell|sell my|sell a property)$/i.test(message.trim()) ||
-      /^i (want|would like) to sell/i.test(message.trim())) {
-    return 'SELL_INTENT';
-  }
-
-  // Check for single-word property type inputs
-  if (/^(apartment|house|condo|villa|penthouse|studio|flat|loft)$/i.test(message.trim())) {
+  const lowerMessage = message.toLowerCase().trim();
+  
+  // Priority 1: Check for specific data patterns FIRST (before name collection)
+  if (extractInfo(message, 'phone')) return 'PHONE_PROVIDED';
+  if (extractInfo(message, 'email')) return 'EMAIL_PROVIDED';
+  if (extractInfo(message, 'bedrooms')) return 'BEDROOM_COUNT';
+  
+  // Priority 2: Check for property types (before name detection)
+  if (/^(apartment|house|condo|villa|penthouse|studio|townhouse|flat|loft|duplex)$/i.test(lowerMessage)) {
     return 'PROPERTY_TYPE';
   }
-
-  // Check for bedroom count inputs or apartment descriptions
-  // Also check for single digit/number responses which are likely bedroom counts in context
-  if (/^\d+\s*(bed|bedroom|br)s?$/i.test(message.trim()) ||
-      /^(one|two|three|four|five)\s*(bed|bedroom|br)s?$/i.test(message.trim()) ||
-      /^\d+\s*(bed|bedroom)\s*(apartment|house|condo|villa|flat)/i.test(message.trim()) ||
-      /^[1-9][0-9]?$/i.test(message.trim())) { // Match single digits or numbers up to 99
-    return 'BEDROOM_COUNT';
+  
+  // Priority 3: Check for simple greetings (exact matches)
+  if (/^(hi|hello|hey|hi there|hello there|greetings|good morning|good afternoon|good evening)$/i.test(lowerMessage)) {
+    return 'GREETING';
   }
-
-  // Check for phone numbers
-  if (/^\+?[0-9\s\(\)\-\.]{7,}$/.test(message.trim())) {
-    return 'PHONE_PROVIDED';
+  
+  // Priority 4: Check for high-intent phrases (exact or near-exact matches)
+  const highIntentPatterns = [
+    { pattern: /^(want to buy|interested in buying|looking to buy|buy this|purchase this)$/i, intent: 'BUY_INTENT' },
+    { pattern: /^(want to sell|interested in selling|looking to sell|sell my)$/i, intent: 'SELL_INTENT' },
+    { pattern: /^(show|view|see)\s+(listings|properties|available)$/i, intent: 'VIEW_LISTINGS' },
+    { pattern: /^(speak|talk)\s+(to|with)\s+(agent|someone)$/i, intent: 'AGENT_CONTACT' }
+  ];
+  
+  for (const { pattern, intent } of highIntentPatterns) {
+    if (pattern.test(lowerMessage)) return intent;
   }
-
-  // Check for email addresses
-  if (/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/.test(message)) {
-    return 'EMAIL_PROVIDED';
-  }
-
-  // ONLY check for name inputs if we're EXPLICITLY in name collection mode
-  // This should ONLY happen after we've asked for a name following a buy/sell/contact intent
-  if (conversationState?.explicitlyAskedForName && !conversationState.userName) {
-    // Even then, apply strict filtering to avoid false positives
-    if (message.trim().length < 20 && message.trim().length > 1 &&
-        !/[@#$%^&*(),.?":{}|<>]/.test(message) &&
-        !/^(yes|no|maybe|ok|okay|sure|thanks|thank you|hi|hello|hey|there|greetings)$/i.test(message.trim()) &&
-        !/\b(hi|hello|hey|there|greetings)\b/i.test(message.trim()) &&
-        !/\d+\s*(bed|bedroom|bath|bathroom|sqft|sq ft|square foot|apartment|house|condo|villa)s?/i.test(message.trim()) &&
-        !/^\d+$/i.test(message.trim()) && // Exclude inputs that are just numbers
-        !/\d/.test(message.trim())) { // Exclude inputs containing any digits
-      return 'NAME_PROVIDED';
+  
+  // Priority 5: Check if we're collecting user info (name detection)
+  if (conversationState?.collectingUserInfo) {
+    // Only check for name if we explicitly asked for it AND it's not a property type
+    if (conversationState.explicitlyAskedForName && !conversationState.userName) {
+      // Make sure it's not a property type or other keyword first
+      const isPropertyType = /^(apartment|house|condo|villa|penthouse|studio|townhouse|flat|loft|duplex)$/i.test(lowerMessage);
+      const isCommonWord = /^(yes|no|maybe|ok|okay|sure|thanks|thank you|hi|hello|hey|buy|sell|rent)$/i.test(lowerMessage);
+      
+      if (!isPropertyType && !isCommonWord) {
+        const extractedName = extractInfo(message, 'name');
+        if (extractedName) {
+          console.log('Name detected:', extractedName); // Debug log
+          return 'NAME_PROVIDED';
+        }
+        
+        // Fallback: if it's a simple text response and we're asking for name
+        if (message.trim().length > 1 && message.trim().length < 30 && 
+            !/[@#$%^&*(),.?":{}|<>]/.test(message) &&
+            !/\d/.test(message)) { // No numbers
+          console.log('Fallback name detection:', message.trim()); // Debug log
+          return 'NAME_PROVIDED';
+        }
+      }
     }
   }
-
-  // Check for standard intents using keywords
+  
+  // Priority 6: Check for keyword-based intents
   for (const [intent, keywords] of Object.entries(INTENTS)) {
     for (const keyword of keywords) {
       if (lowerMessage.includes(keyword.toLowerCase())) {
@@ -153,11 +290,11 @@ export const detectIntent = (message: string, conversationState?: ChatbotConvers
       }
     }
   }
-
+  
   return null;
 };
 
-// Define conversation state type
+// Conversation state interface
 export interface ChatbotConversationState {
   collectingUserInfo: boolean;
   userName?: string;
@@ -170,7 +307,7 @@ export interface ChatbotConversationState {
   explicitlyAskedForName?: boolean;
 }
 
-// Generate response based on intent and conversation state
+// Enhanced response generation
 export const generateResponse = (intent: string | null, message: string, conversationState?: ChatbotConversationState, currentProperty?: Property): string => {
   if (!intent) {
     return getFallbackResponse();
@@ -179,96 +316,156 @@ export const generateResponse = (intent: string | null, message: string, convers
   // Handle user information collection flow
   if (conversationState?.collectingUserInfo) {
     if (intent === 'NAME_PROVIDED' && !conversationState.userName) {
-      return `Thanks, ${message}! Could you please provide your phone number? This is important for the agent to contact you directly.`;
+      const extractedName = extractInfo(message, 'name');
+      if (extractedName) {
+        return `Nice to meet you, ${extractedName}! Could you please share your phone number so our agent can reach you?`;
+      }
     }
 
-    if (intent === 'PHONE_PROVIDED' && !conversationState.userPhone) {
-      return `Thank you! Now, could you also provide your email address so the agent can send you property details?`;
+    if (intent === 'PHONE_PROVIDED' && conversationState.userName && !conversationState.userPhone) {
+      const phone = extractInfo(message, 'phone');
+      if (phone) {
+        return `Perfect! I have your details. Our team will contact you at ${phone} shortly. Is there anything specific you'd like them to know about your requirements?`;
+      }
     }
 
-    if (intent === 'EMAIL_PROVIDED' && !conversationState.userEmail) {
-      return `Great! An agent will contact you at ${conversationState.userPhone} and ${message} soon regarding ${conversationState.propertyInterest || 'your property inquiry'}. Is there anything specific you'd like to know in the meantime?`;
+    if (intent === 'EMAIL_PROVIDED' && conversationState.userName && conversationState.userPhone && !conversationState.userEmail) {
+      return `Excellent! Our agent will reach out to you soon with detailed property information and to schedule a viewing.`;
     }
   }
 
   switch (intent) {
     case 'GREETING':
       if (currentProperty) {
-        return `Welcome to Luxury Estates! You're currently viewing ${currentProperty.title}. This beautiful property is priced at $${currentProperty.price.toLocaleString()} and located in ${currentProperty.location}. How can I help you with this property today?`;
+        return `Welcome! You're viewing ${currentProperty.title} - a beautiful property in ${currentProperty.location} priced at AED ${currentProperty.price.toLocaleString()}. How can I help you with this property today?`;
       }
       return getGreetingResponse();
 
     case 'HELP':
       if (currentProperty) {
-        return `I can help you with information about this property, answer questions about its price, location, or features, connect you with the listing agent, or schedule a viewing. What would you like to know?`;
+        return `I can help you with information about this property, pricing details, neighborhood info, schedule a viewing, or connect you with the listing agent. What interests you most?`;
       }
-      return "I can help you find properties, answer questions about prices and locations, connect you with an agent, or schedule a viewing. What would you like to know?";
+      return "I can help you search for properties, get pricing information, learn about locations, schedule viewings, or connect you with our expert agents. What would you like to explore?";
 
     case 'THANKS':
-      return "You're welcome! Is there anything else I can help you with?";
+      const thankResponses = [
+        "You're very welcome! Is there anything else I can help you with?",
+        "Happy to help! Any other questions about properties or our services?",
+        "My pleasure! Feel free to ask if you need anything else."
+      ];
+      return thankResponses[Math.floor(Math.random() * thankResponses.length)];
 
     case 'PROPERTY_SEARCH':
-      return "I can help you find the perfect property. What type of property are you looking for? And do you have a specific location or budget in mind?";
+      const bedroomCount = extractInfo(message, 'bedrooms');
+      if (bedroomCount) {
+        return `Great! I can help you find ${bedroomCount === '0' ? 'studio' : bedroomCount + '-bedroom'} properties. What type of property interests you most - apartment, villa, or townhouse?`;
+      }
+      return "Perfect! I can help you find your ideal property. What type are you looking for (apartment, villa, townhouse), and how many bedrooms do you need?";
 
     case 'BUY_INTENT':
       if (currentProperty) {
-        return `Great! Could you please provide your name and phone number? An agent will contact you shortly about ${currentProperty.title}.`;
+        return `Excellent choice! This ${currentProperty.title} is a fantastic property. To help you with the purchase process, may I get your name so an agent can contact you?`;
       }
-      return "I'd be happy to help you find a property to buy. Could you please provide your name and phone number so an agent can contact you?";
+      return "Wonderful! I'd love to help you find the perfect property to buy. Could you please share your name so one of our agents can assist you personally?";
 
     case 'SELL_INTENT':
-      return "Great! Could you please provide your name and phone number? A listing agent will contact you shortly to discuss selling your property.";
+      return "Great! Our agents provide free property valuations and expert selling advice. Could you share your name so a specialist can contact you about selling your property?";
 
     case 'PROPERTY_TYPE':
-      return `Great! ${message.trim()} properties are popular choices. How many bedrooms are you looking for?`;
+      const propertyType = message.match(/\b(apartment|house|condo|villa|penthouse|studio|townhouse)\b/i)?.[1];
+      if (propertyType) {
+        return `Excellent choice! ${propertyType.charAt(0).toUpperCase() + propertyType.slice(1)}s are very popular in Dubai. How many bedrooms are you looking for?`;
+      }
+      return "Could you tell me more about the specific type of property you're interested in?";
 
     case 'BEDROOM_COUNT':
-      // Handle single digit responses differently
-      if (/^[1-9]$/.test(message.trim())) {
-        return `I can help you find ${message.trim()} bedroom properties. Are you interested in a specific location or do you have a budget in mind? I can also show you our available listings if you'd like.`;
+      const bedrooms = extractInfo(message, 'bedrooms');
+      if (bedrooms) {
+        const bedroomText = bedrooms === '0' ? 'Studio' : `${bedrooms}-bedroom`;
+        // Set collecting user info state
+        if (conversationState) {
+          conversationState.collectingUserInfo = true;
+          conversationState.explicitlyAskedForName = true;
+          conversationState.bedroomCount = bedrooms;
+        }
+        return `Perfect! ${bedroomText} properties are excellent choices. I can connect you with an agent who specializes in these properties. Could you share your name so they can help you find the best options?`;
       }
-      return `I can help you find ${message.trim()} properties. Are you interested in a specific location or do you have a budget in mind? I can also show you our available listings if you'd like.`;
+      return "How many bedrooms are you looking for in your ideal property?";
 
     case 'VIEW_LISTINGS':
-      if (conversationState?.bedroomCount) {
-        return `Here are our available ${conversationState.bedroomCount} bedroom properties. You can view more details by clicking on any property that interests you. Would you like to speak with an agent about any of these properties?`;
+      // Always try to collect user details instead of just showing listings
+      if (conversationState?.bedroomCount && conversationState?.propertyType) {
+        return `Perfect! I can help you find ${conversationState.bedroomCount}-bedroom ${conversationState.propertyType} properties. Let me connect you with an agent who can show you the best options. Could you share your name?`;
+      } else if (conversationState?.bedroomCount) {
+        return `Great! I can help you find ${conversationState.bedroomCount === '0' ? 'studio' : conversationState.bedroomCount + '-bedroom'} properties. Let me connect you with an agent for personalized assistance. Could you share your name?`;
       } else if (conversationState?.propertyType) {
-        return `Here are our available ${conversationState.propertyType} properties. You can view more details by clicking on any property that interests you. Would you like to speak with an agent about any of these properties?`;
+        return `Excellent! I can help you find ${conversationState.propertyType} properties. Let me connect you with an agent who specializes in this type. Could you share your name?`;
       }
-      return `Here are our available properties. You can view more details by clicking on any property that interests you. Would you like to speak with an agent about any of these properties?`;
+      return "I'd love to help you find the perfect property! Let me connect you with one of our expert agents who can show you the best available options. Could you share your name so they can assist you personally?";
 
     case 'PRICE_INQUIRY':
       if (currentProperty) {
-        return `This property is listed at $${currentProperty.price.toLocaleString()}. ${currentProperty.status === 'For Sale' ? 'It\'s currently on the market and available for purchase.' : 'It\'s currently available for rent.'} Would you like to schedule a viewing or speak with an agent about financing options?`;
+        return `This beautiful property is priced at AED ${currentProperty.price.toLocaleString()}. It offers excellent value in ${currentProperty.location}. Would you like to know about financing options or schedule a viewing?`;
       }
-      return "Our properties range from affordable to luxury. What's your budget range so I can help you find something suitable?";
+      return "Our properties range from affordable to luxury options. What's your budget range so I can show you suitable properties?";
 
     case 'LOCATION_INQUIRY':
       if (currentProperty) {
-        return `This property is located in ${currentProperty.location}. It's a great area with ${Math.random() > 0.5 ? 'excellent schools and shopping nearby' : 'parks and restaurants within walking distance'}. Would you like to know more about the neighborhood?`;
+        return `This property is located in ${currentProperty.location} - one of Dubai's most desirable areas with excellent amenities, dining, and transportation links. Would you like me to connect you with an agent for more details?`;
       }
-      return "We have properties in various prime locations. Is there a specific area or city you're interested in?";
+      
+      // Check if user mentioned a specific area
+      const mentionedArea = message.toLowerCase();
+      const popularAreas = {
+        'downtown': 'Downtown Dubai offers iconic landmarks like Burj Khalifa and Dubai Mall, with excellent connectivity.',
+        'marina': 'Dubai Marina is a stunning waterfront community with high-rise living and marina views.',
+        'jbr': 'JBR offers beachfront living with The Beach and The Walk shopping and dining.',
+        'business bay': 'Business Bay is Dubai\'s business district with canal views and modern towers.',
+        'palm jumeirah': 'Palm Jumeirah is an exclusive man-made island with luxury beachfront properties.',
+        'jumeirah': 'Jumeirah areas offer proximity to beaches, parks, and family-friendly communities.',
+        'difc': 'DIFC is the financial hub with premium apartments and easy business district access.',
+        'dubai hills': 'Dubai Hills Estate offers family villas with golf course views and green spaces.',
+        'arabian ranches': 'Arabian Ranches provides luxury villas in a gated golf community.',
+        'jlt': 'Jumeirah Lake Towers offers affordable apartments with lake and marina proximity.'
+      };
+      
+      for (const [area, description] of Object.entries(popularAreas)) {
+        if (mentionedArea.includes(area)) {
+          return `Great choice! ${description} I can connect you with an agent who specializes in ${area.toUpperCase()} properties. Could you share your name so they can assist you?`;
+        }
+      }
+      
+      return "Dubai has amazing areas! I can connect you with an agent who knows the best properties in your preferred location. Could you share your name so they can help you find the perfect property?";
+
+    case 'AMENITIES_INQUIRY':
+      if (currentProperty) {
+        return `This property features premium amenities and modern finishes. Would you like me to schedule a viewing so you can experience all the features firsthand?`;
+      }
+      return "Our properties feature world-class amenities like swimming pools, gyms, concierge services, and more. What specific amenities are most important to you?";
+
+    case 'FINANCING_INQUIRY':
+      return "We work with leading banks in the UAE to offer competitive mortgage rates. Typically, you'll need 20-25% down payment for residents, 30-40% for non-residents. Would you like me to connect you with our mortgage specialist?";
 
     case 'AGENT_CONTACT':
-      if (currentProperty) {
-        return `I'd be happy to connect you with ${currentProperty.agent?.firstName || 'the listing agent'} who can tell you more about this property. Please provide your name, and they will contact you shortly.`;
+      if (currentProperty?.agent) {
+        return `I'd be happy to connect you with ${currentProperty.agent.firstName || 'our listing agent'} who specializes in this property. Could you please share your name so they can contact you?`;
       }
-      return "I'd be happy to connect you with one of our experienced agents. Please provide your name, and an agent will contact you shortly.";
+      return "I'll connect you with one of our experienced agents right away. Could you please provide your name so they can assist you personally?";
 
     case 'NAME_PROVIDED':
-      return `Thank you! Could you please provide your phone number? This is important for the agent to contact you directly.`;
+      return `Thank you! Could you please share your phone number so our agent can reach you directly?`;
 
     case 'PHONE_PROVIDED':
-      return `Thank you! An agent will contact you shortly at this number.`;
+      return `Perfect! Thank you for providing your details. Our expert agent will contact you shortly to assist with your property needs. We appreciate your interest in Luxury Estates!`;
 
     case 'EMAIL_PROVIDED':
-      return `Thank you! An agent will contact you at ${message} soon. Is there anything specific about properties you'd like to know while you wait?`;
+      return `Excellent! Our agent will send you detailed property information and contact you soon. Thank you for your interest!`;
 
     case 'VIEWING_REQUEST':
       if (currentProperty) {
-        return `I can help you schedule a viewing for ${currentProperty.title}. When would be a good time for you? Our agents are available 7 days a week.`;
+        return `I'd be happy to arrange a viewing of ${currentProperty.title}! Our agents are available 7 days a week. Could you share your name and preferred time so we can schedule this for you?`;
       }
-      return "I'd be happy to arrange a property viewing for you. Could you specify which property you're interested in seeing?";
+      return "I can definitely arrange a property viewing for you! Which property interests you, and when would be convenient for you?";
 
     default:
       return getFallbackResponse();

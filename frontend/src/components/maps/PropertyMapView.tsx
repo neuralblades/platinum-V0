@@ -3,27 +3,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { loadGoogleMapsApi } from '@/utils/googleMapsLoader';
 import { getFullImageUrl } from '../../utils/imageUtils';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { Property } from '@/services/propertyService';
 
 // Types
-interface Property {
-  id: string;
-  title: string;
-  price: number;
-  location: string;
-  address?: string;
-  bedrooms: number;
-  bedroomRange?: string;
-  bathrooms: number;
-  area: number;
-  mainImage: string;
-  featured?: boolean;
-  isOffplan?: boolean;
-  yearBuilt?: number | string;
-  paymentPlan?: string;
-  latitude?: number;
-  longitude?: number;
-}
-
 interface PropertyMarker extends google.maps.Marker {
   propertyData?: Property;
 }
@@ -42,6 +25,7 @@ const PropertyMapView = ({ properties, onPropertySelect, selectedProperty }: Pro
   const [mapError, setMapError] = useState<string | null>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Load Google Maps API
   useEffect(() => {
@@ -508,9 +492,12 @@ const PropertyMapView = ({ properties, onPropertySelect, selectedProperty }: Pro
   return (
     <div className="w-full h-full relative">
       <div ref={mapRef} className="w-full h-full rounded-lg"></div>
+      {isLoading && (
+        <LoadingSpinner />
+      )}
       {!mapLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600"></div>
         </div>
       )}
       {/* Map controls positioned for better UX */}

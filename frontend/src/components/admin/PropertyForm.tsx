@@ -8,6 +8,7 @@ import { getDevelopers } from '@/services/developerService';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { clearServerCache } from '@/utils/cacheUtils';
 import Button from '@/components/ui/Button';
+import Alert from '@/components/ui/Alert';
 
 interface PropertyFormProps {
   propertyId?: string;
@@ -277,17 +278,8 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      {error && (
-        <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
-          {error}
-        </div>
-      )}
-
-      {success && (
-        <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-          {success}
-        </div>
-      )}
+      {error && <Alert type="error">{error}</Alert>}
+      {success && <Alert type="success">{success}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -306,7 +298,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="title"
               value={formData.title}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -321,7 +313,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="price"
               value={formData.price}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -336,7 +328,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               value={formData.description}
               onChange={handleInputChange}
               rows={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -356,7 +348,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="location"
               value={formData.location}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -371,7 +363,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="address"
               value={formData.address}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -386,7 +378,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="city"
               value={formData.city}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -401,7 +393,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="state"
               value={formData.state}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -416,7 +408,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="zipCode"
               value={formData.zipCode}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -435,7 +427,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="propertyType"
               value={formData.propertyType}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="house">House</option>
@@ -457,7 +449,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="status"
               value={formData.status}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="for-sale">For Sale</option>
@@ -466,8 +458,6 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               <option value="rented">Rented</option>
             </select>
           </div>
-
-
 
           <div>
             <label htmlFor="isOffplan" className="flex items-center text-sm font-medium text-gray-700 mb-1">
@@ -483,7 +473,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                     isOffplan
                   });
                 }}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mr-2"
+                className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded mr-2"
               />
               Off Plan Property
             </label>
@@ -499,7 +489,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                 name="developerId"
                 value={formData.developerId}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 <option value="">Select a Developer</option>
                 {developers.map((developer) => (
@@ -521,7 +511,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="bedrooms"
               value={formData.bedrooms}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -536,7 +526,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="bathrooms"
               value={formData.bathrooms}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
               step="0.5"
             />
@@ -552,7 +542,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="area"
               value={formData.area}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -567,7 +557,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
               name="yearBuilt"
               value={formData.yearBuilt}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
           </div>
 
@@ -579,7 +569,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                 name="featured"
                 checked={formData.featured}
                 onChange={(e) => setFormData({...formData, featured: e.target.checked})}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mr-2"
+                className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded mr-2"
               />
               Featured Property (will appear on homepage)
             </label>
@@ -596,7 +586,7 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                     id={`feature-${feature}`}
                     checked={formData.features.includes(feature)}
                     onChange={() => handleFeatureChange(feature)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                   />
                   <label htmlFor={`feature-${feature}`} className="ml-2 text-sm text-gray-700">
                     {feature}
@@ -624,7 +614,6 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                           fill
                           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
                           className="object-cover"
-
                         />
                       </div>
                       <button
@@ -688,7 +677,6 @@ const PropertyForm = ({ propertyId, isEdit = false }: PropertyFormProps) => {
                           fill
                           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
                           className="object-cover"
-
                         />
                       </div>
                       <button

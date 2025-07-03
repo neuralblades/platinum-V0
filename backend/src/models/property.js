@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     propertyType: {
-      type: DataTypes.ENUM('house', 'apartment', 'condo', 'townhouse', 'land', 'commercial', 'other'),
+      type: DataTypes.ENUM('house', 'apartment', 'condo', 'townhouse', 'villa', 'penthouse', 'land', 'commercial', 'other'),
       allowNull: false,
     },
     status: {

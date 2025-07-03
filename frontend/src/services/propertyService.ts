@@ -3,6 +3,8 @@
 import api from './api';
 import { fetchWithErrorHandling, objectToQueryParams } from './utils';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
 // Types
 export interface Property {
   id: string;
@@ -43,6 +45,8 @@ export interface Property {
   paymentPlan?: string;
   createdAt: string;
   updatedAt: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface PropertyFilter {
@@ -81,8 +85,13 @@ export const getFeaturedProperties = async () => {
 
 // Get property by ID
 export const getPropertyById = async (id: string) => {
+  // Use absolute URL for server-side fetch
+  const url =
+    typeof window === 'undefined'
+      ? `${API_URL}/properties/${id}`
+      : `/api/properties/${id}`;
   return fetchWithErrorHandling(
-    `/api/properties/${id}`,
+    url,
     `Failed to fetch property with ID ${id}`
   );
 };

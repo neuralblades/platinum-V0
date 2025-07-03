@@ -8,6 +8,7 @@ import { useToast } from '@/contexts/ToastContext';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Button from '@/components/ui/Button';
+import Alert from '@/components/ui/Alert';
 
 interface DeveloperFormProps {
   developerId?: string;
@@ -29,6 +30,8 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
     headquarters: '',
     featured: false,
   });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     if (isEdit && developerId) {
@@ -160,7 +163,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -175,7 +178,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               name="website"
               value={formData.website}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="e.g. www.example.com"
             />
           </div>
@@ -191,7 +194,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                 name="established"
                 value={formData.established}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="e.g. 1995"
                 min="1800"
                 max={new Date().getFullYear()}
@@ -208,7 +211,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
                 name="headquarters"
                 value={formData.headquarters}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="e.g. Dubai, UAE"
               />
             </div>
@@ -221,7 +224,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               name="featured"
               checked={formData.featured}
               onChange={handleInputChange}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
             />
             <label htmlFor="featured" className="ml-2 block text-sm text-gray-700">
               Featured Developer
@@ -240,7 +243,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               value={formData.description}
               onChange={handleInputChange}
               rows={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               placeholder="Enter developer description..."
             ></textarea>
           </div>
@@ -255,7 +258,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               name="logo"
               onChange={handleLogoChange}
               accept="image/*"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             {logoPreview && (
               <div className="mt-2 relative h-40 w-full">
@@ -281,7 +284,7 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
               name="backgroundImage"
               onChange={handleBackgroundImageChange}
               accept="image/*"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             />
             {backgroundImagePreview && (
               <div className="mt-2 relative h-40 w-full">
@@ -317,6 +320,9 @@ export default function DeveloperForm({ developerId, isEdit = false }: Developer
           {isEdit ? 'Update Developer' : 'Create Developer'}
         </Button>
       </div>
+
+      {error && <Alert type="error">{error}</Alert>}
+      {success && <Alert type="success">{success}</Alert>}
     </form>
   );
 }

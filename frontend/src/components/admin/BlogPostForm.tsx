@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { createBlogPost, updateBlogPost, getBlogPostById, getBlogImageUrl, BlogPost } from '@/services/blogService';
 import Button from '@/components/ui/Button';
+import Alert from '@/components/ui/Alert';
 
 interface BlogPostFormProps {
   postId?: string;
@@ -173,17 +174,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="bg-red-50 text-red-800 p-4 rounded-md">
-          <p>{error}</p>
-        </div>
-      )}
-
-      {success && (
-        <div className="bg-green-50 text-green-800 p-4 rounded-md">
-          <p>{success}</p>
-        </div>
-      )}
+      {error && <Alert type="error">{error}</Alert>}
+      {success && <Alert type="success">{success}</Alert>}
 
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
@@ -195,7 +187,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
           name="title"
           value={formData.title}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
           placeholder="Enter post title"
           required
         />
@@ -211,7 +203,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
           rows={15}
           value={formData.content}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
           placeholder="Write your post content here..."
           required
         ></textarea>
@@ -230,7 +222,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
           rows={3}
           value={formData.excerpt}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
           placeholder="Brief summary of the post (shown in listings)"
         ></textarea>
         <p className="mt-1 text-sm text-gray-500">
@@ -248,7 +240,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             required
           >
             <option value="Real Estate">Real Estate</option>
@@ -272,7 +264,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
             name="tags"
             value={formData.tags}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             placeholder="Enter tags separated by commas"
           />
         </div>
@@ -288,7 +280,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
           name="featuredImage"
           ref={fileInputRef}
           onChange={handleFileChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
           accept="image/jpeg,image/png,image/webp"
         />
         <p className="mt-1 text-sm text-gray-500">
@@ -320,7 +312,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ postId }) => {
           name="status"
           value={formData.status}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
           required
         >
           <option value="draft">Draft</option>

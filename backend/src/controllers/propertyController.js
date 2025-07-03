@@ -11,6 +11,17 @@ const getProperties = asyncHandler(async (req, res) => {
   const pageSize = Number(req.query.limit) || 9;
   const page = Number(req.query.page) || 1;
 
+  // --- RECOMMENDED INDEXES FOR PERFORMANCE ---
+  // CREATE INDEX idx_property_type ON Properties(propertyType);
+  // CREATE INDEX idx_status ON Properties(status);
+  // CREATE INDEX idx_isOffplan ON Properties(isOffplan);
+  // CREATE INDEX idx_price ON Properties(price);
+  // CREATE INDEX idx_bedrooms ON Properties(bedrooms);
+  // CREATE INDEX idx_bathrooms ON Properties(bathrooms);
+  // CREATE INDEX idx_area ON Properties(area);
+  // CREATE INDEX idx_location ON Properties(location);
+  // CREATE INDEX idx_yearBuilt ON Properties(yearBuilt);
+
   // Generate cache key based on query parameters
   const queryString = JSON.stringify(req.query);
   const cacheKey = `properties_${queryString}`;
@@ -94,7 +105,8 @@ const getProperties = asyncHandler(async (req, res) => {
     ];
   }
 
-  // Get properties with pagination and count
+  // Profile query timing
+  const start = Date.now();
   const { count, rows: properties } = await Property.findAndCountAll({
     where: whereClause,
     include: [
@@ -113,6 +125,8 @@ const getProperties = asyncHandler(async (req, res) => {
     limit: pageSize,
     offset: pageSize * (page - 1),
   });
+  const end = Date.now();
+  console.log(`getProperties query took ${end - start}ms for filters:`, req.query);
 
   // Prepare response data
   const responseData = {

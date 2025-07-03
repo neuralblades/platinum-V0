@@ -30,8 +30,8 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
 
   if (variant === 'featured') {
     return (
-      <div className="group relative h-full overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
-        <div className="relative h-64 w-full overflow-hidden">
+      <div className="group relative h-80 overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+        <div className="relative h-full w-full overflow-hidden">
           <Image
             src={getBlogImageUrl(post.featuredImage)}
             alt={post.title}
@@ -43,20 +43,20 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, variant = 'default' }) => {
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAEtAJJXF+wHAAAAABJRU5ErkJggg=="
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <div className="mb-2 flex items-center space-x-2">
+          <div className="mb-3 flex items-center space-x-2">
             <span className="rounded-full bg-gray-600 shadow-lg px-3 py-1 text-xs font-medium">{post.category}</span>
             <span className="text-sm opacity-80">{formatDate(post.publishedAt || post.createdAt)}</span>
           </div>
 
           <Link href={`/blog/${post.slug}`} className="group-hover:text-gray-300">
-            <h3 className="mb-2 text-xl font-bold leading-tight transition-colors">{post.title}</h3>
+            <h3 className="mb-3 text-lg font-bold leading-tight transition-colors line-clamp-2">{post.title}</h3>
           </Link>
 
-          <p className="mb-4 text-sm opacity-90">{truncateExcerpt(post.excerpt, 120)}</p>
+          <p className="text-sm opacity-90 line-clamp-2">{truncateExcerpt(post.excerpt, 80)}</p>
         </div>
       </div>
     );

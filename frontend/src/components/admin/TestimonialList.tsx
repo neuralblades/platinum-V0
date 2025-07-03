@@ -10,6 +10,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import Button from '@/components/ui/Button';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import Alert from '@/components/ui/Alert';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 export default function TestimonialList() {
   const router = useRouter();
@@ -18,6 +20,8 @@ export default function TestimonialList() {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [testimonialToDelete, setTestimonialToDelete] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTestimonials();
@@ -34,6 +38,7 @@ export default function TestimonialList() {
       console.error('Error fetching testimonials:', error);
       showToast('Failed to load testimonials', 'error');
       setLoading(false);
+      setError('Failed to load testimonials');
     }
   };
 
@@ -53,9 +58,11 @@ export default function TestimonialList() {
       await deleteTestimonial(testimonialToDelete);
       setTestimonials(testimonials.filter(t => t.id !== testimonialToDelete));
       showToast('Testimonial deleted successfully', 'success');
+      setSuccess('Testimonial deleted successfully');
     } catch (error) {
       console.error('Error deleting testimonial:', error);
       showToast('Failed to delete testimonial', 'error');
+      setError('Failed to delete testimonial');
     } finally {
       setShowDeleteModal(false);
       setTestimonialToDelete(null);
@@ -95,6 +102,9 @@ export default function TestimonialList() {
             <FaPlus className="mr-2" /> Add New Testimonial
           </Button>
         </div>
+
+        {error && <Alert type="error">{error}</Alert>}
+        {success && <Alert type="success">{success}</Alert>}
 
         {testimonials.length === 0 ? (
           <div className="bg-gray-100 p-6 rounded-lg text-center">
@@ -149,15 +159,7 @@ export default function TestimonialList() {
                       {renderStars(testimonial.rating)}
                     </td>
                     <td className="py-3 px-4">
-                      {testimonial.isActive ? (
-                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold">
-                          Active
-                        </span>
-                      ) : (
-                        <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold">
-                          Inactive
-                        </span>
-                      )}
+                      <StatusBadge status={testimonial.isActive ? 'Active' : 'Inactive'} />
                     </td>
                     <td className="py-3 px-4 text-gray-600">{testimonial.order}</td>
                     <td className="py-3 px-4">

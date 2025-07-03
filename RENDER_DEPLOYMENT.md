@@ -23,7 +23,7 @@ git push origin main
 ### Step 2: Deploy Using render.yaml (Recommended)
 
 1. Go to https://render.com/dashboard
-2. Click "New" → "Blueprint"
+2. Click "New" → "grayprint"
 3. Connect your GitHub repository
 4. Select the repository containing your code
 5. Render will automatically detect the `render.yaml` file and create all services

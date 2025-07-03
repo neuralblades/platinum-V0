@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { getTeamMembers, deleteTeamMember, TeamMember } from '@/services/teamService';
 import Button from '@/components/ui/Button';
 import { FaEdit, FaTrash, FaPlus, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import StatusBadge from '@/components/ui/StatusBadge';
 // import AdminLayout from '@/components/admin/AdminLayout';
 
 export default function TeamMembersPage() {
@@ -141,15 +142,7 @@ export default function TeamMembersPage() {
                     <td className="py-3 px-4 text-gray-600">{member.role}</td>
                     <td className="py-3 px-4 text-gray-600">{member.email}</td>
                     <td className="py-3 px-4">
-                      {member.isLeadership ? (
-                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
-                          Yes
-                        </span>
-                      ) : (
-                        <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">
-                          No
-                        </span>
-                      )}
+                      <StatusBadge status={member.isLeadership ? 'Yes' : 'No'} />
                     </td>
                     <td className="py-3 px-4 text-gray-600">{member.order}</td>
                     <td className="py-3 px-4">

@@ -10,6 +10,7 @@ import { clearServerCache } from '@/utils/cacheUtils';
 import { useToast } from '@/contexts/ToastContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Button from '@/components/ui/Button';
+import Alert from '@/components/ui/Alert';
 
 interface OffplanPropertyFormProps {
   propertyId?: string;
@@ -346,17 +347,8 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-          <p>{error}</p>
-        </div>
-      )}
-
-      {success && (
-        <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-          <p>{success}</p>
-        </div>
-      )}
+      {error && <Alert type="error">{error}</Alert>}
+      {success && <Alert type="success">{success}</Alert>}
 
       <h2 className="text-xl font-bold mb-6">Offplan Property Information</h2>
 
@@ -373,7 +365,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="title"
               value={formData.title}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -388,7 +380,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               value={formData.description}
               onChange={handleInputChange}
               rows={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             ></textarea>
           </div>
@@ -403,7 +395,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="price"
               value={formData.price}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               min="0"
               step="0.01"
               required
@@ -420,7 +412,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="location"
               value={formData.location}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -435,7 +427,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="address"
               value={formData.address}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             />
           </div>
@@ -451,7 +443,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 required
               />
             </div>
@@ -465,7 +457,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="state"
                 value={formData.state}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 required
               />
             </div>
@@ -482,7 +474,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="zipCode"
                 value={formData.zipCode}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 required
               />
             </div>
@@ -496,7 +488,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="yearBuilt"
                 value={formData.yearBuilt}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 min={new Date().getFullYear()}
                 required
               />
@@ -515,7 +507,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="propertyType"
               value={formData.propertyType}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="apartment">Apartment</option>
@@ -536,7 +528,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="status"
               value={formData.status}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="for-sale">For Sale</option>
@@ -553,7 +545,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="developerId"
               value={formData.developerId}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="">Select a Developer</option>
@@ -574,7 +566,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               name="paymentPlan"
               value={formData.paymentPlan}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               required
             >
               <option value="70/30">70/30 - Standard Plan</option>
@@ -599,7 +591,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="bedroomRange"
                 value={formData.bedroomRange}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 required
                 placeholder="e.g., 1-3, Studio-2, 2-4"
               />
@@ -617,7 +609,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="bedrooms"
                 value={formData.bedrooms}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 min="0"
                 required
               />
@@ -634,13 +626,13 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 type="text"
                 value={featureInput}
                 onChange={handleFeatureInputChange}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Add a feature"
               />
               <button
                 type="button"
                 onClick={addFeature}
-                className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 transition duration-300"
+                className="px-4 py-2 bg-gray-600 text-white rounded-r-md hover:bg-gray-700 transition duration-300"
               >
                 Add
               </button>
@@ -649,13 +641,13 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
               {formData.features.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center"
+                  className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full flex items-center"
                 >
                   <span>{feature}</span>
                   <button
                     type="button"
                     onClick={() => removeFeature(index)}
-                    className="ml-2 text-blue-600 hover:text-blue-800"
+                    className="ml-2 text-gray-600 hover:text-gray-800"
                   >
                     &times;
                   </button>
@@ -671,7 +663,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 name="featured"
                 checked={formData.featured}
                 onChange={handleInputChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mr-2"
+                className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded mr-2"
               />
               Featured Property
             </label>
@@ -696,7 +688,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
             id="headerImage"
             name="headerImage"
             onChange={handleHeaderImageChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             accept="image/*"
           />
         </div>
@@ -740,7 +732,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
             id="images"
             name="images"
             onChange={handleImageChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
             accept="image/*"
             multiple
           />
@@ -774,7 +766,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 </svg>
               </button>
               {index === 0 && (
-                <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">
                   Main
                 </div>
               )}
@@ -804,7 +796,7 @@ export default function OffplanPropertyForm({ propertyId, isEdit = false }: Offp
                 </svg>
               </button>
               {existingImages.length === 0 && index === 0 && (
-                <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                <div className="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">
                   Main
                 </div>
               )}

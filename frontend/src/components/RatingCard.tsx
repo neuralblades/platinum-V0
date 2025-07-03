@@ -65,9 +65,9 @@ const RatingCard: React.FC<RatingCardProps> = ({
             href={mapUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium"
+            className="inline-flex items-center text-gray-600 hover:text-gray-800 font-medium"
           >
-            <FaDirections className="mr-2 text-teal-700" size={16} />
+            <FaDirections className="mr-2 text-gray-700" size={16} />
             <span>Directions</span>
           </Link>
         </div>

@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { requestPasswordReset } from '@/services/userService';
+import Alert from '@/components/ui/Alert';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="py-4 px-6 bg-blue-600 text-white text-center">
+          <div className="py-4 px-6 bg-gray-600 text-white text-center">
             <h2 className="text-2xl font-bold">Forgot Password</h2>
           </div>
 
@@ -43,7 +44,7 @@ export default function ForgotPasswordPage() {
                 <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
                   Password reset email sent! Check your inbox for instructions to reset your password.
                 </div>
-                <Link href="/auth/login" className="text-blue-600 hover:underline">
+                <Link href="/auth/login" className="text-gray-600 hover:underline">
                   Return to Login
                 </Link>
               </div>
@@ -53,11 +54,7 @@ export default function ForgotPasswordPage() {
                   Enter your email address and we'll send you a link to reset your password.
                 </p>
 
-                {error && (
-                  <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
-                    {error}
-                  </div>
-                )}
+                {error && <Alert type="error">{error}</Alert>}
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-6">
@@ -69,7 +66,7 @@ export default function ForgotPasswordPage() {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                       placeholder="john@example.com"
                       required
                     />
@@ -78,7 +75,7 @@ export default function ForgotPasswordPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 transition duration-300 disabled:bg-blue-400 disabled:cursor-not-allowed"
+                    className="w-full bg-gray-600 text-white py-3 px-4 rounded-md font-medium hover:bg-gray-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Sending...' : 'Send Reset Link'}
                   </button>
@@ -87,7 +84,7 @@ export default function ForgotPasswordPage() {
                 <div className="mt-6 text-center">
                   <p className="text-gray-600">
                     Remember your password?{' '}
-                    <Link href="/auth/login" className="text-blue-600 hover:underline">
+                    <Link href="/auth/login" className="text-gray-600 hover:underline">
                       Sign In
                     </Link>
                   </p>

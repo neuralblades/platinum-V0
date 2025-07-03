@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation';
 import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
 import SearchInput from '@/components/search/SearchInput';
 import { PropertyFilter } from '@/services/propertyService';
-import { motion } from 'framer-motion';
-import { FadeIn, FadeInUp } from '@/components/animations/MotionWrapper';
 
 const HeroSection = () => {
   const router = useRouter();
@@ -37,28 +35,23 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/30"></div>
       </div>
 
-      <motion.div
-        className="w-full relative z-10 py-20 md:py-65 flex flex-col items-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
+      <div className="w-full relative z-10 py-20 md:py-65 flex flex-col items-center opacity-100 transition-opacity duration-800">
         {/* Hero Text - Centered */}
         <div className="text-center mb-8 px-4">
-          <FadeInUp delay={0.3}>
+          <div className="animate-fade-in-up delay-0.3">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-shadow-lg">
               Find your home in Dubai.
             </h1>
-          </FadeInUp>
-          <FadeInUp delay={0.5}>
+          </div>
+          <div className="animate-fade-in-up delay-0.5">
             <p className="text-sm md:text-xl mb-8 text-gray-100 max-w-3xl mx-auto">
               Discover exclusive properties in the most desirable locations worldwide.
             </p>
-          </FadeInUp>
+          </div>
         </div>
 
         {/* Mobile Search Input Only */}
-        <FadeInUp delay={0.7} className="w-full px-4 block md:hidden">
+        <div className="animate-fade-in-up delay-0.7 w-full px-4 block md:hidden">
           <div className="max-w-6xl mx-auto">
             <SearchInput
               placeholder="Search by area, project or community..."
@@ -71,10 +64,10 @@ const HeroSection = () => {
               className="w-full px-4 py-3 bg-white/90 text-gray-700 placeholder-gray-500"
             />
           </div>
-        </FadeInUp>
+        </div>
 
         {/* Desktop Integrated Search and Filters - Full Width */}
-        <FadeInUp delay={0.7} className="w-full px-4 hidden md:block">
+        <div className="animate-fade-in-up delay-0.7 w-full px-4 hidden md:block">
           <div className="max-w-6xl mx-auto">
             <IntegratedSearchFilters
               filters={filters}
@@ -97,13 +90,13 @@ const HeroSection = () => {
               className="w-full"
             />
           </div>
-        </FadeInUp>
+        </div>
 
         {/* Stats */}
-        <FadeIn delay={0.9} className="mt-8 text-center text-md text-white/90 font-medium">
+        <div className="animate-fade-in delay-0.9 mt-8 text-center text-md text-white/90 font-medium">
           <p>Premium Properties · Expert Agents · Exclusive Listings</p>
-        </FadeIn>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { getContactForms } from '@/services/contactService';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Button from '@/components/ui/Button';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 interface ContactForm {
   id: string;
@@ -226,15 +227,7 @@ export default function ContactSubmissionsPage() {
                       <div className="max-w-xs truncate text-gray-700">{form.message}</div>
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium shadow-sm ${
-                        form.status === 'new'
-                          ? 'bg-blue-100 text-blue-800'
-                          : form.status === 'in-progress'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}>
-                        {form.status}
-                      </span>
+                      <StatusBadge status={form.status} />
                     </td>
                   </tr>
                 ))}

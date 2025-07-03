@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useInView } from 'framer-motion';
 
 interface CounterProps {
   end: number;
@@ -10,6 +9,28 @@ interface CounterProps {
   prefix?: string;
   suffix?: string;
   className?: string;
+}
+
+// Custom hook for in-view detection using IntersectionObserver
+function useInViewCustom(ref: React.RefObject<HTMLElement>, options: { once?: boolean; amount?: number } = {}) {
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          if (options.once) observer.disconnect();
+        } else if (!options.once) {
+          setInView(false);
+        }
+      },
+      { threshold: options.amount ?? 0.5 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [ref, options.once, options.amount]);
+  return inView;
 }
 
 export default function CounterAnimation({
@@ -22,7 +43,7 @@ export default function CounterAnimation({
 }: CounterProps) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInViewCustom(ref, { once: true, amount: 0.5 });
   const [hasAnimated, setHasAnimated] = useState(false);
 
   useEffect(() => {

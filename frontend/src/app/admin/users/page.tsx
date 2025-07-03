@@ -108,12 +108,12 @@ export default function AdminUsersPage() {
       {/* Header with Add User Button */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-          <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+          <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
           User Management
         </h1>
         <Link
           href="/admin/users/add"
-          className="px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
+          className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -133,7 +133,7 @@ export default function AdminUsersPage() {
           <input
             type="text"
             placeholder="Search users..."
-            className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+            className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -144,7 +144,7 @@ export default function AdminUsersPage() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300">
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
           </div>
         ) : error ? (
           <div className="p-6 text-center">
@@ -224,7 +224,7 @@ export default function AdminUsersPage() {
                       <select
                         value={user.role}
                         onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                        className="text-sm border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all shadow-sm"
+                        className="text-sm border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all shadow-sm"
                       >
                         <option value="user">User</option>
                         <option value="agent">Agent</option>
@@ -238,7 +238,7 @@ export default function AdminUsersPage() {
                       <div className="flex items-center justify-end space-x-2">
                         <Link
                           href={`/admin/users/edit/${user.id}`}
-                          className="text-white bg-teal-500 hover:bg-teal-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
+                          className="text-white bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded text-xs font-medium transition-colors duration-200 inline-flex items-center"
                         >
                           <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

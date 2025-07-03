@@ -159,7 +159,7 @@ export default function AddTeamMemberPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -173,7 +173,7 @@ export default function AddTeamMemberPage() {
                     value={formData.role}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -186,7 +186,7 @@ export default function AddTeamMemberPage() {
                     value={formData.bio}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function AddTeamMemberPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -219,7 +219,7 @@ export default function AddTeamMemberPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function AddTeamMemberPage() {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -275,7 +275,7 @@ export default function AddTeamMemberPage() {
                     value={formData.whatsapp}
                     onChange={handleChange}
                     placeholder="e.g., +971501234567"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Include country code for international format (e.g., +971 for UAE)
@@ -297,12 +297,12 @@ export default function AddTeamMemberPage() {
                 value={newLanguage}
                 onChange={(e) => setNewLanguage(e.target.value)}
                 placeholder="Add a language (e.g., English, Arabic)"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
               <button
                 type="button"
                 onClick={handleAddLanguage}
-                className="px-4 py-2 bg-teal-600 text-white rounded-r-md hover:bg-teal-700"
+                className="px-4 py-2 bg-gray-600 text-white rounded-r-md hover:bg-gray-700"
               >
                 <FaPlus />
               </button>
@@ -344,7 +344,7 @@ export default function AddTeamMemberPage() {
                     name="isLeadership"
                     checked={formData.isLeadership}
                     onChange={handleChange}
-                    className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                   />
                   <span className="ml-2 text-gray-700">Leadership Team Member</span>
                 </label>
@@ -360,7 +360,7 @@ export default function AddTeamMemberPage() {
                   value={formData.order}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   Lower numbers will be displayed first.

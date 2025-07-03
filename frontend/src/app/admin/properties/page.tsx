@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { getProperties, deleteProperty } from '@/services/propertyService';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import Button from '@/components/ui/Button';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 // Define Property interface to avoid using 'any'
 interface Property {
@@ -157,14 +158,14 @@ export default function AdminPropertiesPage() {
             <input
               type="text"
               placeholder="Search properties..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div>
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
@@ -178,7 +179,7 @@ export default function AdminPropertiesPage() {
           </div>
           <div>
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
             >
@@ -192,7 +193,7 @@ export default function AdminPropertiesPage() {
           <div>
             <button
               type="submit"
-              className="w-full px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
+              className="w-full px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -207,7 +208,7 @@ export default function AdminPropertiesPage() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300">
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
           </div>
         ) : error ? (
           <div className="p-6 text-center">
@@ -292,14 +293,7 @@ export default function AdminPropertiesPage() {
                       <div className="text-sm text-gray-900">{property.propertyType}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm ${
-                        property.status === 'for-sale' ? 'bg-green-100 text-green-800' :
-                        property.status === 'for-rent' ? 'bg-teal-100 text-teal-800' :
-                        property.status === 'sold' ? 'bg-gray-100 text-gray-800' :
-                        'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {property.status}
-                      </span>
+                      <StatusBadge status={property.status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {property.isOffplan ? (
@@ -307,7 +301,7 @@ export default function AdminPropertiesPage() {
                           Off Plan
                         </span>
                       ) : (
-                        <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800 shadow-sm">
+                        <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 shadow-sm">
                           Regular
                         </span>
                       )}

@@ -5,6 +5,7 @@ import { getAllOffplanInquiries, updateOffplanInquiryStatus, OffplanInquiry } fr
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { getFullImageUrl } from '@/utils/imageUtils';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 export default function OffplanInquiriesPage() {
   const [inquiries, setInquiries] = useState<OffplanInquiry[]>([]);
@@ -156,7 +157,7 @@ export default function OffplanInquiriesPage() {
       <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-            <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+            <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
             Offplan Property Inquiries
           </h1>
           <div className="flex space-x-2">
@@ -195,7 +196,7 @@ export default function OffplanInquiriesPage() {
             </button>
             <button
               onClick={handleRefresh}
-              className="px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
+              className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 flex items-center"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -216,14 +217,14 @@ export default function OffplanInquiriesPage() {
             <input
               type="text"
               placeholder="Search by name, email, property..."
-              className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              className="w-full pl-10 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="w-full md:w-64">
             <select
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -237,7 +238,7 @@ export default function OffplanInquiriesPage() {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
           </div>
         ) : error ? (
           <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg mb-6 flex items-start">
@@ -295,22 +296,7 @@ export default function OffplanInquiriesPage() {
                       </div>
                     </td>
                     <td className="py-3 px-4">
-                      <select
-                        className={`px-2 py-1 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm transition-all ${
-                          inquiry.status === 'new' ? 'bg-blue-100 border-blue-300 text-blue-800' :
-                          inquiry.status === 'in-progress' ? 'bg-yellow-100 border-yellow-300 text-yellow-800' :
-                          'bg-green-100 border-green-300 text-green-800'
-                        }`}
-                        value={inquiry.status}
-                        onChange={(e) => {
-                          const newStatus = e.target.value as 'new' | 'in-progress' | 'resolved';
-                          handleStatusUpdate(inquiry.id, newStatus);
-                        }}
-                      >
-                        <option value="new">New</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="resolved">Resolved</option>
-                      </select>
+                      <StatusBadge status={inquiry.status} />
                     </td>
                     <td className="py-3 px-4 text-gray-700">
                       {formatDate(inquiry.createdAt)}
@@ -318,7 +304,7 @@ export default function OffplanInquiriesPage() {
                     <td className="py-3 px-4">
                       <button
                         onClick={() => viewInquiryDetails(inquiry)}
-                        className="px-2 py-1 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-xs font-medium flex items-center"
+                        className="px-2 py-1 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 text-xs font-medium flex items-center"
                       >
                         <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -341,7 +327,7 @@ export default function OffplanInquiriesPage() {
           <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-100">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-gray-800 flex items-center">
-                <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+                <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
                 Inquiry Details
               </h2>
               <button
@@ -364,7 +350,7 @@ export default function OffplanInquiriesPage() {
                   <div className="flex items-center space-x-2 mt-1">
                     <span className={`px-2 py-1 rounded text-xs ${
                       selectedInquiry.status === 'new'
-                        ? 'bg-blue-100 text-blue-800'
+                        ? 'bg-gray-100 text-gray-800'
                         : selectedInquiry.status === 'in-progress'
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-green-100 text-green-800'
@@ -372,8 +358,8 @@ export default function OffplanInquiriesPage() {
                       {selectedInquiry.status}
                     </span>
                     <select
-                      className={`px-2 py-1 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm transition-all ${
-                        selectedInquiry.status === 'new' ? 'bg-blue-100 border-blue-300 text-blue-800' :
+                      className={`px-2 py-1 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 shadow-sm transition-all ${
+                        selectedInquiry.status === 'new' ? 'bg-gray-100 border-gray-300 text-gray-800' :
                         selectedInquiry.status === 'in-progress' ? 'bg-yellow-100 border-yellow-300 text-yellow-800' :
                         'bg-green-100 border-green-300 text-green-800'
                       }`}
@@ -491,7 +477,7 @@ export default function OffplanInquiriesPage() {
                       <a
                         href={`/properties/offplan/${selectedInquiry.propertyId}`}
                         target="_blank"
-                        className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 font-medium"
+                        className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 font-medium"
                       >
                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

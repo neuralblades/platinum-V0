@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getFullImageUrl } from '@/utils/imageUtils';
 import { getTestimonials, Testimonial } from '@/services/testimonialService';
-import { motion } from 'framer-motion';
-import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -31,13 +30,22 @@ const Testimonials = () => {
     fetchTestimonials();
   }, []);
 
-  // Add animation keyframes to the document
+  // Add CSS styles to the document
   useEffect(() => {
-    if (testimonials.length <= 3) return; // Don't add animation if we have 3 or fewer testimonials
-
-    // Create a style element
+    // Create a style element for testimonial styles
     const styleElement = document.createElement('style');
+    styleElement.id = 'testimonial-styles';
     styleElement.innerHTML = `
+      .testimonial-text-truncate {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.6;
+        max-height: 4.8em; /* 3 lines × 1.6 line-height */
+      }
+      
       @keyframes testimonialMarquee {
         0% { transform: translateX(0); }
         100% { transform: translateX(-50%); }
@@ -47,9 +55,12 @@ const Testimonials = () => {
 
     // Clean up
     return () => {
-      document.head.removeChild(styleElement);
+      const existingStyle = document.getElementById('testimonial-styles');
+      if (existingStyle) {
+        document.head.removeChild(existingStyle);
+      }
     };
-  }, [testimonials.length]);
+  }, []);
 
   // Handle pause on hover
   const handleMouseEnter = () => {
@@ -86,21 +97,14 @@ const Testimonials = () => {
   };
 
   // Render testimonial card
-  const renderTestimonialCard = (testimonial: Testimonial, index: number) => (
-    <motion.div
-      key={`${testimonial.id}-${index}`}
-      className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col mx-4 min-w-[300px] md:min-w-[350px]"
-      whileHover={{
-        y: -10,
-        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-      }}
-      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+  const renderTestimonialCard = (testimonial: Testimonial, index: number, isDuplicate = false) => (
+    <div
+      key={isDuplicate ? `duplicate-${testimonial.id}-${index}` : `original-${testimonial.id}`}
+      className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col mx-4 min-w-[300px] md:min-w-[350px] transition-transform duration-200 hover:-translate-y-2 hover:shadow-2xl"
     >
       <div className="flex items-center mb-4">
-        <motion.div
-          className="relative h-12 w-12 rounded-full overflow-hidden mr-4"
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
+        <div
+          className="relative h-12 w-12 rounded-full overflow-hidden mr-4 transition-transform duration-200 hover:scale-110"
         >
           {testimonial.image ? (
             <Image
@@ -117,91 +121,77 @@ const Testimonials = () => {
               </span>
             </div>
           )}
-        </motion.div>
+        </div>
         <div>
           <h3 className="text-lg font-bold text-gray-900">{testimonial.name}</h3>
           <p className="text-gray-600">{testimonial.role}</p>
         </div>
       </div>
 
-      <p className="text-gray-700 italic flex-grow">&quot;{testimonial.quote}&quot;</p>
+      <p className="text-gray-700 italic flex-grow testimonial-text-truncate">
+        &quot;{testimonial.quote}&quot;
+      </p>
 
       <div className="mt-4">
         {renderStars(testimonial.rating)}
       </div>
-    </motion.div>
+    </div>
   );
 
-  // Duplicate testimonials for seamless loop
-  const allTestimonials = testimonials.length > 3
-    ? [...testimonials, ...testimonials]
-    : testimonials;
+  // No need for allTestimonials array since we're mapping separately
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <FadeInUp className="text-center mb-12">
+        <div className="animate-fade-in-up text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Clients Say</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Don&apos;t just take our word for it. Here&apos;s what our satisfied clients have to say about their experience with Platinum Square.
           </p>
-        </FadeInUp>
+        </div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <motion.div
-              className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-          </div>
+          <LoadingSpinner />
         ) : error ? (
-          <FadeInUp>
-            <div className="text-center text-red-500 py-8">{error}</div>
-          </FadeInUp>
+          <div className="animate-fade-in-up text-center text-red-500 py-8">{error}</div>
         ) : testimonials.length === 0 ? (
-          <FadeInUp>
-            <div className="text-center text-gray-500 py-8">No testimonials available at the moment.</div>
-          </FadeInUp>
+          <div className="animate-fade-in-up text-center text-gray-500 py-8">No testimonials available at the moment.</div>
         ) : testimonials.length <= 3 ? (
           // If we have 3 or fewer testimonials, just show them in a grid
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <StaggerItem key={testimonial.id}>
-                {renderTestimonialCard(testimonial, index)}
-              </StaggerItem>
+              <div key={`grid-${testimonial.id}`}>
+                {renderTestimonialCard(testimonial, index, false)}
+              </div>
             ))}
-          </StaggerContainer>
+          </div>
         ) : (
           // If we have more than 3 testimonials, show them in a marquee
-          <FadeInUp>
-            <div className="relative overflow-hidden">
-              <motion.div
-                ref={marqueeRef}
-                className="flex"
-                style={{
-                  width: 'fit-content'
-                }}
-                animate={{
-                  x: [0, testimonials.length <= 3 ? 0 : '-50%']
-                }}
-                transition={{
-                  x: {
-                    duration: 30,
-                    repeat: Infinity,
-                    ease: "linear",
-                    repeatType: "loop"
-                  }
-                }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                {allTestimonials.map((testimonial, index) => (
-                  renderTestimonialCard(testimonial, index)
-                ))}
-              </motion.div>
+          <div className="relative overflow-hidden">
+            <div
+              ref={marqueeRef}
+              className="flex"
+              style={{
+                width: 'fit-content',
+                animation: 'testimonialMarquee 30s linear infinite'
+              }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* First set of testimonials */}
+              {testimonials.map((testimonial, index) => (
+                <div key={`original-${testimonial.id}`}>
+                  {renderTestimonialCard(testimonial, index, false)}
+                </div>
+              ))}
+              {/* Duplicate set for seamless loop */}
+              {testimonials.map((testimonial, index) => (
+                <div key={`duplicate-${testimonial.id}`}>
+                  {renderTestimonialCard(testimonial, index, true)}
+                </div>
+              ))}
             </div>
-          </FadeInUp>
+          </div>
         )}
       </div>
     </section>

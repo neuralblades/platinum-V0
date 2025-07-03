@@ -126,7 +126,7 @@ const GoogleMap = ({
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 10,
-          fillColor: '#0D9488', // Teal-600
+          fillColor: '#0D9488', // gray-600
           fillOpacity: 1,
           strokeColor: '#FFFFFF',
           strokeWeight: 2,

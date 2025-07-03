@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getAllDocumentRequests, updateDocumentRequestStatus, deleteDocumentRequest } from '@/services/documentRequestService';
 import { formatDate } from '@/utils/dateUtils';
 import Link from 'next/link';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 interface DocumentRequest {
   id: string;
@@ -143,7 +144,7 @@ export default function DocumentRequestsPage() {
   if (authLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
       </div>
     );
   }
@@ -153,14 +154,14 @@ export default function DocumentRequestsPage() {
     return (
       <div className="p-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
-          <h1 className="text-2xl font-bold text-teal-600 mb-4 flex items-center">
-            <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+          <h1 className="text-2xl font-bold text-gray-600 mb-4 flex items-center">
+            <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
             Authentication Required
           </h1>
           <p className="text-gray-700 mb-4">Please log in to access this page.</p>
           <a
             href="/auth/login?redirect=/admin/document-requests"
-            className="px-4 py-2 bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 inline-flex items-center font-medium"
+            className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 inline-flex items-center font-medium"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
@@ -201,7 +202,7 @@ export default function DocumentRequestsPage() {
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-            <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+            <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
             Document Requests
           </h1>
 
@@ -216,7 +217,7 @@ export default function DocumentRequestsPage() {
                 name="requestType"
                 value={filters.requestType}
                 onChange={handleFilterChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               >
                 <option value="">All Types</option>
                 <option value="brochure">Brochure</option>
@@ -233,7 +234,7 @@ export default function DocumentRequestsPage() {
                 name="status"
                 value={filters.status}
                 onChange={handleFilterChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 transition-all"
               >
                 <option value="">All Statuses</option>
                 <option value="pending">Pending</option>
@@ -255,7 +256,7 @@ export default function DocumentRequestsPage() {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
           </div>
         ) : documentRequests.length === 0 ? (
           <div className="p-6 text-center text-gray-500 flex flex-col items-center justify-center h-64">
@@ -311,7 +312,7 @@ export default function DocumentRequestsPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <Link
                         href={`/properties/${request.property?.id || request.propertyId}`}
-                        className="text-sm text-teal-600 hover:text-teal-800 hover:underline flex items-center"
+                        className="text-sm text-gray-600 hover:text-gray-800 hover:underline flex items-center"
                       >
                         <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -329,21 +330,7 @@ export default function DocumentRequestsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <select
-                        value={request.status}
-                        onChange={(e) => handleStatusUpdate(request.id, e.target.value as 'pending' | 'sent' | 'completed')}
-                        className={`text-sm font-medium rounded-lg px-2 py-1 border focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 shadow-sm transition-all ${
-                          request.status === 'pending'
-                            ? 'bg-yellow-100 border-yellow-300 text-yellow-800'
-                            : request.status === 'sent'
-                            ? 'bg-blue-100 border-blue-300 text-blue-800'
-                            : 'bg-green-100 border-green-300 text-green-800'
-                        }`}
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="sent">Sent</option>
-                        <option value="completed">Completed</option>
-                      </select>
+                      <StatusBadge status={request.status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button

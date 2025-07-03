@@ -1,72 +1,71 @@
 "use client";
+
 import Button from '@/components/ui/Button';
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import PropertyCard from '@/components/properties/PropertyCard';
-import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
-import { getProperties, PropertyFilter, Property } from '@/services/propertyService';
+import { Property, PropertyFilter, getProperties } from '@/services/propertyService';
 import Breadcrumb from '@/components/ui/Breadcrumb';
-import { motion } from 'framer-motion';
-import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
+import IntegratedSearchFilters from '@/components/search/IntegratedSearchFilters';
+
+interface PropertyQueryResponse {
+  success: boolean;
+  properties: Property[];
+  page: number;
+  pages: number;
+  total: number;
+}
 
 export default function OffPlanPropertiesPage() {
   const searchParams = useSearchParams();
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [filters, setFilters] = useState<PropertyFilter>({
-    isOffplan: true,
-    page: 1,
-    type: searchParams.get('type') || '',
-    minPrice: searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined,
-    maxPrice: searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined,
-    bedrooms: searchParams.get('bedrooms') ? Number(searchParams.get('bedrooms')) : undefined,
-    location: searchParams.get('location') || '',
-    keyword: searchParams.get('keyword') || '',
+
+  const page = Number(searchParams.get('page')) || 1;
+  const type = searchParams.get('type') || '';
+  const minPrice = searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : undefined;
+  const maxPrice = searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : undefined;
+  const bedrooms = searchParams.get('bedrooms') ? Number(searchParams.get('bedrooms')) : undefined;
+  const location = searchParams.get('location') || '';
+  const keyword = searchParams.get('keyword') || '';
+  const isOffplan = true;
+
+  const initialFilters = useMemo(() => ({
+    isOffplan,
+    page,
+    type,
+    minPrice,
+    maxPrice,
+    bedrooms,
+    location,
+    keyword,
+  }), [isOffplan, page, type, minPrice, maxPrice, bedrooms, location, keyword]);
+
+  // Local state for current filters
+  const [currentFilters, setCurrentFilters] = useState<PropertyFilter>(initialFilters);
+
+  // Single TanStack Query for property data
+  const { 
+    data: propertyData = { success: false, properties: [], page: 1, pages: 1, total: 0 }, 
+    isLoading, 
+    isError,
+    refetch 
+  } = useQuery<PropertyQueryResponse>({
+    queryKey: ['properties', 'offplan', JSON.stringify(currentFilters)],
+    queryFn: () => getProperties(currentFilters),
   });
 
-  // Fetch properties with current filters
-  const fetchProperties = async () => {
-    setLoading(true);
-    try {
-      const response = await getProperties(filters);
-      if (response.success && response.properties.length > 0) {
-        setProperties(response.properties);
-        setTotalPages(response.pages);
-        setCurrentPage(response.page);
-      } else {
-        setProperties([]);
-        setError('No off-plan properties found matching your criteria.');
-      }
-    } catch (err) {
-      console.error('Error fetching properties:', err);
-      setError('Failed to load properties');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Initial fetch
-  useEffect(() => {
-    fetchProperties();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Handle filter changes
   const handleFilterChange = (newFilters: PropertyFilter) => {
-    setFilters({ ...filters, ...newFilters, page: 1, isOffplan: true });
+    setCurrentFilters(newFilters);
   };
 
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    setFilters({ ...filters, page, isOffplan: true });
+  const handleApplyFilters = () => {
+    refetch();
   };
 
-  // Apply filters and fetch properties
-  const applyFilters = () => {
-    fetchProperties();
+  // Handle pagination
+  const handlePageChange = (newPage: number) => {
+    const updatedFilters = { ...currentFilters, page: newPage };
+    setCurrentFilters(updatedFilters);
   };
 
   return (
@@ -81,30 +80,16 @@ export default function OffPlanPropertiesPage() {
           ]}
         />
       </div>
-      <FadeInUp className="mb-8">
-        <motion.h1
-          className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+      
+      <div className="animate-fade-in-up mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 opacity-100 translate-y-0 transition-all duration-500">
           Off Plan Properties
-        </motion.h1>
-        <motion.p
-          className="text-gray-600 mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+        </h1>
+        <p className="text-gray-600 mb-4 opacity-100 translate-y-0 transition-all duration-500">
           Discover our exclusive collection of off-plan properties in Dubai. Invest in the future with these upcoming developments offering modern designs and premium amenities.
-        </motion.p>
-        <motion.div
-          className="flex space-x-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        </p>
+        <div className="flex space-x-4 opacity-100 translate-y-0 transition-all duration-500">
+          <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
             <Button
               href="/properties"
               variant="outline"
@@ -112,8 +97,8 @@ export default function OffPlanPropertiesPage() {
             >
               Ready Properties
             </Button>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          </div>
+          <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
             <Button
               href="/properties/offplan"
               variant="accent"
@@ -121,8 +106,8 @@ export default function OffPlanPropertiesPage() {
             >
               Off Plan Properties
             </Button>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          </div>
+          <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
             <Button
               href="/properties/map?isOffplan=true"
               variant="outline"
@@ -130,134 +115,100 @@ export default function OffPlanPropertiesPage() {
             >
               Map View
             </Button>
-          </motion.div>
-        </motion.div>
-      </FadeInUp>
-        {/* Integrated Search and Filters */}
-        <FadeInUp delay={0.3} className="mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: 0.3
-            }}
-          >
-            <IntegratedSearchFilters
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              onApplyFilters={applyFilters}
-              className="w-full"
-            />
-          </motion.div>
-        </FadeInUp>
-
-        {/* Property Grid */}
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <motion.div
-              className="rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
           </div>
-        ) : error ? (
-          <motion.div
-            className="text-center text-red-600 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {error}
-          </motion.div>
-        ) : properties.length === 0 ? (
-          <motion.div
-            className="text-center text-gray-600 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            No off-plan properties found matching your criteria.
-          </motion.div>
-        ) : (
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" delay={0.05}>
-            {properties.map((property) => (
-              <StaggerItem key={property.id}>
-                <motion.div
-                  whileHover={{
-                    y: -5,
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  <PropertyCard
-                    id={property.id}
-                    title={property.title}
-                    price={property.price}
-                    location={property.location}
-                    bedrooms={property.bedrooms}
-                    bedroomRange={property.bedroomRange}
-                    bathrooms={property.bathrooms}
-                    area={property.area}
-                    imageUrl={property.mainImage}
-                    featured={property.featured}
-                    isOffplan={true}
-                    yearBuilt={property.yearBuilt}
-                    paymentPlan={property.paymentPlan}
-                    agent={property.agent}
-                  />
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        )}
+        </div>
+      </div>
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <FadeInUp delay={0.4}>
-            <div className="mt-12 flex justify-center">
-              <nav className="flex items-center">
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    variant="outline"
-                    size="sm"
-                    className="mr-2"
-                  >
-                    Previous
-                  </Button>
-                </motion.div>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <motion.div
-                    key={page}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="mx-1"
-                  >
-                    <Button
-                      onClick={() => handlePageChange(page)}
-                      variant={currentPage === page ? "primary" : "outline"}
-                      size="sm"
-                    >
-                      {page}
-                    </Button>
-                  </motion.div>
-                ))}
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    variant="outline"
-                    size="sm"
-                    className="ml-2"
-                  >
-                    Next
-                  </Button>
-                </motion.div>
-              </nav>
+      {/* Integrated Search and Filters */}
+      <div className="animate-fade-in-up mb-8">
+        <IntegratedSearchFilters
+          filters={currentFilters}
+          onFilterChange={handleFilterChange}
+          onApplyFilters={handleApplyFilters}
+          className="w-full"
+          isLoading={isLoading}
+          isError={isError}
+          results={propertyData}
+        />
+      </div>
+
+      {/* Property Grid */}
+      {isLoading ? (
+        <div className="text-center text-gray-600 mb-8">Loading properties...</div>
+      ) : isError ? (
+        <div className="text-center text-red-600 mb-8">Error loading properties. Please try again.</div>
+      ) : propertyData.properties.length === 0 ? (
+        <div className="text-center text-gray-600 mb-8 opacity-100 translate-y-0 transition-all duration-500">
+          No off-plan properties found matching your criteria.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {propertyData.properties.map((property) => (
+            <div key={property.id} className="transition-transform duration-200 hover:-translate-y-1">
+              <PropertyCard
+                id={property.id}
+                title={property.title}
+                price={property.price}
+                location={property.location}
+                bedrooms={property.bedrooms}
+                bedroomRange={property.bedroomRange}
+                bathrooms={property.bathrooms}
+                area={property.area}
+                imageUrl={property.mainImage}
+                featured={property.featured}
+                isOffplan={true}
+                yearBuilt={property.yearBuilt}
+                paymentPlan={property.paymentPlan}
+                agent={property.agent}
+              />
             </div>
-          </FadeInUp>
-        )}
+          ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {propertyData.pages > 1 && (
+        <div className="mt-12 flex justify-center">
+          <nav className="flex items-center">
+            <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
+              <Button
+                onClick={() => handlePageChange(propertyData.page - 1)}
+                disabled={propertyData.page === 1}
+                variant="outline"
+                size="sm"
+                className="mr-2"
+              >
+                Previous
+              </Button>
+            </div>
+            {Array.from({ length: propertyData.pages }, (_, i) => i + 1).map((page) => (
+              <div
+                key={page}
+                className="inline-block transition-transform duration-200 hover:scale-110 active:scale-95 mx-1"
+              >
+                <Button
+                  onClick={() => handlePageChange(page)}
+                  variant={propertyData.page === page ? "primary" : "outline"}
+                  size="sm"
+                >
+                  {page}
+                </Button>
+              </div>
+            ))}
+            <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
+              <Button
+                onClick={() => handlePageChange(propertyData.page + 1)}
+                disabled={propertyData.page === propertyData.pages}
+                variant="outline"
+                size="sm"
+                className="ml-2"
+              >
+                Next
+              </Button>
+            </div>
+          </nav>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,10 +2,9 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,18 +18,15 @@ const Header = () => {
   // Use the auth context instead of local state
   const { user, logout } = useAuth();
 
-  // Get scroll information
-  const { scrollY } = useScroll();
-
   // Listen to scroll events and update state
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  const handleScroll = () => {
     const scrollThreshold = 50;
-    if (latest > scrollThreshold && !isScrolled) {
+    if (window.scrollY > scrollThreshold && !isScrolled) {
       setIsScrolled(true);
-    } else if (latest <= scrollThreshold && isScrolled) {
+    } else if (window.scrollY <= scrollThreshold && isScrolled) {
       setIsScrolled(false);
     }
-  });
+  };
 
   // Determine the header background class based on page and scroll position
   const headerBgClass = isHomePage
@@ -44,12 +40,16 @@ const Header = () => {
     ? isScrolled ? "fixed w-full" : "absolute w-full"
     : "sticky";
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isScrolled]);
+
   return (
-    <motion.header
+    <header
       className={`${headerBgClass} ${positionClass} top-0 z-[100] transition-colors duration-300`}
-      animate={{
-        backgroundColor: isHomePage && !isScrolled ? 'rgba(0, 0, 0, 0)' : undefined,
-      }}>
+    >
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Image
@@ -115,7 +115,7 @@ const Header = () => {
 
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-primary-600 transition duration-300"
+                  className="flex items-center space-x-2 px-4 py-2 text-gray-300 hover:text-white transition duration-300"
                 >
                   <span>{user.firstName}</span>
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -277,7 +277,7 @@ const Header = () => {
           </nav>
         </div>
       )}
-    </motion.header>
+    </header>
   );
 };
 

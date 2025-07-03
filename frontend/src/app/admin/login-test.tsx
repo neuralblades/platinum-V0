@@ -34,7 +34,7 @@ export default function AdminLoginTest() {
     <div className="flex justify-center items-center h-screen">
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">Creating Test Admin User...</h1>
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 mx-auto"></div>
       </div>
     </div>
   );

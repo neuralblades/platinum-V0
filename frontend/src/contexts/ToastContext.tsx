@@ -64,7 +64,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
                   ? 'bg-red-500 text-white'
                   : toast.type === 'warning'
                   ? 'bg-yellow-500 text-white'
-                  : 'bg-blue-500 text-white'
+                  : 'bg-gray-500 text-white'
               }`}
             >
               <p>{toast.message}</p>

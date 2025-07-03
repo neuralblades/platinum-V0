@@ -164,7 +164,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
       <div className="p-6">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600"></div>
           </div>
         </div>
       </div>
@@ -216,7 +216,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -230,7 +230,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     value={formData.role}
                     onChange={handleChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -243,7 +243,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     value={formData.bio}
                     onChange={handleChange}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
               </div>
@@ -263,7 +263,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
 
@@ -276,7 +276,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                 </div>
               </div>
@@ -317,7 +317,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Leave empty to keep the current image.
@@ -341,7 +341,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     value={formData.whatsapp}
                     onChange={handleChange}
                     placeholder="e.g., +971501234567"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   />
                   <p className="text-xs text-gray-500 mt-1">
                     Include country code for international format (e.g., +971 for UAE)
@@ -363,12 +363,12 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                 value={newLanguage}
                 onChange={(e) => setNewLanguage(e.target.value)}
                 placeholder="Add a language (e.g., English, Arabic)"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
               <button
                 type="button"
                 onClick={handleAddLanguage}
-                className="px-4 py-2 bg-teal-600 text-white rounded-r-md hover:bg-teal-700"
+                className="px-4 py-2 bg-gray-600 text-white rounded-r-md hover:bg-gray-700"
               >
                 <FaPlus />
               </button>
@@ -410,7 +410,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                     name="isLeadership"
                     checked={formData.isLeadership}
                     onChange={handleChange}
-                    className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                   />
                   <span className="ml-2 text-gray-700">Leadership Team Member</span>
                 </label>
@@ -426,7 +426,7 @@ export default function EditTeamMemberPage({ params }: EditTeamMemberPageProps) 
                   value={formData.order}
                   onChange={handleChange}
                   min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   Lower numbers will be displayed first.

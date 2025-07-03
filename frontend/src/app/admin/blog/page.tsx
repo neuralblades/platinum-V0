@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { getBlogPosts, deleteBlogPost, BlogPost, getBlogImageUrl } from '@/services/blogService';
 import Button from '@/components/ui/Button';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 const AdminBlogPage: React.FC = () => {
   const { user, isAdmin } = useAuth();
@@ -87,12 +88,12 @@ const AdminBlogPage: React.FC = () => {
       <div className="p-6 space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-            <span className="w-1 h-6 bg-teal-500 rounded-full mr-2"></span>
+            <span className="w-1 h-6 bg-gray-500 rounded-full mr-2"></span>
             Blog Posts
           </h1>
         </div>
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600 shadow-md"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600 shadow-md"></div>
         </div>
       </div>
     );
@@ -178,7 +179,7 @@ const AdminBlogPage: React.FC = () => {
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">
-                            <Link href={`/blog/${post.slug}`} target="_blank" className="hover:text-blue-600">
+                            <Link href={`/blog/${post.slug}`} target="_blank" className="hover:text-gray-600">
                               {post.title}
                             </Link>
                           </div>
@@ -194,18 +195,12 @@ const AdminBlogPage: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800 shadow-sm">
+                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800 shadow-sm">
                         {post.category}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full shadow-sm ${
-                        post.status === 'published'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {post.status}
-                      </span>
+                      <StatusBadge status={post.status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(post.publishedAt || post.createdAt)}

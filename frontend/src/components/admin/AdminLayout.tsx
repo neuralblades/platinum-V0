@@ -25,7 +25,7 @@ export default function AdminLayout({
   if (loading || (!user && !loading)) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-600"></div>
       </div>
     );
   }
@@ -126,7 +126,7 @@ export default function AdminLayout({
           <div className="px-4 py-4 flex justify-between items-center">
             <h2 className="text-xl font-semibold text-gray-800">Team Management</h2>
             <div className="flex items-center">
-              <Link href="/" className="ml-4 px-4 py-2 text-sm text-blue-600 hover:text-blue-800">
+              <Link href="/" className="ml-4 px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
                 View Website
               </Link>
             </div>

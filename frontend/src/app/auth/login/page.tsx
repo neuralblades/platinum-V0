@@ -39,7 +39,7 @@ export default function LoginPage() {
       await login({ email, password });
       // If login is successful, the auth context will update the user state
       // and the useEffect above will handle the redirect
-    } catch (err) {
+    } catch {
       // Error is handled by the auth context
     }
   };
@@ -86,7 +86,7 @@ export default function LoginPage() {
             <p className="text-sm text-gray-500">Don't have an account yet? <Link href="/auth/register" className="text-gray-700 font-medium hover:underline">Sign Up</Link></p>
           </div>
 
-          {(error || formError) && (
+          {(formError || formError) && (
             <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
               {formError || error}
             </div>

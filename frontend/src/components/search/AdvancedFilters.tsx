@@ -134,7 +134,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
           <div className="min-w-[150px]">
             <select
               id="property-type"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
               value={filters.type || ''}
               onChange={handleFilterChange}
             >
@@ -153,7 +153,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
           <div className="min-w-[120px]">
             <select
               id="price-range"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
               value={
                 filters.minPrice !== undefined && filters.maxPrice !== undefined
                   ? `${filters.minPrice}-${filters.maxPrice}`
@@ -176,7 +176,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
           <div className="min-w-[100px]">
             <select
               id="bedrooms"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
               value={filters.bedrooms?.toString() || ''}
               onChange={handleFilterChange}
             >
@@ -195,7 +195,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
           <div className="min-w-[100px]">
             <select
               id="status"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
               value={filters.status || ''}
               onChange={handleFilterChange}
             >
@@ -215,7 +215,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
             <button
               type="button"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-center"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-gray-500 flex items-center justify-center"
             >
               <span>Filters</span>
               <svg className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -250,7 +250,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
                 </label>
                 <select
                   id="location"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={filters.location || ''}
                   onChange={handleFilterChange}
                 >
@@ -272,7 +272,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
                 </label>
                 <select
                   id="bathrooms"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={filters.bathrooms?.toString() || ''}
                   onChange={handleFilterChange}
                 >
@@ -295,7 +295,7 @@ const AdvancedFilters: React.FC<AdvancedFiltersProps> = ({
                 <input
                   type="number"
                   id="year-built"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   placeholder="e.g. 2020"
                   min="1900"
                   max={new Date().getFullYear()}

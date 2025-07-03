@@ -4,13 +4,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProperties, getPropertyById, PropertyFilter } from '@/services/propertyService';
 import Button from '@/components/ui/Button';
-import { motion, AnimatePresence } from 'framer-motion';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface IntegratedSearchFiltersProps {
   filters: PropertyFilter;
   onFilterChange: (filters: PropertyFilter) => void;
   onApplyFilters: () => void;
   className?: string;
+  isLoading?: boolean;
+  isError?: boolean;
+  results?: any;
 }
 
 interface Suggestion {
@@ -86,6 +89,9 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
   onFilterChange,
   onApplyFilters,
   className = '',
+  isLoading = false,
+  isError = false,
+  results = [],
 }) => {
   const [query, setQuery] = useState(filters.keyword || '');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -310,13 +316,8 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
         <div className="relative flex flex-col md:flex-row gap-2">
           {/* Search input */}
           <div className="flex-grow relative">
-            <motion.div
-              className="relative flex items-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.input
+            <div className="relative flex items-center">
+              <input
                 ref={inputRef}
                 type="text"
                 value={query}
@@ -342,20 +343,14 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Search by area, project or community..."
-                className="w-full px-4 py-3 pr-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 placeholder-gray-500"
+                className="w-full px-4 py-3 pr-10 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 placeholder-gray-500"
                 aria-label="Search"
-                whileFocus={{
-                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
-                  borderColor: "rgba(59, 130, 246, 0.5)"
-                }}
               />
-              <motion.button
+              <button
                 type="button"
                 onClick={handleSearch}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                 aria-label="Search"
-                whileHover={{ scale: 1.1, color: "#2563eb" }}
-                whileTap={{ scale: 0.95 }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -371,27 +366,17 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
 
             {/* Suggestions dropdown */}
-            <AnimatePresence>
-              {showSuggestions && (
-                <motion.div
-                  ref={suggestionsRef}
-                  className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-                  initial={{ opacity: 0, y: -10, height: 0 }}
-                  animate={{ opacity: 1, y: 0, height: 'auto' }}
-                  exit={{ opacity: 0, y: -10, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
+            {showSuggestions && (
+              <div
+                ref={suggestionsRef}
+                className="absolute z-20 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+              >
                 {loading ? (
-                  <div className="p-3 text-center text-gray-500">
-                    <div className="flex justify-center items-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-blue-600 mr-2"></div>
-                      <span>Searching properties...</span>
-                    </div>
-                  </div>
+                  <LoadingSpinner />
                 ) : error ? (
                   <div className="p-3 text-center text-red-500">
                     <div className="flex items-center justify-center">
@@ -432,39 +417,29 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                         onApplyFilters();
                         setShowSuggestions(false);
                       }}
-                      className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      className="mt-2 text-gray-600 hover:text-gray-800 text-sm font-medium"
                     >
                       Clear search and show all properties
                     </button>
                   </div>
                 ) : null}
-                </motion.div>
-              )}
-            </AnimatePresence>
+              </div>
+            )}
           </div>
 
           {/* Quick filters */}
-          <motion.div
+          <div
             className="flex flex-wrap gap-2"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
           >
             {/* Property Type Filter */}
-            <motion.div
+            <div
               className="min-w-[120px]"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <motion.select
+              <select
                 id="property-type"
-                className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+                className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
                 value={filters.type || ''}
                 onChange={handleFilterChange}
-                whileFocus={{
-                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
-                  borderColor: "rgba(59, 130, 246, 0.5)"
-                }}
               >
                 <option value="">Property Type</option>
                 {propertyTypes.map((option) => (
@@ -474,24 +449,18 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     </option>
                   )
                 ))}
-              </motion.select>
-            </motion.div>
+              </select>
+            </div>
 
             {/* Bedrooms Filter */}
-            <motion.div
+            <div
               className="min-w-[100px]"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <motion.select
+              <select
                 id="bedrooms"
-                className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 appearance-none bg-white"
+                className="w-full h-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 appearance-none bg-white"
                 value={filters.bedrooms?.toString() || ''}
                 onChange={handleFilterChange}
-                whileFocus={{
-                  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.2)",
-                  borderColor: "rgba(59, 130, 246, 0.5)"
-                }}
               >
                 <option value="">Beds</option>
                 {bedroomOptions.map((option) => (
@@ -501,50 +470,30 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                     </option>
                   )
                 ))}
-              </motion.select>
-            </motion.div>
+              </select>
+            </div>
 
             {/* Advanced Filters Toggle */}
-            <motion.div
+            <div
               className="min-w-[100px]"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <motion.button
+              <button
                 type="button"
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-                className="filter-toggle w-full h-full px-3 py-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-center"
-                whileHover={{ backgroundColor: "#F9FAFB" }}
-                whileTap={{ scale: 0.98 }}
+                className="filter-toggle w-full h-full px-3 py-3 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-500 flex items-center justify-center"
               >
                 <span>Filters</span>
-                <motion.svg
-                  className="ml-2 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  animate={{ rotate: showAdvancedFilters ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </motion.svg>
                 {hasActiveFilters && (
-                  <motion.span
-                    className="ml-1 flex h-2 w-2 rounded-full bg-blue-600"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                  <span
+                    className="ml-1 flex h-2 w-2 rounded-full bg-gray-600"
                   />
                 )}
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
 
             {/* Search Button */}
-            <motion.div
+            <div
               className="min-w-[100px]"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               <Button
                 type="submit"
@@ -553,21 +502,16 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
               >
                 Search
               </Button>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Advanced filters panel */}
-        <AnimatePresence>
-          {showAdvancedFilters && (
-            <motion.div
-              ref={filtersRef}
-              className="absolute z-10 left-0 right-0 mt-2 p-4 border border-gray-200 rounded-md bg-white shadow-lg"
-              initial={{ opacity: 0, y: -20, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, y: -20, height: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            >
+        {showAdvancedFilters && (
+          <div
+            ref={filtersRef}
+            className="absolute z-10 left-0 right-0 mt-2 p-4 border border-gray-200 rounded-md bg-white shadow-lg"
+          >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               {/* Status Filter */}
               <div>
@@ -576,7 +520,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 </label>
                 <select
                   id="status"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={filters.status || ''}
                   onChange={handleFilterChange}
                 >
@@ -598,7 +542,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 </label>
                 <select
                   id="price-range"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={
                     filters.minPrice !== undefined && filters.maxPrice !== undefined
                       ? `${filters.minPrice}-${filters.maxPrice}`
@@ -624,7 +568,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 </label>
                 <select
                   id="location"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={filters.location || ''}
                   onChange={handleFilterChange}
                 >
@@ -646,7 +590,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 </label>
                 <select
                   id="bathrooms"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   value={filters.bathrooms?.toString() || ''}
                   onChange={handleFilterChange}
                 >
@@ -669,7 +613,7 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 <input
                   type="number"
                   id="year-built"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 bg-white"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-700 bg-white"
                   placeholder="e.g. 2020"
                   min="1900"
                   max={new Date().getFullYear()}
@@ -701,9 +645,8 @@ const IntegratedSearchFilters: React.FC<IntegratedSearchFiltersProps> = ({
                 Apply Filters
               </Button>
             </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </div>
+        )}
       </form>
     </div>
   );

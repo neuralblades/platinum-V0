@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import PropertyCard from './PropertyCard';
 import { getFeaturedProperties, Property } from '@/services/propertyService';
-import { motion } from 'framer-motion';
-import { FadeInUp, StaggerContainer, StaggerItem } from '@/components/animations/MotionWrapper';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 type PropertyStatus = 'sale' | 'rent' | 'offplan';
 
@@ -69,67 +68,53 @@ const FeaturedProperties = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
-          <FadeInUp>
+          <div className="animate-fade-in-up">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Properties</h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-8">
               Explore our handpicked selection of premium properties in the most sought-after locations.
             </p>
-          </FadeInUp>
+          </div>
 
-          <FadeInUp delay={0.2}>
-            <div className="flex justify-center gap-4 mb-8 max-w-md mx-auto">
-              <motion.button
-                onClick={() => setActiveFilter('sale')}
-                className={`px-6 py-2 rounded-md border ${activeFilter === 'sale'
-                  ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
-                  : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                For Sale
-              </motion.button>
-              <motion.button
-                onClick={() => setActiveFilter('rent')}
-                className={`px-6 py-2 rounded-md border ${activeFilter === 'rent'
-                  ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
-                  : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                For Rent
-              </motion.button>
-              <motion.button
-                onClick={() => setActiveFilter('offplan')}
-                className={`px-6 py-2 rounded-md border ${activeFilter === 'offplan'
-                  ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
-                  : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Off Plan
-              </motion.button>
-            </div>
-          </FadeInUp>
+          <div className="flex justify-center gap-4 mb-8 max-w-md mx-auto">
+            <button
+              onClick={() => setActiveFilter('sale')}
+              className={`px-6 py-2 rounded-md border transition-transform duration-200 hover:scale-105 active:scale-95 ${activeFilter === 'sale'
+                ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
+                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
+            >
+              For Sale
+            </button>
+            <button
+              onClick={() => setActiveFilter('rent')}
+              className={`px-6 py-2 rounded-md border transition-transform duration-200 hover:scale-105 active:scale-95 ${activeFilter === 'rent'
+                ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
+                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
+            >
+              For Rent
+            </button>
+            <button
+              onClick={() => setActiveFilter('offplan')}
+              className={`px-6 py-2 rounded-md border transition-transform duration-200 hover:scale-105 active:scale-95 ${activeFilter === 'offplan'
+                ? 'border-gray-800 bg-gradient-to-r from-gray-700 to-gray-900 text-white font-medium shadow-lg'
+                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}`}
+            >
+              Off Plan
+            </button>
+          </div>
         </div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-800"></div>
-          </div>
+          <LoadingSpinner />
         ) : error ? (
-          <FadeInUp>
-            <div className="text-center text-gray-800 mb-8 p-4 bg-gray-100 rounded-md">{error}</div>
-          </FadeInUp>
+          <div className="text-center text-gray-800 mb-8 p-4 bg-gray-100 rounded-md">{error}</div>
         ) : properties.length === 0 ? (
-          <FadeInUp>
-            <div className="text-center text-gray-800 mb-8 p-4 bg-gray-100 rounded-md">
-              No featured properties available at the moment.
-            </div>
-          </FadeInUp>
+          <div className="text-center text-gray-800 mb-8 p-4 bg-gray-100 rounded-md">
+            No featured properties available at the moment.
+          </div>
         ) : (
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" delay={0.3}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {properties.map((property) => (
-              <StaggerItem key={property.id}>
+              <div key={property.id} className="animate-fade-in-up">
                 <PropertyCard
                   id={property.id}
                   title={property.title}
@@ -142,16 +127,13 @@ const FeaturedProperties = () => {
                   featured={property.featured}
                   isOffplan={property.isOffplan}
                 />
-              </StaggerItem>
+              </div>
             ))}
-          </StaggerContainer>
+          </div>
         )}
 
-        <FadeInUp delay={0.5} className="text-center mt-12">
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
+        <div className="text-center mt-12">
+          <div className="inline-block transition-transform duration-200 hover:scale-105 active:scale-95">
             <Link
               href={activeFilter === 'offplan' ? '/properties/offplan' : `/properties?status=${activeFilter === 'sale' ? 'for-sale' : 'for-rent'}`}
               className="inline-block px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-900 text-white hover:from-gray-900 hover:to-gray-700 transition duration-300 font-medium shadow-lg rounded-md"
@@ -160,8 +142,8 @@ const FeaturedProperties = () => {
               {activeFilter === 'rent' && 'View All Properties For Rent'}
               {activeFilter === 'offplan' && 'View All Off Plan Properties'}
             </Link>
-          </motion.div>
-        </FadeInUp>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -55,7 +55,7 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="py-4 px-6 bg-blue-600 text-white text-center">
+          <div className="py-4 px-6 bg-gray-600 text-white text-center">
             <h2 className="text-2xl font-bold">Reset Password</h2>
           </div>
 
@@ -65,7 +65,7 @@ export default function ResetPasswordPage() {
                 <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
                   Password reset successful! You will be redirected to the login page.
                 </div>
-                <Link href="/auth/login" className="text-blue-600 hover:underline">
+                <Link href="/auth/login" className="text-gray-600 hover:underline">
                   Go to Login
                 </Link>
               </div>
@@ -91,7 +91,7 @@ export default function ResetPasswordPage() {
                       id="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                       placeholder="••••••••"
                       required
                       minLength={6}
@@ -107,7 +107,7 @@ export default function ResetPasswordPage() {
                       id="confirm-password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                       placeholder="••••••••"
                       required
                       minLength={6}
@@ -117,7 +117,7 @@ export default function ResetPasswordPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 transition duration-300 disabled:bg-blue-400 disabled:cursor-not-allowed"
+                    className="w-full bg-gray-600 text-white py-3 px-4 rounded-md font-medium hover:bg-gray-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Resetting...' : 'Reset Password'}
                   </button>
@@ -126,7 +126,7 @@ export default function ResetPasswordPage() {
                 <div className="mt-6 text-center">
                   <p className="text-gray-600">
                     Remember your password?{' '}
-                    <Link href="/auth/login" className="text-blue-600 hover:underline">
+                    <Link href="/auth/login" className="text-gray-600 hover:underline">
                       Sign In
                     </Link>
                   </p>

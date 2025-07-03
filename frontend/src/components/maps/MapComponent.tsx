@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { loadGoogleMapsApi } from '@/utils/googleMapsLoader';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface MapComponentProps {
   address?: string;
@@ -15,6 +16,7 @@ const MapComponent = ({ address, location, height = '400px', zoom = 15 }: MapCom
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load Google Maps API
   useEffect(() => {
@@ -25,6 +27,8 @@ const MapComponent = ({ address, location, height = '400px', zoom = 15 }: MapCom
       } catch (error) {
         console.error('Error loading Google Maps API:', error);
         setMapError('Failed to load Google Maps');
+      } finally {
+        setIsLoading(false);
       }
     };
     
@@ -136,7 +140,7 @@ const MapComponent = ({ address, location, height = '400px', zoom = 15 }: MapCom
       icon: {
         path: window.google.maps.SymbolPath.CIRCLE,
         scale: 10,
-        fillColor: '#0D9488', // Teal-600
+        fillColor: '#0D9488', // gray-600
         fillOpacity: 1,
         strokeColor: '#FFFFFF',
         strokeWeight: 2,
@@ -162,10 +166,8 @@ const MapComponent = ({ address, location, height = '400px', zoom = 15 }: MapCom
       className="rounded-lg overflow-hidden w-full"
       style={{ height }}
     >
-      {!mapLoaded && (
-        <div className="h-full w-full bg-gray-100 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-teal-600"></div>
-        </div>
+      {isLoading && (
+        <LoadingSpinner />
       )}
     </div>
   );

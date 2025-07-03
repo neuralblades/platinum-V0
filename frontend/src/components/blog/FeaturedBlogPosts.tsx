@@ -43,7 +43,7 @@ const FeaturedBlogPosts: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {[...Array(3)].map((_, index) => (
-            <div key={index} className="h-96 animate-pulse rounded-xl bg-gray-200"></div>
+            <div key={index} className="h-80 animate-pulse rounded-xl bg-gray-200"></div>
           ))}
         </div>
       </div>
@@ -82,7 +82,9 @@ const FeaturedBlogPosts: React.FC = () => {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {posts.map((post) => (
-            <BlogCard key={post.id} post={post} variant="featured" />
+            <div key={post.id} className="h-80">
+              <BlogCard post={post} variant="featured" />
+            </div>
           ))}
         </div>
       </div>

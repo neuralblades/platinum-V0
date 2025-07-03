@@ -8,6 +8,7 @@ import { getAllUsers } from '@/services/userService';
 import { getAllOffplanInquiries } from '@/services/offplanInquiryService';
 import { clearServerCache } from '@/utils/cacheUtils';
 import Button from '@/components/ui/Button';
+import StatusBadge from '@/components/ui/StatusBadge';
 
 // Dashboard Stat Card Component
 const StatCard = ({ title, value, icon, bgColor }: { title: string; value: number; icon: React.ReactNode; bgColor: string }) => (
@@ -190,11 +191,11 @@ export default function AdminDashboard() {
           title="Total Properties"
           value={stats.properties}
           icon={
-            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           }
-          bgColor="bg-gradient-to-br from-blue-100 to-blue-200"
+          bgColor="bg-gradient-to-br from-gray-100 to-gray-200"
         />
         <StatCard
           title="Featured Properties"
@@ -304,13 +305,7 @@ export default function AdminDashboard() {
                   <div key={inquiry.id} className="py-3 hover:bg-gray-50 px-2 rounded-md transition-colors">
                     <div className="flex justify-between">
                       <h3 className="font-medium text-gray-800">{inquiry.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        inquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
-                        inquiry.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
-                      }`}>
-                        {inquiry.status || 'new'}
-                      </span>
+                      <StatusBadge status={inquiry.status || 'new'} />
                     </div>
                     <p className="text-sm text-gray-500">{inquiry.email}</p>
                     <p className="text-xs text-gray-500 mt-1">
@@ -349,13 +344,7 @@ export default function AdminDashboard() {
                   <div key={inquiry.id} className="py-3 hover:bg-gray-50 px-2 rounded-md transition-colors">
                     <div className="flex justify-between">
                       <h3 className="font-medium text-gray-800">{inquiry.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        inquiry.status === 'new' ? 'bg-blue-100 text-blue-800' :
-                        inquiry.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
-                      }`}>
-                        {inquiry.status || 'new'}
-                      </span>
+                      <StatusBadge status={inquiry.status || 'new'} />
                     </div>
                     <p className="text-sm text-gray-500">{inquiry.email}</p>
                     <p className="text-xs text-gray-500 mt-1">
